@@ -6,4 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Nocturne.Constellation\Nocturne.Constellation.csproj" />
+      <ProjectReference Include="..\Nocturne.Lens\Nocturne.Lens.csproj" />
+      <ProjectReference Include="..\Nocturne.Prism\Nocturne.Prism.csproj" />
+      <ProjectReference Include="..\Nocturne.Sparks\Nocturne.Sparks.csproj" />
+    </ItemGroup>
+
 </Project>
