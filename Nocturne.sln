@@ -21,7 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B1FFC7D7-7
 		readme.md = readme.md
 		changelog.md = changelog.md
 		..\..\OneDrive\Desktop\Docs\quickstart.md = ..\..\OneDrive\Desktop\Docs\quickstart.md
-		..\..\OneDrive\nocturne.docx = ..\..\OneDrive\nocturne.docx
+		..\..\OneDrive\nocturne.htm = ..\..\OneDrive\nocturne.htm
+		..\..\OneDrive\Desktop\setup-card.md = ..\..\OneDrive\Desktop\setup-card.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Samples", "..\PrismX.SDK\Nocturne.Samples\Nocturne.Samples.csproj", "{02632061-B8FA-4547-BB81-485851CB3DAB}"
