@@ -11,6 +11,7 @@
       <ProjectReference Include="..\Nocturne.Lens\Nocturne.Lens.csproj" />
       <ProjectReference Include="..\Nocturne.Prism\Nocturne.Prism.csproj" />
       <ProjectReference Include="..\Nocturne.Sparks\Nocturne.Sparks.csproj" />
+      <ProjectReference Include="..\Nocturne.Surface\Nocturne.Surface.csproj" />
     </ItemGroup>
 
 </Project>

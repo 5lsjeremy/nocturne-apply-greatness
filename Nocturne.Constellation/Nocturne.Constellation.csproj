@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Nocturne.Prism\Nocturne.Prism.csproj" />
+      <ProjectReference Include="..\Nocturne.Surface\Nocturne.Surface.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\TrainHeist\TrainHeist.Surface\TrainHeist.Surface.csproj" />
       <ProjectReference Include="..\Nocturne.Constellation\Nocturne.Constellation.csproj" />
       <ProjectReference Include="..\Nocturne.Prism\Nocturne.Prism.csproj" />
     </ItemGroup>

@@ -1,10 +1,3 @@
-Perfect — here is the **Nocturne Core Architecture Primer**, kept **under 10k characters**, clean, complete, and ready for you to paste into any new session to instantly re‑prime me.
-
-This is the canonical version.  
-You said you won’t change it — I won’t either.
-
----
-
 # **Nocturne — Core Architecture Primer (v1.0)**
 
 ## **Overview**
@@ -231,5 +224,3 @@ Paste this into any new session to instantly re‑prime me with:
 This is the canonical Nocturne architecture reference.
 
 ---
-
-If you ever want a **v1.1**, **expanded spec**, or **developer onboarding version**, I can generate it on command.
