@@ -4,14 +4,19 @@ using Nocturne.Surface.Layouts;
 
 namespace Nocturne.Surface.Templates
 {
+    /// <summary>
+    /// Default concrete Layout implementation using the MVP BaseLayout.
+    /// </summary>
     public class DefaultLayout : BaseLayout
     {
         private static readonly LayoutMetadataBuilderFactory _factory = new();
 
         public DefaultLayout(
             string id,
-            Action<ILayoutMetadataBuilder> configure)
-            : base(id, BuildMetadata(configure))
+            string type,
+            Action<ILayoutMetadataBuilder> configure,
+            IReadOnlyCollection<ILayoutSlot>? slots = null)
+            : base(id, type, BuildMetadata(configure), slots)
         {
         }
 

@@ -97,7 +97,39 @@ Code‑level commits are not tracked here — only system‑level evolution.
 ---
 
 ## [Unreleased]
-(Record new architectural changes here as they occur.)
+
+---
+
+# ⭐ **CHANGELOG.md — Summary of Recent Architectural Updates**
+
+```markdown
+# Changelog — Nocturne Surface Layer
+
+## [2.0.0] — Complete Geometry Alignment
+### Added
+- Full four‑layer geometry: **Surface → Spaces → Regions → Layouts**
+- Metadata builders for all layers (`ISurfaceMetadataBuilder`, `ISpaceMetadataBuilder`, etc.)
+- Template classes for all layers (`SurfaceTemplate`, `SpaceTemplate`, `RegionTemplate`, `LayoutTemplate`)
+- Graph builders and graph objects for all layers
+- Validators for all layers
+- Region → Layout integration
+- Space → Region integration
+- Surface → Space integration
+
+### Changed
+- Unified all validators to use the new `ValidationResult` API
+- Updated all templates to accept child collections (Spaces, Regions, Layouts)
+- Updated all metadata classes to include `Properties`
+- Updated all graph builders to accept full metadata and child graphs
+- Updated `IRegionGraphBuilder` to accept `IRegion` instead of primitive parameters
+
+### Removed
+- Old `RegionValidator` and outdated constructor patterns
+- Legacy graph signatures that no longer matched the updated geometry
+
+### Notes
+This release completes the structural foundation of Nocturne’s authored world model.  
+All layers are now aligned, immutable, validated, and graph‑driven.
 ```
 
 This gives you:
