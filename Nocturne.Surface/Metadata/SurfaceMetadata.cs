@@ -1,4 +1,4 @@
-namespace Nocturne.Abstractions
+namespace Nocturne.Surface.Metadata
 {
     public sealed class SurfaceMetadata
     {

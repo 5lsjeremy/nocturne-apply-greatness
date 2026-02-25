@@ -1,0 +1,52 @@
+{
+  "localizations": [
+    {
+      "id": "high_fantasy",
+      "name": "High Fantasy",
+      "path": "prompts/localization/high_fantasy.json",
+      "previewColor": "#4A8F3C"
+    },
+    {
+      "id": "grimdark",
+      "name": "Grimdark",
+      "path": "prompts/localization/grimdark.json",
+      "previewColor": "#3A3A3A"
+    },
+    {
+      "id": "cozy",
+      "name": "Cozy",
+      "path": "prompts/localization/cozy.json",
+      "previewColor": "#E8B88F"
+    },
+    {
+      "id": "sci_fi",
+      "name": "Sci‑Fi",
+      "path": "prompts/localization/sci_fi.json",
+      "previewColor": "#00C8FF"
+    },
+    {
+      "id": "eldritch",
+      "name": "Eldritch",
+      "path": "prompts/localization/eldritch.json",
+      "previewColor": "#5A2A82"
+    },
+    {
+      "id": "dieselpunk",
+      "name": "Dieselpunk",
+      "path": "prompts/localization/dieselpunk.json",
+      "previewColor": "#6B4F3A"
+    },
+    {
+      "id": "solar_punk",
+      "name": "Solar Punk",
+      "path": "prompts/localization/solar_punk.json",
+      "previewColor": "#4CAF50"
+    },
+    {
+      "id": "mythic_heroic",
+      "name": "Mythic Heroic",
+      "path": "prompts/localization/mythic_heroic.json",
+      "previewColor": "#C28F2C"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["heavy", "suffocating", "ashen"],
+    "conflict": ["brutal", "inevitable", "corrupt"],
+    "aesthetic": ["rusted", "scarred", "blood‑stained"]
+  },
+  "colors": {
+    "primary": "#3A3A3A",
+    "secondary": "#5A1E1E",
+    "accent": "#8B0000",
+    "background": "#1A1A1A",
+    "darkMode": {
+      "primary": "#2A2A2A",
+      "secondary": "#441414",
+      "accent": "#B30000",
+      "background": "#000000"
+    }
+  }
+}

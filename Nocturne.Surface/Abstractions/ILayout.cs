@@ -1,4 +1,5 @@
 using Nocturne.Abstractions;
+using Nocturne.Abstractions.Surface;
 using Nocturne.Surface.Layouts;
 
 namespace Nocturne.Surface.Abstractions

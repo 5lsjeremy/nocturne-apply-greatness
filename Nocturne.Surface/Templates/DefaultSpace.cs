@@ -1,6 +1,7 @@
 using Nocturne.Abstractions;
 using Nocturne.Surface.Abstractions;
 using Nocturne.Surface.Builders;
+using Nocturne.Surface.Metadata;
 
 namespace Nocturne.Surface.Templates
 {

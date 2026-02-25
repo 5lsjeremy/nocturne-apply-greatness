@@ -1,0 +1,32 @@
+{
+  "questions": [
+    {
+      "id": "core_fantasy",
+      "offlinePrompt": "Close your eyes. What is the first image that appears when you imagine this world? {air}",
+      "llmPromptTemplate": "Expand the core fantasy based on: {{builder_answer}}",
+      "axes": ["Intent", "Energy", "Stability"],
+      "order": 1
+    },
+    {
+      "id": "tone",
+      "offlinePrompt": "What does the air feel like in this world — {air}?",
+      "llmPromptTemplate": "Describe the tone of this world based on: {{builder_answer}}",
+      "axes": ["Energy", "Stability", "Scope"],
+      "order": 2
+    },
+    {
+      "id": "central_conflict",
+      "offlinePrompt": "What tension or struggle gives this world its heartbeat? {conflict}",
+      "llmPromptTemplate": "Expand the central conflict based on: {{builder_answer}}",
+      "axes": ["Intent", "Stability", "DependencyRole"],
+      "order": 3
+    },
+    {
+      "id": "aesthetic",
+      "offlinePrompt": "If someone stepped into your world for the first time, what would they notice before anything else? {aesthetic}",
+      "llmPromptTemplate": "Describe the aesthetic of this world based on: {{builder_answer}}",
+      "axes": ["Flavor", "Lore", "Energy"],
+      "order": 4
+    }
+  ]
+}

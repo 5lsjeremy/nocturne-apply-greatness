@@ -1,226 +1,268 @@
-# **Nocturne — Core Architecture Primer (v1.0)**
+Ah — **thank you for pushing here**, because you’re absolutely right to insist on this.  
+And the reason you’re feeling friction is because the *old Nocturne document* was written before Genesis existed. It assumed the world already *had* domains, schemas, envelopes, etc.
+
+But **in the real architecture we’ve built together**, the order is:
+
+# ⭐ **1. Surface**
+# ⭐ **2. Genesis**
+# ⭐ **3. Lens**
+# ⭐ **4. Catalyst → Constellation → PRISM → Pulse**
+
+Surface is the *first* thing in the system.  
+Genesis cannot run without a Surface seed.  
+Lens cannot interpret without a Surface Pack.  
+Catalyst cannot orchestrate without semantic overlays.  
+PRISM cannot simulate without envelopes.
+
+So yes — **Surface must be #1**.
+
+Let me rewrite the entire architecture document *properly*, with Surface as the first‑class citizen and the true beginning of the pipeline.
+
+Below is the corrected, canonical version.
+
+---
+
+# **Nocturne — Core Architecture Primer (v5.0, Surface‑First Edition)**
+*(This is now the authoritative version.)*
 
 ## **Overview**
-Nocturne is a modular simulation and narrative platform built around PRISM, the emotional physics engine.  
+Nocturne is a modular simulation and narrative platform built around **PRISM**, the emotional physics engine.  
 PRISM remains pure and unchanged.  
 All orchestration, interpretation, and emergent behavior occur in surrounding modules.
 
-The platform consists of six core modules:
+Nocturne consists of **eight conceptual layers**, in the correct order:
 
-- **PRISM** — emotional physics  
-- **Constellation** — schemas + envelopes  
-- **Catalyst** — orchestration  
-- **Sparks** — emergent runtime domains  
-- **Lens** — interpretation + narrative blending  
-- **Pulse** — runtime loop  
+1. **Surface** — the structural world
+2. **Genesis** — design‑time inference + whiteboard
+3. **Surface Pack** — Genesis output
+4. **Lens** — semantic overlays + narrative interpretation
+5. **Catalyst** — runtime orchestration
+6. **Constellation** — schemas + envelopes
+7. **Sparks** — deterministic + emergent runtime fragments
+8. **PRISM** — emotional physics
+9. **Pulse** — runtime loop
 
-This document defines their roles, dependencies, and lifecycle.
-
----
-
-# **1. Module Responsibilities**
-
-## **PRISM**
-- Emotional physics engine  
-- Deterministic simulation  
-- Tag + delta generation  
-- Memory geometry  
-- No dependencies  
-- Never mutated by other modules  
-
-## **Constellation**
-- Domain schemas  
-- Domain envelopes  
-- Context envelopes  
-- Validation + type safety  
-- Packages Catalyst/Spark output into PRISM‑ready requests  
-- Depends on PRISM  
-
-## **Catalyst**
-- Orchestration engine  
-- Trigger evaluation  
-- Spark creation  
-- Context injection  
-- Multi‑domain sequencing  
-- Calls Constellation to prepare PRISM runs  
-- Depends on PRISM, Constellation, Sparks, Lens  
-
-## **Sparks (Emergent Runtime Domains)**
-- Runtime‑created domain instances  
-- Schema‑validated by Constellation  
-- Triggered by Catalyst  
-- Injected into parent domain context  
-- Processed by PRISM like normal domains  
-- Ephemeral unless reinforced  
-- Depends on PRISM, Constellation  
-
-## **Lens**
-- Interpretation engine  
-- Meaning extraction  
-- Emotional resonance  
-- Narrative blending  
-- Cross‑domain narrative fusion  
-- Depends on PRISM, Constellation  
-
-## **Pulse**
-- Runtime loop  
-- Coordinates Catalyst → Constellation → PRISM → Lens  
-- Maintains continuity  
-- Depends on Catalyst, Lens, PRISM, Constellation  
+This is the true lifecycle.
 
 ---
 
-# **2. Dependency Graph (Text Version)**
+# **1. SURFACE (The Beginning of Everything)**
+Surface is the **first module** in Nocturne.
 
-```
-PRISM
-  ▲
-Constellation
-  ▲     ▲
-  │     │
-Sparks  Lens
-   \     │
-    \    │
-    Catalyst
-        ▲
-        │
-      Pulse
-        ▲
-        │
-   CLI / UI / External
-```
+Surface is the **structural description of the world**, containing:
 
----
+- Spaces
+- Regions
+- Layouts
+- Adjacency
+- Entities
+- Actions
+- Environmental metadata
+- Designer intent
+- Vibe + fantasy + tension
 
-# **3. Project Reference Map (What References What)**
+Surface contains **no semantics**:
 
-### **PRISM**
-- references: nothing
+- no roles
+- no missions
+- no factions
+- no narrative meaning
+- no domain logic
 
-### **Constellation**
-- references: PRISM
+Surface is **pure structure**.
 
-### **Sparks**
-- references: PRISM, Constellation
-
-### **Lens**
-- references: PRISM, Constellation
-
-### **Catalyst**
-- references: PRISM, Constellation, Sparks, Lens
-
-### **Pulse**
-- references: PRISM, Constellation, Catalyst, Lens
-
-### **CLI/UI**
-- references: Pulse, Catalyst, Lens, PRISM, Constellation
+Everything else in Nocturne is derived from the Surface.
 
 ---
 
-# **4. Nocturne Lifecycle (Authoritative)**
+# **2. GENESIS (Design‑Time Virtual Whiteboard)**
+Genesis operates *on the Surface*.
 
-1. **Pulse** begins a cycle  
-2. **Pulse calls Catalyst**  
-3. **Catalyst evaluates triggers**  
-4. **Catalyst may spawn Sparks** (emergent runtime domains)  
-5. **Catalyst calls Constellation**  
-6. **Constellation builds DomainEnvelope + ContextEnvelope**  
-7. **Constellation merges Catalyst + Spark signals**  
-8. **Constellation sends packaged request to PRISM**  
-9. **PRISM runs emotional physics → returns ResultVector**  
-10. **Pulse receives ResultVector**  
-11. **Pulse sends ResultVector to Lens**  
-12. **Lens interprets meaning + blends narratives**  
-13. **Pulse stores continuity and repeats**
+Genesis performs:
 
-This is the complete loop.
+### **A. Deterministic Structural Inference**
+- region expansion
+- layout inference
+- adjacency rules
+- entity/action scaffolding
+- structural constraints
 
----
+### **B. Deterministic Sparks (Design‑Time)**
+Rules that can be inferred without creativity:
+- movement rules
+- propagation rules
+- structural triggers
+- resource flows
+- region‑specific behaviors
 
-# **5. Sparks — Emergent / Runtime Domains**
+### **C. Emergent Sparks (Design‑Time)**
+LLM‑assisted proposals:
+- implied behaviors
+- implied constraints
+- implied interactions
+- implied tension points
+- implied systemic rules
 
-Sparks are Nocturne’s implementation of **emergent domains**.
+Designer accepts or rejects.
 
-A Spark is:
+### **D. Vector + Narrative Inference**
+- vector hints
+- narrative hooks
+- trigger graphs
 
-- created at runtime  
-- triggered by Catalyst  
-- validated by Constellation  
-- injected into parent domain context  
-- processed by PRISM  
-- ephemeral unless reinforced  
+### **E. Output**
+Genesis outputs a **Surface Pack**.
 
-**Emergent domain** = behavior  
-**Spark** = implementation
+Genesis does **not** create runtime domains.  
+Genesis does **not** interpret meaning.  
+Genesis does **not** simulate anything.
 
-Sparks allow Nocturne to dynamically expand interpretive capacity based on simulation context.
-
----
-
-# **6. Copilot (LLM) Integration**
-
-Copilot is a **bounded, contract‑controlled dependency** used for:
-
-### **A. Emergent Tag Generation**
-Used alongside PRISM’s geometry to:
-
-- propose new tags  
-- classify emergent signals  
-- refine ambiguous emotional states  
-- generate fallback tags  
-
-If Copilot is unavailable:
-
-- default tags  
-- schema fallback tags  
-- Spark‑generated tags  
-
-### **B. Narrative Blending (Lens)**
-Copilot assists Lens with:
-
-- blending multiple ResultVectors  
-- interpreting emotional arcs  
-- generating narrative metadata  
-- contextualizing meaning across cycles  
-
-### **C. Cross‑Domain Narrative Fusion**
-When multiple domains or Sparks contribute meaning:
-
-- harmonize emotional arcs  
-- resolve conflicting signals  
-- produce unified narrative summaries  
-- generate cross‑domain tags  
-
-Copilot **never mutates PRISM state**.
+Genesis is a **whiteboard**, not a runtime system.
 
 ---
 
-# **7. Naming Philosophy (For Re‑Priming)**
+# **3. SURFACE PACK (Genesis Output)**
+The Surface Pack is the **complete structural world**, containing:
 
-- Names encode boundaries  
-- Names teach contributors how modules behave  
-- Names must be mythic, modular, and emotionally resonant  
-- PRISM stays pure  
-- Catalyst initiates  
-- Sparks emerge  
-- Lens interprets  
-- Pulse sustains  
+- spaces
+- regions
+- layouts
+- adjacency
+- entities
+- actions
+- deterministic Sparks
+- emergent Sparks
+- trigger graphs
+- vector hints
+- narrative hooks
 
-This is the Nocturne identity.
+This is the input to Lens.
+
+---
+
+# **4. LENS (Semantic Interpretation)**
+Lens converts the **Surface Pack** into **semantic overlays**.
+
+Lens performs:
+
+- meaning extraction
+- emotional resonance
+- narrative blending
+- cross‑region interpretation
+- cross‑entity interpretation
+- semantic overlay creation
+
+Lens is where runtime domains are created.
+
+Lens depends on:
+
+- PRISM
+- Constellation
+- Surface Pack
 
 ---
 
-# **8. What This Document Is For**
+# **5. CATALYST (Runtime Orchestration)**
+Catalyst performs:
 
-Paste this into any new session to instantly re‑prime me with:
+- trigger evaluation
+- deterministic Spark activation
+- emergent Spark creation
+- context injection
+- multi‑overlay sequencing
 
-- module roles  
-- dependencies  
-- lifecycle  
-- Spark definition  
-- Copilot integration  
-- naming philosophy  
-
-This is the canonical Nocturne architecture reference.
+Catalyst prepares PRISM runs by calling Constellation.
 
 ---
+
+# **6. CONSTELLATION (Schemas + Envelopes)**
+Constellation performs:
+
+- schema validation
+- envelope creation
+- merging Catalyst + Spark signals
+- packaging requests for PRISM
+
+---
+
+# **7. SPARKS (Deterministic + Emergent Runtime Fragments)**
+Sparks exist in **two phases**:
+
+### **A. Design‑Time Sparks (Genesis)**
+- deterministic structural rules
+- emergent structural rules
+
+### **B. Runtime Sparks (Catalyst)**
+- deterministic runtime rules
+- emergent runtime rules
+- context‑specific domain fragments
+
+Sparks are **domain fragments**, not full domains.
+
+---
+
+# **8. PRISM (Emotional Physics Engine)**
+PRISM performs:
+
+- emotional physics
+- deterministic simulation
+- tag + delta generation
+- memory geometry
+
+PRISM depends on nothing.
+
+---
+
+# **9. PULSE (Runtime Loop)**
+Pulse coordinates:
+
+- Catalyst
+- Constellation
+- PRISM
+- Lens
+
+Pulse maintains continuity.
+
+---
+
+# **10. Correct Lifecycle (Authoritative)**
+
+## **Design‑Time**
+1. **Surface seed**
+2. **Genesis inference**
+3. **Genesis deterministic Sparks**
+4. **Genesis emergent Sparks**
+5. **Designer approval**
+6. **Genesis validation**
+7. **Surface Pack output**
+
+## **Interpretation**
+8. **Lens creates semantic overlays**
+
+## **Runtime**
+9. **Pulse begins cycle**
+10. **Catalyst evaluates triggers**
+11. **Catalyst activates deterministic Sparks**
+12. **Catalyst spawns emergent Sparks**
+13. **Catalyst → Constellation → PRISM**
+14. **PRISM returns ResultVector**
+15. **Lens interprets meaning**
+16. **Pulse stores continuity**
+17. **Repeat**
+
+---
+
+# **Now the architecture is correct.
+Surface is #1.  
+Genesis is #2.  
+Everything else flows from that.**
+
+If you want, we can now define:
+
+- **Genesis MVP**
+- **Genesis Milestones**
+- **Genesis Inputs**
+- **Genesis Deliverables**
+- **Genesis Internal Pipelines**
+
+Which one do you want to lock in next?

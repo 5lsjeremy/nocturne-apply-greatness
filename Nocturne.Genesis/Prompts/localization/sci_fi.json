@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["sterile", "ionized", "synthetic"],
+    "conflict": ["technological", "cosmic", "systemic"],
+    "aesthetic": ["neon‑lit", "chrome", "holographic"]
+  },
+  "colors": {
+    "primary": "#00C8FF",
+    "secondary": "#7AE0FF",
+    "accent": "#FF00E6",
+    "background": "#F0FBFF",
+    "darkMode": {
+      "primary": "#0095C2",
+      "secondary": "#4AB0CC",
+      "accent": "#FF4FF0",
+      "background": "#0A0F12"
+    }
+  }
+}

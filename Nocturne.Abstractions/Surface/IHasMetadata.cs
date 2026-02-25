@@ -1,4 +1,4 @@
-namespace Nocturne.Abstractions
+namespace Nocturne.Abstractions.Surface
 {
     public interface IHasMetadata<TMetadata>
     {

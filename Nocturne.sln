@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B1FFC7D7-7
 		..\..\OneDrive\Desktop\Docs\quickstart.md = ..\..\OneDrive\Desktop\Docs\quickstart.md
 		..\..\OneDrive\Desktop\setup-card.md = ..\..\OneDrive\Desktop\setup-card.md
 		..\..\OneDrive\Desktop\Docs\sparks.md = ..\..\OneDrive\Desktop\Docs\sparks.md
+		..\..\OneDrive\Desktop\Docs\genesis.md = ..\..\OneDrive\Desktop\Docs\genesis.md
+		..\..\OneDrive\Desktop\Docs\nocturne-philosophy = ..\..\OneDrive\Desktop\Docs\nocturne-philosophy
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Surface", "Nocturne.Surface\Nocturne.Surface.csproj", "{A40DC4FD-62F4-4BC1-9078-E179F5444427}"
@@ -30,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Abstractions", "Nocturne.Abstractions\Nocturne.Abstractions.csproj", "{2CB29DBE-CF77-4DFF-A427-CE48436641AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Samples", "..\PrismX.SDK\Nocturne.Samples - Copy\Nocturne.Samples.csproj", "{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Genesis", "Nocturne.Genesis\Nocturne.Genesis.csproj", "{AC095057-4A65-433D-B85D-D57F870A6B5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,5 +85,9 @@ Global
 		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

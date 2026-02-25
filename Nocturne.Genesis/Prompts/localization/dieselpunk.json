@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["oily", "smog‑choked", "mechanized"],
+    "conflict": ["industrial", "oppressive", "resource‑driven"],
+    "aesthetic": ["rusted‑steel", "gear‑laden", "smokestack"]
+  },
+  "colors": {
+    "primary": "#6B4F3A",
+    "secondary": "#A68A6A",
+    "accent": "#D97A2B",
+    "background": "#F5F1EB",
+    "darkMode": {
+      "primary": "#4A3628",
+      "secondary": "#6A5947",
+      "accent": "#FF8F3A",
+      "background": "#1A1714"
+    }
+  }
+}

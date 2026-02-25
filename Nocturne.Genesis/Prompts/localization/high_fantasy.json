@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["bright", "ancient", "enchanted"],
+    "conflict": ["epic", "mythic", "destined"],
+    "aesthetic": ["glittering", "verdant", "runic"]
+  },
+  "colors": {
+    "primary": "#4A8F3C",
+    "secondary": "#C9E4B4",
+    "accent": "#8A5FFF",
+    "background": "#F3F8EF",
+    "darkMode": {
+      "primary": "#2E5A26",
+      "secondary": "#6A8F5F",
+      "accent": "#BFA4FF",
+      "background": "#1A1F18"
+    }
+  }
+}

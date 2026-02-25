@@ -1,0 +1,7 @@
+{
+  "defaults": {
+    "offlineMode": true,
+    "promptSetPath": "prompts/base_prompts.json",
+    "localizationPath": "prompts/localization/high_fantasy.json"
+  }
+}

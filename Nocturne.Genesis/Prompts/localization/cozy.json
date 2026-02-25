@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["warm", "gentle", "soft"],
+    "conflict": ["personal", "quiet", "small‑scale"],
+    "aesthetic": ["hand‑crafted", "sunlit", "whimsical"]
+  },
+  "colors": {
+    "primary": "#E8B88F",
+    "secondary": "#F7E6C4",
+    "accent": "#FF9F80",
+    "background": "#FFF8F0",
+    "darkMode": {
+      "primary": "#B98E6A",
+      "secondary": "#7A6A55",
+      "accent": "#FFB199",
+      "background": "#2B241E"
+    }
+  }
+}

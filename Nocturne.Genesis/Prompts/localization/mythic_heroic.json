@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["charged", "fateful", "divine"],
+    "conflict": ["heroic", "prophetic", "trial‑bound"],
+    "aesthetic": ["monumental", "celestial", "etched‑in‑legend"]
+  },
+  "colors": {
+    "primary": "#C28F2C",
+    "secondary": "#F2D28B",
+    "accent": "#4A90E2",
+    "background": "#FFF9E6",
+    "darkMode": {
+      "primary": "#8F6A1F",
+      "secondary": "#A68A55",
+      "accent": "#6FB3FF",
+      "background": "#1A1710"
+    }
+  }
+}

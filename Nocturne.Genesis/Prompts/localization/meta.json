@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "high_fantasy": {
+      "description": "Bright, enchanted worlds filled with ancient magic and mythic destinies.",
+      "tags": ["magic", "epic", "enchanted", "mythic"]
+    },
+    "grimdark": {
+      "description": "Bleak, brutal worlds where corruption and decay shape every conflict.",
+      "tags": ["dark", "violent", "dystopian", "horror"]
+    },
+    "cozy": {
+      "description": "Warm, gentle worlds focused on small stories and handcrafted charm.",
+      "tags": ["warm", "whimsical", "slice‑of‑life"]
+    },
+    "sci_fi": {
+      "description": "Synthetic, neon‑lit worlds shaped by technology, systems, and cosmic forces.",
+      "tags": ["cyberpunk", "space", "tech", "futuristic"]
+    },
+    "eldritch": {
+      "description": "Unsettling, impossible worlds shaped by cosmic horror and shifting geometry.",
+      "tags": ["horror", "cosmic", "weird", "void"]
+    },
+    "dieselpunk": {
+      "description": "Industrial, gritty worlds powered by machinery, smoke, and conflict.",
+      "tags": ["industrial", "retro‑future", "war", "mechanical"]
+    },
+    "solar_punk": {
+      "description": "Optimistic, eco‑harmonic worlds blending nature, light, and community.",
+      "tags": ["utopian", "green", "eco", "bright"]
+    },
+    "mythic_heroic": {
+      "description": "Legendary worlds shaped by divine forces, heroic trials, and celestial power.",
+      "tags": ["legend", "heroic", "divine", "epic"]
+    }
+  }
+}

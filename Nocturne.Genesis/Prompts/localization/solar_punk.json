@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["fresh", "renewing", "bioluminescent"],
+    "conflict": ["ecological", "communal", "restorative"],
+    "aesthetic": ["overgrown‑green", "woven‑fiber", "sun‑dappled"]
+  },
+  "colors": {
+    "primary": "#4CAF50",
+    "secondary": "#A5D6A7",
+    "accent": "#FFD54F",
+    "background": "#F1F8E9",
+    "darkMode": {
+      "primary": "#2E7D32",
+      "secondary": "#6FAF72",
+      "accent": "#FFCA28",
+      "background": "#121A10"
+    }
+  }
+}

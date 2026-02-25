@@ -1,0 +1,19 @@
+{
+  "adjectives": {
+    "air": ["whispering", "unsettling", "impossible"],
+    "conflict": ["incomprehensible", "inevitable", "corruptive"],
+    "aesthetic": ["non‑euclidean", "shifting", "void‑touched"]
+  },
+  "colors": {
+    "primary": "#5A2A82",
+    "secondary": "#8F5FBF",
+    "accent": "#00FFB7",
+    "background": "#F7F3FF",
+    "darkMode": {
+      "primary": "#3A1A55",
+      "secondary": "#6A4A8F",
+      "accent": "#00DFA0",
+      "background": "#0D0A12"
+    }
+  }
+}

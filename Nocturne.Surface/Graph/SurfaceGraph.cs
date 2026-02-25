@@ -1,5 +1,6 @@
 using Nocturne.Abstractions;
 using Nocturne.Surface.Abstractions;
+using Nocturne.Surface.Metadata;
 
 namespace Nocturne.Surface.Graph
 {

@@ -1,6 +1,6 @@
 using Nocturne.Surface.Abstractions;
 
-namespace Nocturne.Surface.Graph
+namespace Nocturne.Surface.Builders
 {
     public sealed class SurfaceGraphBuilderFactory 
         : IGraphBuilderFactory<ISurfaceGraphBuilder>
