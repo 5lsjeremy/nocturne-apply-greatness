@@ -2,6 +2,9 @@ namespace Nocturne.Abstractions.Genesis
 {
     public interface IGenesisBuilder
     {
-        IStarterDeck BuildStarterDeck(IGenesisContext context);
+        IStarterDeck BuildStarterDeck(
+            ISurfaceArtifact seed,
+            IGenesisContext context,
+            IGenesisInferenceResult inference);
     }
 }

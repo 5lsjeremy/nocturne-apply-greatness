@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B1FFC7D7-7
 		..\..\OneDrive\Desktop\Docs\sparks.md = ..\..\OneDrive\Desktop\Docs\sparks.md
 		..\..\OneDrive\Desktop\Docs\genesis.md = ..\..\OneDrive\Desktop\Docs\genesis.md
 		..\..\OneDrive\Desktop\Docs\nocturne-philosophy = ..\..\OneDrive\Desktop\Docs\nocturne-philosophy
+		..\..\OneDrive\Desktop\Docs\step3blueprint.md = ..\..\OneDrive\Desktop\Docs\step3blueprint.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Surface", "Nocturne.Surface\Nocturne.Surface.csproj", "{A40DC4FD-62F4-4BC1-9078-E179F5444427}"

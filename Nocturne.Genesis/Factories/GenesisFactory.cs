@@ -41,11 +41,7 @@ namespace Nocturne.Genesis.Factories
                 mergedOfflineMode
             );
 
-            var deckBuilder = new DeckBuilder();
-            var cardBuilder = new CardBuilder();
-            var metadataBuilder = new GenesisMetadataBuilder();
-
-            var builder = new GenesisBuilder(deckBuilder, cardBuilder, metadataBuilder);
+            var builder = new GenesisBuilder();
             var inference = new GenesisInferenceService();
 
             return new GenesisEngine(seed, builder, inference, promptService);

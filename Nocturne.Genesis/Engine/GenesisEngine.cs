@@ -1,4 +1,6 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Genesis.Services;
+using IGenesisInferenceService = Nocturne.Abstractions.Genesis.IGenesisInferenceService;
 
 namespace Nocturne.Genesis.Engine
 {
@@ -26,9 +28,10 @@ namespace Nocturne.Genesis.Engine
             var context = new GenesisContext(_seed);
 
             _prompts.RunMvpLoop(context);
-            _inference.InferWorldShape(context);
 
-            return _builder.BuildStarterDeck(context);
+            var inference = _inference.Infer(context);
+
+            return _builder.BuildStarterDeck(_seed, context, inference);
         }
     }
 }
