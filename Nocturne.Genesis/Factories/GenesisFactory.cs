@@ -4,6 +4,7 @@ using Nocturne.Genesis.Config;
 using Nocturne.Genesis.Engine;
 using Nocturne.Genesis.Prompts;
 using Nocturne.Genesis.Services;
+using Nocturne.Genesis.Services.Lineage;
 
 namespace Nocturne.Genesis.Factories
 {
@@ -44,7 +45,20 @@ namespace Nocturne.Genesis.Factories
             var builder = new GenesisBuilder();
             var inference = new GenesisInferenceService();
 
-            return new GenesisEngine(seed, builder, inference, promptService);
+            // NEW: lineage services
+            var provenanceService = new ProvenanceService();
+            var versioningService = new VersioningService();
+            var fingerprintService = new FingerprintService();
+
+            return new GenesisEngine(
+                seed,
+                builder,
+                inference,
+                promptService,
+                provenanceService,
+                versioningService,
+                fingerprintService
+            );
         }
     }
 }
