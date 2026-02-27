@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Lineage;
 
 namespace Nocturne.Genesis.Models
 {
@@ -8,5 +9,7 @@ namespace Nocturne.Genesis.Models
         public IReadOnlyList<ICard> Cards { get; init; } = Array.Empty<ICard>();
         public IReadOnlyDictionary<string, object> Metadata { get; init; }
             = new Dictionary<string, object>();
+
+        public IDeckLineage Lineage { get; set; }
     }
 }

@@ -46,30 +46,26 @@ namespace Nocturne.Genesis.Engine
             // 3. Run inference
             var inference = _inference.Infer(context);
 
-            // Convert prompt answers into a deterministic, replay‑safe form.
-            // The prompt loop stores values as objects for flexibility, but provenance
-            // requires stable, serializable strings so the artifact chain can be
-            // regenerated, compared, and replayed without ambiguity.
-            var promptAnswers = context.Answers
-                .ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value?.ToString() ?? string.Empty
-                );
+            // 4. Create a unique inference run ID
+            var inferenceRunId = Guid.NewGuid().ToString("N");
 
-            // Create the provenance record for this inference run.
-            // Provenance is the fossil record of creation: seed → prompts → inference.
-            // It anchors the card’s identity and enables deterministic regeneration.
-            var provenance = _provenanceService.CreateProvenance(
-                seedId: _seed.Id,
-                promptAnswers: promptAnswers,
-                llm: new[] { "inference" },
-                builder: Array.Empty<string>(),
-                rules: new[] { "initial-inference" }
-            );
-
-            // 4. Attach lineage to each card
+            // 5. Attach lineage to each card
             foreach (var card in inference.Cards)
             {
+                var promptAnswers = context.Answers
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value?.ToString() ?? string.Empty
+                    );
+
+                var provenance = _provenanceService.CreateProvenance(
+                    seedId: _seed.Id,
+                    promptAnswers: promptAnswers,
+                    llm: new[] { "inference" },
+                    builder: Array.Empty<string>(),
+                    rules: new[] { "initial-inference" }
+                );
+
                 var version = _versioningService.CreateInitialVersion(
                     author: "system",
                     origin: "inference",
@@ -83,8 +79,13 @@ namespace Nocturne.Genesis.Engine
                 card.Fingerprint = fingerprint;
             }
 
-            // 5. Build deck with lineage preserved
-            return _builder.BuildStarterDeck(_seed, context, inference);
+            // 6. Build deck with lineage preserved
+            return _builder.BuildStarterDeck(
+                _seed,
+                context,
+                inference,
+                inferenceRunId
+            );
         }
     }
 }

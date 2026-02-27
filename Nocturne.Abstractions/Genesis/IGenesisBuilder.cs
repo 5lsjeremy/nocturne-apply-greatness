@@ -1,10 +1,10 @@
-namespace Nocturne.Abstractions.Genesis
+namespace Nocturne.Abstractions.Genesis;
+
+public interface IGenesisBuilder
 {
-    public interface IGenesisBuilder
-    {
-        IStarterDeck BuildStarterDeck(
-            ISurfaceArtifact seed,
-            IGenesisContext context,
-            IGenesisInferenceResult inference);
-    }
+    IStarterDeck BuildStarterDeck(
+        ISurfaceArtifact seed,
+        IGenesisContext context,
+        IGenesisInferenceResult inference,
+        string inferenceRunId);
 }

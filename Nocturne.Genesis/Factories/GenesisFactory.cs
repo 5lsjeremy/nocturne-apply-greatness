@@ -42,13 +42,15 @@ namespace Nocturne.Genesis.Factories
                 mergedOfflineMode
             );
 
-            var builder = new GenesisBuilder();
-            var inference = new GenesisInferenceService();
-
             // NEW: lineage services
             var provenanceService = new ProvenanceService();
             var versioningService = new VersioningService();
             var fingerprintService = new FingerprintService();
+
+            // FIX: builder now requires fingerprintService
+            var builder = new GenesisBuilder(fingerprintService);
+
+            var inference = new GenesisInferenceService();
 
             return new GenesisEngine(
                 seed,
