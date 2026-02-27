@@ -2,6 +2,11 @@ namespace Nocturne.Abstractions.Genesis.Enums
 {
     public static class CardStatusDetails
     {
+        public enum ArtifactState
+        {
+            Draft,
+            Approved
+        }
         public enum CardType
         {
             Starter,

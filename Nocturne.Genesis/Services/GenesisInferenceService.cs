@@ -80,12 +80,20 @@ namespace Nocturne.Genesis.Services
 
         private void BuildStarterDeck(GenesisInferenceResult result)
         {
-            result.StarterDeck = new StarterDeck
+            var deck = new StarterDeck
             {
-                Name = "Starter Deck",
-                Cards = result.Cards,
-                Metadata = result.Metadata
+                Name = "Starter Deck"
             };
+
+            // Populate cards
+            foreach (var card in result.Cards)
+                deck.Cards.Add(card);
+
+            // Populate metadata
+            foreach (var kvp in result.Metadata)
+                deck.Metadata[kvp.Key] = kvp.Value;
+
+            result.StarterDeck = deck;
         }
     }
 }

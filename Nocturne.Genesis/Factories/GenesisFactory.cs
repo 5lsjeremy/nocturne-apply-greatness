@@ -42,15 +42,22 @@ namespace Nocturne.Genesis.Factories
                 mergedOfflineMode
             );
 
-            // NEW: lineage services
+            // lineage services
             var provenanceService = new ProvenanceService();
             var versioningService = new VersioningService();
             var fingerprintService = new FingerprintService();
 
-            // FIX: builder now requires fingerprintService
+            // builder now requires fingerprintService
             var builder = new GenesisBuilder(fingerprintService);
 
             var inference = new GenesisInferenceService();
+
+            // NEW: riffing service
+            var riffService = new RiffService(new ApprovalService(
+                versioningService,
+                provenanceService,
+                fingerprintService
+            ));
 
             return new GenesisEngine(
                 seed,
@@ -59,7 +66,8 @@ namespace Nocturne.Genesis.Factories
                 promptService,
                 provenanceService,
                 versioningService,
-                fingerprintService
+                fingerprintService,
+                riffService
             );
         }
     }

@@ -3,9 +3,12 @@ using Nocturne.Genesis.Models.Lineage;
 
 namespace Nocturne.Genesis.Services.Lineage
 {
-    public class VersioningService : IVersioningService
+    internal sealed class VersioningService : IVersioningService
     {
-        public IVersionInfo CreateInitialVersion(string author, string origin, object artifact)
+        public IVersionInfo CreateInitialVersion(
+            string author,
+            string origin,
+            object artifact)
         {
             return new CardVersionInfo
             {
@@ -13,11 +16,15 @@ namespace Nocturne.Genesis.Services.Lineage
                 Timestamp = DateTime.UtcNow,
                 Author = author,
                 Origin = origin,
-                Fingerprint = Compute(artifact)
+                Notes = "initial",
             };
         }
 
-        public IVersionInfo CreateNextVersion(IVersionInfo previous, string author, string origin, object artifact)
+        public IVersionInfo CreateNextVersion(
+            IVersionInfo previous,
+            string author,
+            string origin,
+            object artifact)
         {
             return new CardVersionInfo
             {
@@ -25,10 +32,8 @@ namespace Nocturne.Genesis.Services.Lineage
                 Timestamp = DateTime.UtcNow,
                 Author = author,
                 Origin = origin,
-                Fingerprint = Compute(artifact)
+                Notes = $"supersedes v{previous.VersionNumber}"
             };
         }
-
-        private string Compute(object artifact) => new FingerprintService().ComputeFingerprint(artifact);
     }
 }

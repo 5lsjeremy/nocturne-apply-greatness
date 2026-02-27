@@ -17,5 +17,27 @@ namespace Nocturne.Genesis.Services.Lineage
                 Timestamp = DateTime.UtcNow
             };
         }
+
+        public void AppendAction(
+            IProvenance provenance,
+            string action,
+            string actor,
+            int previousVersion,
+            string? reason = null,
+            string? prompt = null)
+        {
+            var concrete = (GenesisProvenance)provenance;
+
+            concrete.Actions.Add(new ProvenanceAction
+            {
+                Action = action,
+                Actor = actor,
+                PreviousVersion = previousVersion,
+                Reason = reason,
+                Prompt = prompt,
+                Timestamp = DateTime.UtcNow
+            });
+        }
+
     }
 }

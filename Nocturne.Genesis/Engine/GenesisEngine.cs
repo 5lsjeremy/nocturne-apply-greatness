@@ -11,10 +11,12 @@ namespace Nocturne.Genesis.Engine
         private readonly IGenesisInferenceService _inference;
         private readonly IGenesisPromptService _prompts;
 
-        // NEW: lineage services injected
         private readonly IProvenanceService _provenanceService;
         private readonly IVersioningService _versioningService;
         private readonly IFingerprintService _fingerprintService;
+
+        // NEW for Step 5
+        private readonly IRiffService _riff;
 
         public GenesisEngine(
             ISurfaceArtifact seed,
@@ -23,7 +25,8 @@ namespace Nocturne.Genesis.Engine
             IGenesisPromptService prompts,
             IProvenanceService provenanceService,
             IVersioningService versioningService,
-            IFingerprintService fingerprintService)
+            IFingerprintService fingerprintService,
+            IRiffService riff)
         {
             _seed = seed;
             _builder = builder;
@@ -33,9 +36,11 @@ namespace Nocturne.Genesis.Engine
             _provenanceService = provenanceService;
             _versioningService = versioningService;
             _fingerprintService = fingerprintService;
+
+            _riff = riff;
         }
 
-        public IStarterDeck Generate()
+        public IGenesisSession Generate()
         {
             // 1. Build context from seed
             var context = new GenesisContext(_seed);
@@ -52,6 +57,8 @@ namespace Nocturne.Genesis.Engine
             // 5. Attach lineage to each card
             foreach (var card in inference.Cards)
             {
+                var concrete = (GenesisCard)card;
+
                 var promptAnswers = context.Answers
                     .ToDictionary(
                         kvp => kvp.Key,
@@ -74,18 +81,32 @@ namespace Nocturne.Genesis.Engine
 
                 var fingerprint = _fingerprintService.ComputeFingerprint(card);
 
-                card.Provenance = provenance;
-                ((GenesisCard)card).Versions.Add(version);
-                card.Fingerprint = fingerprint;
+                concrete.Provenance = provenance;
+                concrete.Versions.Add(version);
+                concrete.Fingerprint = fingerprint;
             }
 
             // 6. Build deck with lineage preserved
-            return _builder.BuildStarterDeck(
+            var deck = _builder.BuildStarterDeck(
                 _seed,
                 context,
                 inference,
                 inferenceRunId
             );
+
+            // 7. Wrap everything in a session (Step 5)
+            return new GenesisSession
+            {
+                SeedId = _seed.Id,
+                Timestamp = DateTime.UtcNow,
+                Cards = inference.Cards,
+                StarterDeck = deck
+            };
+        }
+
+        public ICard Riff(ICard card, string contributor, string prompt)
+        {
+            return _riff.Riff(card, contributor, prompt);
         }
     }
 }

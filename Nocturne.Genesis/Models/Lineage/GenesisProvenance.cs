@@ -2,7 +2,7 @@ using Nocturne.Abstractions.Genesis.Lineage;
 
 namespace Nocturne.Genesis.Models.Lineage
 {
-    public class GenesisProvenance : IProvenance
+    public sealed class GenesisProvenance : IProvenance
     {
         public string SeedId { get; init; }
         public IReadOnlyDictionary<string, string> PromptAnswers { get; init; }
@@ -10,5 +10,7 @@ namespace Nocturne.Genesis.Models.Lineage
         public IReadOnlyList<string> BuilderContributions { get; init; }
         public IReadOnlyList<string> InferenceRulesApplied { get; init; }
         public DateTime Timestamp { get; init; }
+
+        public List<ProvenanceAction> Actions { get; } = new();
     }
 }
