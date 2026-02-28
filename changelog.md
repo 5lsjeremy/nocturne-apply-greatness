@@ -1,4 +1,5 @@
-A changelog is a smart move — it becomes the **living heartbeat** of the project, the place where every architectural shift, naming ritual, and module evolution gets recorded. And because you’re locking the primer, the changelog becomes the *only* evolving document in the system.
+
+changelog is a smart move — it becomes the **living heartbeat** of the project, the place where every architectural shift, naming ritual, and module evolution gets recorded. And because you’re locking the primer, the changelog becomes the *only* evolving document in the system.
 
 Let’s set it up cleanly so it fits your workflow and stays easy to maintain.
 
