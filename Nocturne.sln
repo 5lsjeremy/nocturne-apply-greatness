@@ -18,16 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.UI", "Nocturne.UI\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}"
 	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
 		changelog.md = changelog.md
-		..\..\OneDrive\Desktop\Docs\quickstart.md = ..\..\OneDrive\Desktop\Docs\quickstart.md
-		..\..\OneDrive\Desktop\setup-card.md = ..\..\OneDrive\Desktop\setup-card.md
-		..\..\OneDrive\Desktop\Docs\sparks.md = ..\..\OneDrive\Desktop\Docs\sparks.md
-		..\..\OneDrive\Desktop\Docs\genesis.md = ..\..\OneDrive\Desktop\Docs\genesis.md
-		..\..\OneDrive\Desktop\Docs\nocturne-philosophy = ..\..\OneDrive\Desktop\Docs\nocturne-philosophy
-		..\..\OneDrive\Desktop\Docs\step3blueprint.md = ..\..\OneDrive\Desktop\Docs\step3blueprint.md
-		..\..\OneDrive\Desktop\Docs\step4blueprint.md = ..\..\OneDrive\Desktop\Docs\step4blueprint.md
-		..\..\OneDrive\Desktop\Docs\internals-and-services.md = ..\..\OneDrive\Desktop\Docs\internals-and-services.md
+		..\..\OneDrive\Desktop\Docs\repo-readme.md = ..\..\OneDrive\Desktop\Docs\repo-readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Surface", "Nocturne.Surface\Nocturne.Surface.csproj", "{A40DC4FD-62F4-4BC1-9078-E179F5444427}"
@@ -37,6 +29,31 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Samples", "..\PrismX.SDK\Nocturne.Samples - Copy\Nocturne.Samples.csproj", "{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Genesis", "Nocturne.Genesis\Nocturne.Genesis.csproj", "{AC095057-4A65-433D-B85D-D57F870A6B5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "phase2", "phase2", "{3FC6A979-E2D4-416F-A6AF-D368A9B871A2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\genesis-contractt.md = ..\..\OneDrive\Desktop\Docs\genesis-contractt.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "overview", "overview", "{0101057C-D2F6-4A44-9C1C-B64DB76CF7C3}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\genesis.md = ..\..\OneDrive\Desktop\Docs\genesis.md
+		..\..\OneDrive\Desktop\Docs\internals-and-services.md = ..\..\OneDrive\Desktop\Docs\internals-and-services.md
+		..\..\OneDrive\Desktop\Docs\nocturne-documentation-project-skeleton.md = ..\..\OneDrive\Desktop\Docs\nocturne-documentation-project-skeleton.md
+		..\..\OneDrive\Desktop\Docs\nocturne-philosophy = ..\..\OneDrive\Desktop\Docs\nocturne-philosophy
+		..\..\OneDrive\Desktop\Docs\quickstart.md = ..\..\OneDrive\Desktop\Docs\quickstart.md
+		..\..\OneDrive\Desktop\Docs\prism-calculatsions.md = ..\..\OneDrive\Desktop\Docs\prism-calculatsions.md
+		readme.md = readme.md
+		..\..\OneDrive\Desktop\setup-card.md = ..\..\OneDrive\Desktop\setup-card.md
+		..\..\OneDrive\Desktop\Docs\sparks.md = ..\..\OneDrive\Desktop\Docs\sparks.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blueprints", "blueprints", "{8642B211-5699-4D40-B1A2-53E1C1B0D5E7}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\Phase2Blueprint.md = ..\..\OneDrive\Desktop\Docs\Phase2Blueprint.md
+		..\..\OneDrive\Desktop\Docs\step3blueprint.md = ..\..\OneDrive\Desktop\Docs\step3blueprint.md
+		..\..\OneDrive\Desktop\Docs\step4blueprint.md = ..\..\OneDrive\Desktop\Docs\step4blueprint.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,5 +109,10 @@ Global
 		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3FC6A979-E2D4-416F-A6AF-D368A9B871A2} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
+		{0101057C-D2F6-4A44-9C1C-B64DB76CF7C3} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
+		{8642B211-5699-4D40-B1A2-53E1C1B0D5E7} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
 	EndGlobalSection
 EndGlobal

@@ -1,48 +1,34 @@
-Ah — **thank you for pushing here**, because you’re absolutely right to insist on this.  
-And the reason you’re feeling friction is because the *old Nocturne document* was written before Genesis existed. It assumed the world already *had* domains, schemas, envelopes, etc.
+Perfect — I’ll update the architecture document so **Umbra** and **Umbra.Maw** are first‑class, canonical products inside the Nocturne ecosystem. I’ll integrate them cleanly without disturbing the sequencing you’ve already locked: Surface → Genesis → Lens → Catalyst → Constellation → PRISM → Pulse.
 
-But **in the real architecture we’ve built together**, the order is:
+Umbra and Umbra.Maw sit **before Genesis** but **after Surface**, because they are the *ingestion and transformation layer* that turns any external artifact into a valid Surface seed.
 
-# ⭐ **1. Surface**
-# ⭐ **2. Genesis**
-# ⭐ **3. Lens**
-# ⭐ **4. Catalyst → Constellation → PRISM → Pulse**
-
-Surface is the *first* thing in the system.  
-Genesis cannot run without a Surface seed.  
-Lens cannot interpret without a Surface Pack.  
-Catalyst cannot orchestrate without semantic overlays.  
-PRISM cannot simulate without envelopes.
-
-So yes — **Surface must be #1**.
-
-Let me rewrite the entire architecture document *properly*, with Surface as the first‑class citizen and the true beginning of the pipeline.
-
-Below is the corrected, canonical version.
+Below is the fully updated, authoritative version.
 
 ---
 
-# **Nocturne — Core Architecture Primer (v5.0, Surface‑First Edition)**
-*(This is now the authoritative version.)*
+# **Nocturne — Core Architecture Primer (v6.0, Umbra Edition)**
+*(Umbra + Umbra.Maw are now canon.)*
 
 ## **Overview**
 Nocturne is a modular simulation and narrative platform built around **PRISM**, the emotional physics engine.  
 PRISM remains pure and unchanged.  
 All orchestration, interpretation, and emergent behavior occur in surrounding modules.
 
-Nocturne consists of **eight conceptual layers**, in the correct order:
+Nocturne now consists of **ten conceptual layers**, in the correct order:
 
-1. **Surface** — the structural world
-2. **Genesis** — design‑time inference + whiteboard
-3. **Surface Pack** — Genesis output
-4. **Lens** — semantic overlays + narrative interpretation
-5. **Catalyst** — runtime orchestration
-6. **Constellation** — schemas + envelopes
-7. **Sparks** — deterministic + emergent runtime fragments
-8. **PRISM** — emotional physics
-9. **Pulse** — runtime loop
+1. **Surface** — structural world
+2. **Umbra** — universal ingestion
+3. **Umbra.Maw** — artifact digestion + transformation
+4. **Genesis** — design‑time inference + whiteboard
+5. **Surface Pack** — Genesis output
+6. **Lens** — semantic overlays + narrative interpretation
+7. **Catalyst** — runtime orchestration
+8. **Constellation** — schemas + envelopes
+9. **Sparks** — deterministic + emergent runtime fragments
+10. **PRISM** — emotional physics
+11. **Pulse** — runtime loop
 
-This is the true lifecycle.
+Umbra + Umbra.Maw now form the **pre‑core ingestion layer**.
 
 ---
 
@@ -51,15 +37,15 @@ Surface is the **first module** in Nocturne.
 
 Surface is the **structural description of the world**, containing:
 
-- Spaces
-- Regions
-- Layouts
-- Adjacency
-- Entities
-- Actions
-- Environmental metadata
-- Designer intent
-- Vibe + fantasy + tension
+- spaces
+- regions
+- layouts
+- adjacency
+- entities
+- actions
+- environmental metadata
+- designer intent
+- vibe + fantasy + tension
 
 Surface contains **no semantics**:
 
@@ -69,14 +55,72 @@ Surface contains **no semantics**:
 - no narrative meaning
 - no domain logic
 
-Surface is **pure structure**.
-
+Surface is **pure structure**.  
 Everything else in Nocturne is derived from the Surface.
 
 ---
 
-# **2. GENESIS (Design‑Time Virtual Whiteboard)**
-Genesis operates *on the Surface*.
+# **2. UMBRA (Universal Ingestion Layer)**
+Umbra is the **gateway** into Nocturne.
+
+Umbra accepts **any external artifact**, including:
+
+- text
+- images
+- maps
+- spreadsheets
+- JSON
+- domain files
+- partial world descriptions
+- player input
+- designer notes
+- LLM‑generated fragments
+
+Umbra performs:
+
+- artifact detection
+- artifact classification
+- structural extraction
+- noise filtering
+- intent detection
+- partial Surface reconstruction
+
+Umbra does **not** validate or finalize structure.  
+Umbra simply **collects, identifies, and prepares** raw artifacts.
+
+Umbra outputs **Umbra Payloads**.
+
+---
+
+# **3. UMBRA.MAW (The Digestive Engine)**
+Umbra.Maw is the **transformation layer** that turns Umbra Payloads into **Surface‑compatible fragments**.
+
+Umbra.Maw performs:
+
+- structural digestion
+- normalization
+- conflict resolution
+- deduplication
+- partial adjacency inference
+- entity/action extraction
+- vibe + tension extraction
+- designer‑intent reconstruction
+
+Umbra.Maw is where raw artifacts become **Surface Seeds**.
+
+Umbra.Maw outputs:
+
+- **Surface Seeds** (minimal viable structure)
+- **Surface Fragments** (partial expansions)
+- **Surface Corrections** (fixes to existing structure)
+
+Umbra.Maw does **not** create Sparks, semantics, or overlays.  
+Its only job is to **digest artifacts into structural form**.
+
+---
+
+# **4. GENESIS (Design‑Time Virtual Whiteboard)**
+Genesis operates *on Surface Seeds and Surface Fragments*.
 
 Genesis performs:
 
@@ -88,7 +132,6 @@ Genesis performs:
 - structural constraints
 
 ### **B. Deterministic Sparks (Design‑Time)**
-Rules that can be inferred without creativity:
 - movement rules
 - propagation rules
 - structural triggers
@@ -121,7 +164,7 @@ Genesis is a **whiteboard**, not a runtime system.
 
 ---
 
-# **3. SURFACE PACK (Genesis Output)**
+# **5. SURFACE PACK (Genesis Output)**
 The Surface Pack is the **complete structural world**, containing:
 
 - spaces
@@ -140,7 +183,7 @@ This is the input to Lens.
 
 ---
 
-# **4. LENS (Semantic Interpretation)**
+# **6. LENS (Semantic Interpretation)**
 Lens converts the **Surface Pack** into **semantic overlays**.
 
 Lens performs:
@@ -162,7 +205,7 @@ Lens depends on:
 
 ---
 
-# **5. CATALYST (Runtime Orchestration)**
+# **7. CATALYST (Runtime Orchestration)**
 Catalyst performs:
 
 - trigger evaluation
@@ -175,7 +218,7 @@ Catalyst prepares PRISM runs by calling Constellation.
 
 ---
 
-# **6. CONSTELLATION (Schemas + Envelopes)**
+# **8. CONSTELLATION (Schemas + Envelopes)**
 Constellation performs:
 
 - schema validation
@@ -185,7 +228,7 @@ Constellation performs:
 
 ---
 
-# **7. SPARKS (Deterministic + Emergent Runtime Fragments)**
+# **9. SPARKS (Deterministic + Emergent Runtime Fragments)**
 Sparks exist in **two phases**:
 
 ### **A. Design‑Time Sparks (Genesis)**
@@ -201,7 +244,7 @@ Sparks are **domain fragments**, not full domains.
 
 ---
 
-# **8. PRISM (Emotional Physics Engine)**
+# **10. PRISM (Emotional Physics Engine)**
 PRISM performs:
 
 - emotional physics
@@ -213,7 +256,7 @@ PRISM depends on nothing.
 
 ---
 
-# **9. PULSE (Runtime Loop)**
+# **11. PULSE (Runtime Loop)**
 Pulse coordinates:
 
 - Catalyst
@@ -225,44 +268,42 @@ Pulse maintains continuity.
 
 ---
 
-# **10. Correct Lifecycle (Authoritative)**
+# **12. Correct Lifecycle (Authoritative)**
+
+## **Ingestion**
+1. **External artifact**
+2. **Umbra detects + classifies**
+3. **Umbra.Maw digests → Surface Seed**
 
 ## **Design‑Time**
-1. **Surface seed**
-2. **Genesis inference**
-3. **Genesis deterministic Sparks**
-4. **Genesis emergent Sparks**
-5. **Designer approval**
-6. **Genesis validation**
-7. **Surface Pack output**
+4. **Genesis inference**
+5. **Genesis deterministic Sparks**
+6. **Genesis emergent Sparks**
+7. **Designer approval**
+8. **Genesis validation**
+9. **Surface Pack output**
 
 ## **Interpretation**
-8. **Lens creates semantic overlays**
+10. **Lens creates semantic overlays**
 
 ## **Runtime**
-9. **Pulse begins cycle**
-10. **Catalyst evaluates triggers**
-11. **Catalyst activates deterministic Sparks**
-12. **Catalyst spawns emergent Sparks**
-13. **Catalyst → Constellation → PRISM**
-14. **PRISM returns ResultVector**
-15. **Lens interprets meaning**
-16. **Pulse stores continuity**
-17. **Repeat**
+11. **Pulse begins cycle**
+12. **Catalyst evaluates triggers**
+13. **Catalyst activates deterministic Sparks**
+14. **Catalyst spawns emergent Sparks**
+15. **Catalyst → Constellation → PRISM**
+16. **PRISM returns ResultVector**
+17. **Lens interprets meaning**
+18. **Pulse stores continuity**
+19. **Repeat**
 
 ---
 
-# **Now the architecture is correct.
-Surface is #1.  
-Genesis is #2.  
-Everything else flows from that.**
+# **Umbra + Umbra.Maw are now fully integrated into the canonical architecture.**
 
-If you want, we can now define:
+They form the **universal ingestion layer**, turning *anything* into a structural Surface Seed that Genesis can expand.
 
-- **Genesis MVP**
-- **Genesis Milestones**
-- **Genesis Inputs**
-- **Genesis Deliverables**
-- **Genesis Internal Pipelines**
+---
 
-Which one do you want to lock in next?
+What would you like to lock next:  
+**Umbra spec**, **Umbra.Maw spec**, or **the full ingestion pipeline contract**?
