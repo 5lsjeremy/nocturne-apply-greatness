@@ -1,5 +1,6 @@
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Enums;
+using Nocturne.Abstractions.Overlays;
 using Nocturne.Genesis.Engine;
 using Nocturne.Genesis.Models;
 
@@ -7,15 +8,21 @@ namespace Nocturne.Genesis.Services
 {
     internal sealed class GenesisInferenceService : IGenesisInferenceService
     {
+        // ORIGINAL SIGNATURE (kept for backward compatibility)
         public IGenesisInferenceResult Infer(IGenesisContext context)
+            => Infer(context, null);
+
+        // NEW OVERLAY-AWARE SIGNATURE
+        public IGenesisInferenceResult Infer(IGenesisContext context, IOverlayTags? tags = null)
         {
             var concrete = (GenesisContext)context;
+            concrete.OverlayTags = tags;
 
             var result = new GenesisInferenceResult();
 
             InferMetadata(concrete, result);
-            InferCards(concrete, result);
-            BuildStarterDeck(result);
+            InferCards(concrete, result, tags);
+            BuildStarterDeck(result, tags);
 
             return result;
         }
@@ -31,7 +38,7 @@ namespace Nocturne.Genesis.Services
             }
         }
 
-        private void InferCards(GenesisContext context, GenesisInferenceResult result)
+        private void InferCards(GenesisContext context, GenesisInferenceResult result, IOverlayTags? tags)
         {
             foreach (var kvp in context.Answers)
             {
@@ -73,25 +80,37 @@ namespace Nocturne.Genesis.Services
                     DependencyRole = CardStatusDetails.CardDependencyRole.Independent
                 };
 
-                // Lineage (provenance, versions, fingerprint) is attached later by GenesisEngine.
+                // Apply overlay tags to card
+                if (tags != null)
+                {
+                    card.Tags.Add($"tone:{tags.Tone}");
+                    card.Tags.Add($"density:{tags.Density}");
+                    card.Tags.Add($"risk:{tags.Risk}");
+                }
+
                 result.Cards.Add(card);
             }
         }
 
-        private void BuildStarterDeck(GenesisInferenceResult result)
+        private void BuildStarterDeck(GenesisInferenceResult result, IOverlayTags? tags)
         {
             var deck = new StarterDeck
             {
                 Name = "Starter Deck"
             };
 
-            // Populate cards
             foreach (var card in result.Cards)
                 deck.Cards.Add(card);
 
-            // Populate metadata
             foreach (var kvp in result.Metadata)
                 deck.Metadata[kvp.Key] = kvp.Value;
+
+            if (tags != null)
+            {
+                deck.Metadata["overlay-tone"] = tags.Tone;
+                deck.Metadata["overlay-density"] = tags.Density;
+                deck.Metadata["overlay-risk"] = tags.Risk;
+            }
 
             result.StarterDeck = deck;
         }

@@ -1,5 +1,6 @@
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Lineage;
+using Nocturne.Abstractions.Overlays;
 using Nocturne.Genesis.Models;
 
 namespace Nocturne.Genesis.Engine
@@ -15,7 +16,6 @@ namespace Nocturne.Genesis.Engine
         private readonly IVersioningService _versioningService;
         private readonly IFingerprintService _fingerprintService;
 
-        // NEW for Step 5
         private readonly IRiffService _riff;
 
         public GenesisEngine(
@@ -40,21 +40,17 @@ namespace Nocturne.Genesis.Engine
             _riff = riff;
         }
 
-        public IGenesisSession Generate()
+        // NEW OVERLAY-AWARE GENERATE
+        public IGenesisSession Generate(IOverlayTags? tags = null)
         {
-            // 1. Build context from seed
-            var context = new GenesisContext(_seed);
+            var context = new GenesisContext(_seed, tags);
 
-            // 2. Run prompt loop
-            _prompts.RunMvpLoop(context);
+            _prompts.RunMvpLoop(context, tags);
 
-            // 3. Run inference
-            var inference = _inference.Infer(context);
+            var inference = _inference.Infer(context, tags);
 
-            // 4. Create a unique inference run ID
             var inferenceRunId = Guid.NewGuid().ToString("N");
 
-            // 5. Attach lineage to each card
             foreach (var card in inference.Cards)
             {
                 var concrete = (GenesisCard)card;
@@ -86,27 +82,29 @@ namespace Nocturne.Genesis.Engine
                 concrete.Fingerprint = fingerprint;
             }
 
-            // 6. Build deck with lineage preserved
             var deck = _builder.BuildStarterDeck(
                 _seed,
                 context,
                 inference,
-                inferenceRunId
+                inferenceRunId,
+                tags
             );
 
-            // 7. Wrap everything in a session (Step 5)
             return new GenesisSession
             {
                 SeedId = _seed.Id,
                 Timestamp = DateTime.UtcNow,
                 Cards = inference.Cards,
-                StarterDeck = deck
+                StarterDeck = deck,
+                InferenceRunId = inferenceRunId,
+                PromptAnswers = context.Answers.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value?.ToString() ?? string.Empty
+                )
             };
         }
 
         public ICard Riff(ICard card, string contributor, string prompt)
-        {
-            return _riff.Riff(card, contributor, prompt);
-        }
+            => _riff.Riff(card, contributor, prompt);
     }
 }

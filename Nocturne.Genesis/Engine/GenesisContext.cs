@@ -1,18 +1,18 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Overlays;
 
-namespace Nocturne.Genesis.Engine
+namespace Nocturne.Genesis.Engine;
+
+public sealed class GenesisContext : IGenesisContext
 {
-    internal sealed class GenesisContext : IGenesisContext
+    public ISurfaceArtifact Seed { get; }
+    public IDictionary<string, object?> Answers { get; } = new Dictionary<string, object?>();
+    public IList<ICard> Cards { get; }
+    public IOverlayTags? OverlayTags { get; set; }   // NEW
+
+    public GenesisContext(ISurfaceArtifact seed, IOverlayTags? tags = null)
     {
-        public ISurfaceArtifact Seed { get; }
-
-        public IDictionary<string, object> Answers { get; } = new Dictionary<string, object>();
-
-        public IList<ICard> Cards { get; } = new List<ICard>();
-
-        public GenesisContext(ISurfaceArtifact seed)
-        {
-            Seed = seed;
-        }
+        Seed = seed;
+        OverlayTags = tags;
     }
 }

@@ -1,3 +1,5 @@
+using Nocturne.Abstractions.Overlays;
+
 namespace Nocturne.Abstractions.Genesis;
 
 public interface IGenesisBuilder
@@ -6,5 +8,7 @@ public interface IGenesisBuilder
         ISurfaceArtifact seed,
         IGenesisContext context,
         IGenesisInferenceResult inference,
-        string inferenceRunId);
+        string inferenceRunId,
+        IOverlayTags? tags = null
+    );
 }

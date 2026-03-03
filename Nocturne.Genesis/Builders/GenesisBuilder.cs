@@ -1,5 +1,6 @@
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Lineage;
+using Nocturne.Abstractions.Overlays;
 using Nocturne.Genesis.Models;
 using Nocturne.Genesis.Models.Lineage;
 
@@ -14,11 +15,13 @@ namespace Nocturne.Genesis.Builders
             _fingerprints = fingerprints;
         }
 
+        // UPDATED SIGNATURE — now matches the interface
         public IStarterDeck BuildStarterDeck(
             ISurfaceArtifact seed,
             IGenesisContext context,
             IGenesisInferenceResult inference,
-            string inferenceRunId)
+            string inferenceRunId,
+            IOverlayTags? tags = null)
         {
             var deck = (StarterDeck)inference.StarterDeck;
 
@@ -38,7 +41,10 @@ namespace Nocturne.Genesis.Builders
                 InferenceRunId = inferenceRunId,
                 CardIds = cardIds,
                 CardVersions = cardVersions,
-                Metadata = deck.Metadata
+                Metadata = deck.Metadata,
+                OverlayTone = tags?.Tone,
+                OverlayDensity = tags?.Density,
+                OverlayRisk = tags?.Risk
             });
 
             // 4. Attach deck lineage
@@ -51,7 +57,15 @@ namespace Nocturne.Genesis.Builders
                 MetadataFingerprint = metadataFingerprint,
                 DeckFingerprint = deckFingerprint
             };
-            
+
+            // 5. Apply overlay metadata (optional but useful)
+            if (tags != null)
+            {
+                deck.Metadata["overlay-tone"] = tags.Tone;
+                deck.Metadata["overlay-density"] = tags.Density;
+                deck.Metadata["overlay-risk"] = tags.Risk;
+            }
+
             return deck;
         }
     }

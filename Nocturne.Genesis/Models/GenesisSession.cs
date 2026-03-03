@@ -8,6 +8,8 @@ namespace Nocturne.Genesis.Models
         public DateTime Timestamp { get; init; }
         public IReadOnlyList<ICard> Cards { get; init; } = Array.Empty<ICard>();
         public IStarterDeck StarterDeck { get; init; } = default!;
+        public string InferenceRunId { get; set; }
+        public Dictionary<string, string> PromptAnswers { get; set; }
 
         public ICard? GetCardById(string id)
         {
