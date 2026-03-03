@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Genesis.Adapters;
 using Nocturne.Genesis.Builders;
 using Nocturne.Genesis.Config;
 using Nocturne.Genesis.Engine;
@@ -32,7 +33,16 @@ namespace Nocturne.Genesis.Factories
             var localization = PromptLocalizationLoader.Load(mergedLocalizationPath);
 
             var promptBuilder = new LlmPromptBuilder();
-            var llm = new DummyLlmAdapter();
+            
+            var llmClient = new CopilotLlmClientBuilder()
+                .UseHttpClient(new HttpClient())
+                .UseEndpoint(_config.Llm.Endpoint)
+                .UseApiKey(_config.Llm.ApiKey)
+                .UseModel(_config.Llm.Model)
+                .Build();
+
+            var llm = new CopilotLlmAdapter(llmClient);
+
 
             var promptService = new GenesisPromptService(
                 promptSet,

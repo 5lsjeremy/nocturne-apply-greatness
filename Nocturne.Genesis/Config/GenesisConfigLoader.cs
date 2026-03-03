@@ -7,7 +7,14 @@ namespace Nocturne.Genesis.Config
         public static GenesisConfig Load(string path)
         {
             var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<GenesisConfig>(json) ?? new GenesisConfig();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return JsonSerializer.Deserialize<GenesisConfig>(json, options) 
+                   ?? new GenesisConfig();
+
         }
     }
 }
