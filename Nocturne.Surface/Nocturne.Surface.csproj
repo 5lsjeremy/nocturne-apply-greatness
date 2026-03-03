@@ -10,4 +10,9 @@
       <ProjectReference Include="..\Nocturne.Abstractions\Nocturne.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="LLM\" />
+      <Folder Include="Validation\LLM\" />
+    </ItemGroup>
+
 </Project>

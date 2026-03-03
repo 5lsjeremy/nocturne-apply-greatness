@@ -41,11 +41,11 @@ namespace Nocturne.Genesis.Engine
         }
 
         // NEW OVERLAY-AWARE GENERATE
-        public IGenesisSession Generate(IOverlayTags? tags = null)
+        public async Task<IGenesisSession> GenerateAsync(IOverlayTags? tags = null)
         {
             var context = new GenesisContext(_seed, tags);
 
-            _prompts.RunMvpLoop(context, tags);
+            await _prompts.RunMvpLoopAsync(context, tags);
 
             var inference = _inference.Infer(context, tags);
 
@@ -64,9 +64,9 @@ namespace Nocturne.Genesis.Engine
                 var provenance = _provenanceService.CreateProvenance(
                     seedId: _seed.Id,
                     promptAnswers: promptAnswers,
-                    llm: new[] { "inference" },
-                    builder: Array.Empty<string>(),
-                    rules: new[] { "initial-inference" }
+                    llm: ["inference"],
+                    builder: [],
+                    rules: ["initial-inference"]
                 );
 
                 var version = _versioningService.CreateInitialVersion(

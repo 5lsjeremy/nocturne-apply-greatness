@@ -4,7 +4,6 @@ namespace Nocturne.Abstractions.Genesis
 {
     public interface IGenesisPromptService
     {
-        void RunMvpLoop(IGenesisContext context, IOverlayTags? tags = null);
+        Task RunMvpLoopAsync(IGenesisContext context, IOverlayTags? tags = null);
     }
-
 }

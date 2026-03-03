@@ -28,12 +28,7 @@ internal sealed class GenesisPromptService : IGenesisPromptService
         _offlineMode = offlineMode;
     }
 
-    // ORIGINAL SIGNATURE (kept for backward compatibility)
-    public void RunMvpLoop(IGenesisContext context)
-        => RunMvpLoop(context, null);
-
-    // NEW OVERLAY-AWARE SIGNATURE
-    public void RunMvpLoop(IGenesisContext context, IOverlayTags? tags = null)
+    public async Task RunMvpLoopAsync(IGenesisContext context, IOverlayTags? tags = null)
     {
         var concrete = (GenesisContext)context;
 
@@ -67,7 +62,7 @@ internal sealed class GenesisPromptService : IGenesisPromptService
                 llmPrompt = $"{llmPrompt}\n\n[overlay-density:{tags.Density}]";
             }
 
-            var enriched = _llm.Generate(llmPrompt);
+            var enriched = await _llm.GenerateRawAsync(llmPrompt);
 
             concrete.Answers[$"{q.Id}_llm"] = enriched;
         }
