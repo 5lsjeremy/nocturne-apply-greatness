@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Overlays;
+using Nocturne.Abstractions.Genesis.Concepts;
 
 namespace Nocturne.Abstractions.Genesis
 {
@@ -6,12 +7,13 @@ namespace Nocturne.Abstractions.Genesis
     {
         ISurfaceArtifact Seed { get; }
 
-        IDictionary<string, object> Answers { get; }
+        IDictionary<string, object?> Answers { get; }
 
         IList<ICard> Cards { get; }
-        
+
         IOverlayTags? OverlayTags { get; }
 
-        // You can extend later with tags/relationships if you formalize them as interfaces.
+        // NEW — evaluated concept available to prompts + inference
+        IConcept Concept { get; }
     }
 }

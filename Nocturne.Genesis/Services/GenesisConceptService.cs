@@ -18,7 +18,7 @@ namespace Nocturne.Genesis.Services
             var builder = new ConceptBuilder(worldConcept);
 
             await _llm.EvaluateClarityAsync(builder);
-            if (builder.IsClear == false)
+            if (builder.IsClear != true)
             {
                 builder.MarkFailure("Concept too vague");
                 return builder.Build();

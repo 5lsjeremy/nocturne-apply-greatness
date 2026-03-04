@@ -5,5 +5,6 @@ namespace Nocturne.Abstractions.Genesis
         // Minimal contract for Genesis:
         string Name { get; }
         // You can extend this later with seed-specific data if needed.
+        string WorldConcept { get; }
     }
 }

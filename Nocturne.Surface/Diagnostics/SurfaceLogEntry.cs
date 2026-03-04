@@ -1,6 +1,8 @@
+using Nocturne.Abstractions.Surface;
+
 namespace Nocturne.Surface.Diagnostics
 {
-    public sealed class SurfaceLogEntry
+    public sealed class SurfaceLogEntry : ISurfaceLogEntry
     {
         public DateTime Timestamp { get; }
         public string Message { get; }

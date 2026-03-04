@@ -1,11 +1,21 @@
-namespace Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Concepts;
+using Nocturne.Abstractions.Surface;
 
-public interface IGenesisSession
+namespace Nocturne.Abstractions.Genesis
 {
-    string SeedId { get; }
-    DateTime Timestamp { get; }
-    IReadOnlyList<ICard> Cards { get; }
-    IStarterDeck StarterDeck { get; }
+    public interface IGenesisSession
+    {
+        string SeedId { get; }
+        DateTime Timestamp { get; }
+        IReadOnlyList<ICard> Cards { get; }
+        IStarterDeck StarterDeck { get; }
 
-    ICard? GetCardById(string id);
+        // NEW — the evaluated concept that inference was based on
+        IConcept Concept { get; }
+
+        // NEW — full diagnostic trace from concept evaluation
+        IReadOnlyCollection<ISurfaceLogEntry> ConceptLogs { get; }
+
+        ICard? GetCardById(string id);
+    }
 }

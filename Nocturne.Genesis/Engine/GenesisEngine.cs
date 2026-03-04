@@ -2,55 +2,62 @@ using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Genesis.Models;
+using Nocturne.Surface.Exceptions;
 
 namespace Nocturne.Genesis.Engine
 {
     internal sealed class GenesisEngine : IGenesisEngine
     {
         private readonly ISurfaceArtifact _seed;
-        private readonly IGenesisBuilder _builder;
-        private readonly IGenesisInferenceService _inference;
         private readonly IGenesisPromptService _prompts;
-
+        private readonly IGenesisInferenceService _inference;
+        private readonly IGenesisBuilder _builder;
         private readonly IProvenanceService _provenanceService;
         private readonly IVersioningService _versioningService;
         private readonly IFingerprintService _fingerprintService;
-
-        private readonly IRiffService _riff;
+        private readonly IConceptService _concepts;
+        private readonly IRiffService _riffService;   // NEW
 
         public GenesisEngine(
             ISurfaceArtifact seed,
-            IGenesisBuilder builder,
-            IGenesisInferenceService inference,
             IGenesisPromptService prompts,
+            IGenesisInferenceService inference,
+            IGenesisBuilder builder,
             IProvenanceService provenanceService,
             IVersioningService versioningService,
             IFingerprintService fingerprintService,
-            IRiffService riff)
+            IConceptService concepts,
+            IRiffService riffService)                 // NEW
         {
             _seed = seed;
-            _builder = builder;
-            _inference = inference;
             _prompts = prompts;
-
+            _inference = inference;
+            _builder = builder;
             _provenanceService = provenanceService;
             _versioningService = versioningService;
             _fingerprintService = fingerprintService;
-
-            _riff = riff;
+            _concepts = concepts;
+            _riffService = riffService;              // NEW
         }
 
-        // NEW OVERLAY-AWARE GENERATE
         public async Task<IGenesisSession> GenerateAsync(IOverlayTags? tags = null)
         {
-            var context = new GenesisContext(_seed, tags);
+            // 1. Evaluate concept BEFORE inference
+            var concept = await _concepts.EvaluateAsync(_seed.WorldConcept);
+            if (!concept.IsFeasible)
+                throw new InvalidConceptException(concept.FailureReason ?? "Concept not feasible.");
 
+            // 2. Thread concept into context
+            var context = new GenesisContext(_seed, concept, tags);
+
+            // 3. MVP loop
             await _prompts.RunMvpLoopAsync(context, tags);
 
+            // 4. Inference
             var inference = _inference.Infer(context, tags);
-
             var inferenceRunId = Guid.NewGuid().ToString("N");
 
+            // 5. Provenance, versioning, fingerprinting
             foreach (var card in inference.Cards)
             {
                 var concrete = (GenesisCard)card;
@@ -82,6 +89,7 @@ namespace Nocturne.Genesis.Engine
                 concrete.Fingerprint = fingerprint;
             }
 
+            // 6. Starter deck
             var deck = _builder.BuildStarterDeck(
                 _seed,
                 context,
@@ -90,8 +98,10 @@ namespace Nocturne.Genesis.Engine
                 tags
             );
 
+            // 7. Return session WITH concept
             return new GenesisSession
             {
+                Concept = concept,
                 SeedId = _seed.Id,
                 Timestamp = DateTime.UtcNow,
                 Cards = inference.Cards,
@@ -105,6 +115,8 @@ namespace Nocturne.Genesis.Engine
         }
 
         public ICard Riff(ICard card, string contributor, string prompt)
-            => _riff.Riff(card, contributor, prompt);
+        {
+            return _riffService.Riff(card, contributor, prompt);   // NEW
+        }
     }
 }

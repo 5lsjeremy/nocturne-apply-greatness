@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Overlays;
+using Nocturne.Abstractions.Surface;
 
 namespace Nocturne.Abstractions.Genesis.Concepts
 {
@@ -15,7 +16,9 @@ namespace Nocturne.Abstractions.Genesis.Concepts
 
         IOverlayTags? Tags { get; }
         IReadOnlyList<string> TagRecommendations { get; }
-
+        
+        IReadOnlyCollection<ISurfaceLogEntry> Logs { get; }
+        
         bool IsFeasible { get; }
         string? FailureReason { get; }
     }

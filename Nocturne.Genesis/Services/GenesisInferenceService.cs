@@ -15,19 +15,24 @@ namespace Nocturne.Genesis.Services
         // NEW OVERLAY-AWARE SIGNATURE
         public IGenesisInferenceResult Infer(IGenesisContext context, IOverlayTags? tags = null)
         {
-            var concrete = (GenesisContext)context;
-            concrete.OverlayTags = tags;
+            // ❌ NO LONGER ALLOWED:
+            // var concrete = (GenesisContext)context;
+            // concrete.OverlayTags = tags;
+
+            // Overlay tags are already set in the context constructor.
+            // Use context.OverlayTags instead of the parameter.
+            var effectiveTags = tags ?? context.OverlayTags;
 
             var result = new GenesisInferenceResult();
 
-            InferMetadata(concrete, result);
-            InferCards(concrete, result, tags);
-            BuildStarterDeck(result, tags);
+            InferMetadata(context, result);
+            InferCards(context, result, effectiveTags);
+            BuildStarterDeck(result, effectiveTags);
 
             return result;
         }
 
-        private void InferMetadata(GenesisContext context, GenesisInferenceResult result)
+        private void InferMetadata(IGenesisContext context, GenesisInferenceResult result)
         {
             foreach (var kvp in context.Answers)
             {
@@ -38,7 +43,7 @@ namespace Nocturne.Genesis.Services
             }
         }
 
-        private void InferCards(GenesisContext context, GenesisInferenceResult result, IOverlayTags? tags)
+        private void InferCards(IGenesisContext context, GenesisInferenceResult result, IOverlayTags? tags)
         {
             foreach (var kvp in context.Answers)
             {

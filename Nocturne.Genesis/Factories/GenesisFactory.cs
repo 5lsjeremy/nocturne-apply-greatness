@@ -33,7 +33,7 @@ namespace Nocturne.Genesis.Factories
             var localization = PromptLocalizationLoader.Load(mergedLocalizationPath);
 
             var promptBuilder = new LlmPromptBuilder();
-            
+
             var llmClient = new CopilotLlmClientBuilder()
                 .UseHttpClient(new HttpClient())
                 .UseEndpoint(_config.Llm.Endpoint)
@@ -42,7 +42,6 @@ namespace Nocturne.Genesis.Factories
                 .Build();
 
             var llm = new CopilotLlmAdapter(llmClient);
-
 
             var promptService = new GenesisPromptService(
                 promptSet,
@@ -62,6 +61,9 @@ namespace Nocturne.Genesis.Factories
 
             var inference = new GenesisInferenceService();
 
+            // NEW: concept service (this was missing)
+            var conceptService = new GenesisConceptService(llm);
+
             // NEW: riffing service
             var riffService = new RiffService(new ApprovalService(
                 versioningService,
@@ -71,12 +73,13 @@ namespace Nocturne.Genesis.Factories
 
             return new GenesisEngine(
                 seed,
-                builder,
-                inference,
                 promptService,
+                inference,
+                builder,
                 provenanceService,
                 versioningService,
                 fingerprintService,
+                conceptService,   // <-- FIXED: pass concept service, not riff service
                 riffService
             );
         }

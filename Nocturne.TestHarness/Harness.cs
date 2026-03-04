@@ -1,28 +1,25 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Overlays;
 
 namespace Nocturne.TestHarness
 {
-    // ------------------------------------------------------------
-    // Concrete seed artifact (allowed)
-    // ------------------------------------------------------------
     public sealed class TestSurfaceArtifact : ISurfaceArtifact
     {
         public string Id { get; }
         public string Name { get; }
+        public string WorldConcept { get; }
 
         public TestSurfaceArtifact(string name)
         {
             Name = name;
             Id = Guid.NewGuid().ToString();
+            WorldConcept = "A haunted bureaucratic underworld where players navigate a surreal DMV staffed by ghosts.";
         }
     }
 
-    // ------------------------------------------------------------
-    // Concrete IGenesisOptions (allowed)
-    // ------------------------------------------------------------
     public sealed class TestGenesisOptions : IGenesisOptions
     {
         public bool? OfflineMode { get; init; }
@@ -31,9 +28,6 @@ namespace Nocturne.TestHarness
         public bool? DarkMode { get; init; }
     }
 
-    // ------------------------------------------------------------
-    // Pure interface-based harness
-    // ------------------------------------------------------------
     public static class Harness
     {
         public static async Task Run(IGenesisFactory factory, IOverlayTags? tags = null)
@@ -52,44 +46,61 @@ namespace Nocturne.TestHarness
             Console.WriteLine("Calling IGenesisEngine.GenerateAsync...");
             var session = await engine.GenerateAsync(tags);
 
-            Console.WriteLine("Genesis session created: " + (session != null ? "OK" : "NULL"));
             Console.WriteLine();
-            Console.WriteLine("=== GENESIS OUTPUT ===");
+            Console.WriteLine("=== GENESIS SESSION ===");
+            Console.WriteLine($"SeedId: {session.SeedId}");
+            Console.WriteLine($"Timestamp: {session.Timestamp}");
+            Console.WriteLine();
 
-            // Narration
-            Console.WriteLine();
-            Console.WriteLine("Narration:");
-            Console.WriteLine(session?.Narration ?? "(none)");
+            // Concept
+            Console.WriteLine("=== CONCEPT ===");
+            Console.WriteLine($"World Concept: {session.Concept.WorldConcept}");
+            Console.WriteLine($"Clarity: {(session.Concept.IsClear == true ? "clear" : "unclear")}");
+            Console.WriteLine($"Pitch: {session.Concept.Pitch ?? "(none)"}");
 
-            // Tags
-            Console.WriteLine();
-            Console.WriteLine("Tags:");
-            if (session?.Tags != null)
+            if (session.Concept.Tags != null)
             {
-                foreach (var tag in session.Tags)
-                    Console.WriteLine($" - {tag}");
+                Console.WriteLine($"Tags: tone={session.Concept.Tags.Tone}, density={session.Concept.Tags.Density}, risk={session.Concept.Tags.Risk}");
             }
             else
             {
-                Console.WriteLine("(none)");
+                Console.WriteLine("Tags: (none)");
             }
 
-            // Surface
+            // Concept Logs (updated)
             Console.WriteLine();
-            Console.WriteLine("Surface Artifact:");
-            Console.WriteLine(session?.Surface?.ToString() ?? "(none)");
+            Console.WriteLine("=== CONCEPT LOGS ===");
 
-            // Lineage
-            Console.WriteLine();
-            Console.WriteLine("Lineage:");
-            Console.WriteLine(session?.Lineage?.ToString() ?? "(none)");
+            if (session.ConceptLogs.Count == 0)
+            {
+                Console.WriteLine("(no logs)");
+            }
+            else
+            {
+                foreach (var group in session.ConceptLogs.GroupBy(l => l.Category))
+                {
+                    Console.WriteLine($"[{group.Key}]");
 
-            // Metadata
+                    foreach (var log in group.OrderBy(l => l.Timestamp))
+                    {
+                        Console.WriteLine($"  {log.Timestamp:HH:mm:ss}  {log.Message}");
+                    }
+
+                    Console.WriteLine();
+                }
+            }
+
+            // Cards
+            Console.WriteLine("=== CARDS ===");
+            foreach (var card in session.Cards)
+                Console.WriteLine($" - {card.Id}: {card.Name}");
+
             Console.WriteLine();
-            Console.WriteLine("Metadata:");
-            Console.WriteLine($"  Model: {session?.Metadata?.Model}");
-            Console.WriteLine($"  Duration: {session?.Metadata?.DurationMs} ms");
-            Console.WriteLine($"  Seed: {session?.Metadata?.Seed}");
+            Console.WriteLine("=== STARTER DECK ===");
+            Console.WriteLine($"Deck Name: {session.StarterDeck.Name}");
+            Console.WriteLine("Cards:");
+            foreach (var card in session.StarterDeck.Cards)
+                Console.WriteLine($"   - {card.Id}: {card.Name}");
 
             Console.WriteLine();
             Console.WriteLine("=== END OF GENESIS OUTPUT ===");

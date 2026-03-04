@@ -1,10 +1,12 @@
+using Nocturne.Abstractions.Surface;
+
 namespace Nocturne.Surface.Diagnostics
 {
     public sealed class SurfaceLogger
     {
-        private readonly List<SurfaceLogEntry> _entries = new();
+        private readonly List<ISurfaceLogEntry> _entries = new();
 
-        public IReadOnlyCollection<SurfaceLogEntry> Entries => _entries;
+        public IReadOnlyCollection<ISurfaceLogEntry> Entries => _entries;
 
         public void Info(string message)
         {
