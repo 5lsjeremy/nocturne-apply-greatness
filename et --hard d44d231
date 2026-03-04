@@ -1,0 +1,23 @@
+* [33m0b21705[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m)[m Here’s the concise check‑in summary you can drop straight into version control:
+* [33md44d231[m[33m ([m[1;31morigin/dev[m[33m)[m tryign to rig up test harness
+* [33m8dcc089[m The build is stable, and the architecture you’ve locked in is now clean, sealed, and aligned across every boundary. The summary below captures exactly what this check‑in represents: a fully unified concept pipeline, an async LLM boundary, and a consistent builder/service pattern across Genesis.
+* [33m16c5681[m updated genesis engine to be tag aware.
+* [33m1edd1fe[m added quick testing harness
+* [33m14d2829[m added overlays to surface spine.
+* [33m9cb566e[m documentation updates
+* [33md5290ee[m some really important docs
+* [33m23cc1d1[m final updates.
+* [33m12f6f47[m completed step 3 of 5
+* [33mb4d8a26[m added provenance, lineage, and articfact srevices.
+* [33m6e19a42[m JUST A FEW ui changes, setting up for react app.
+* [33m5437a49[m alright, done for the day
+* [33mf33766b[m looks like i borked the samples.
+* [33m611f90d[m added a document to root
+* [33m65e14fc[m final updates to give us MVP style layouts
+* [33m51d4ef3[m surface public API and internal scaffolding
+* [33m203af95[m early morning commit
+* [33m1c78878[m a markdown file setup-card
+* [33m60b1875[m a few updates to documentation and startup
+* [33m17d640d[m brought in prism engine dlls and updated changelog and readme.
+* [33m71e0bb7[m setting up dependency graph
+* [33m1bc3094[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m first commit

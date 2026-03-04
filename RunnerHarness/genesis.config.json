@@ -6,7 +6,7 @@
   },
   "llm": {
     "endpoint": "https://5ls-nocturne-26-03-resource.cognitiveservices.azure.com/openai/deployments/gpt-4o-main/chat/completions?api-version=2024-05-01-preview",
-    "apiKey": "3ZfhEogfzG9RVwF8eM8vt92jDlA40Oq2rV1tNjDjhkGwssMQ1CQxJQQJ99CCACHYHv6XJ3w3AAAAACOGqB1U",
+    "apiKey": "${GENESIS_LLM_KEY}",
     "model": "gpt-4o-main"
   }
 }
