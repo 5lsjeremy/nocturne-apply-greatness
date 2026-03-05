@@ -5,8 +5,8 @@
     "localizationPath": "prompts/localization/high_fantasy.json"
   },
   "llm": {
-    "endpoint": "https://5ls-nocturne-26-03-resource.cognitiveservices.azure.com/openai/deployments/gpt-4o-main/chat/completions?api-version=2024-05-01-preview",
-    "apiKey": "${GENESIS_LLM_KEY}",
-    "model": "gpt-4o-main"
+    "endpoint": "https://generativelanguage.googleapis.com",
+    "apiKey": "%GEMINI_API_KEY%",
+    "model": "gemini-2.5-flash"
   }
 }

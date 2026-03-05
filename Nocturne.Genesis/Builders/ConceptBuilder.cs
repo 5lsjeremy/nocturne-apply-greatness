@@ -5,46 +5,31 @@ using Nocturne.Surface.Diagnostics;
 
 namespace Nocturne.Genesis.Builders
 {
-    internal sealed class ConceptBuilder:IConceptBuilder
+    internal sealed class ConceptBuilder : IConceptBuilder
     {
         private readonly string _worldConcept;
         private readonly SurfaceLogger _logger = new();
 
         public string WorldConcept => _worldConcept;
-        public bool? IsClear { get; private set; }
-        IReadOnlyList<string> IConceptBuilder.ClarityRecommendations => ClarityRecommendations;
 
-        IReadOnlyList<string> IConceptBuilder.ClarityQuestions => ClarityQuestions;
+        public bool? IsClear { get; private set; }
 
         public List<string> ClarityRecommendations { get; } = new();
         public List<string> ClarityQuestions { get; } = new();
 
+        IReadOnlyList<string> IConceptBuilder.ClarityRecommendations => ClarityRecommendations;
+        IReadOnlyList<string> IConceptBuilder.ClarityQuestions => ClarityQuestions;
+
         public string? Pitch { get; private set; }
+        public List<string> PitchRecommendations { get; } = new();
         IReadOnlyList<string> IConceptBuilder.PitchRecommendations => PitchRecommendations;
 
-        public List<string> PitchRecommendations { get; } = new();
-
         public IOverlayTags? Tags { get; private set; }
-        IReadOnlyList<string> IConceptBuilder.TagRecommendations => TagRecommendations;
-
         public List<string> TagRecommendations { get; } = new();
+        IReadOnlyList<string> IConceptBuilder.TagRecommendations => TagRecommendations;
 
         public bool IsFeasible { get; private set; } = true;
         public string? FailureReason { get; private set; }
-        public void SetClarity(bool isClear, IReadOnlyList<string> recommendations, IReadOnlyList<string> questions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetPitch(string? pitch, IReadOnlyList<string> recommendations)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetTags(IOverlayTags? tags, IReadOnlyList<string> recommendations)
-        {
-            throw new NotImplementedException();
-        }
 
         public SurfaceLogger Logger => _logger;
 
@@ -54,10 +39,33 @@ namespace Nocturne.Genesis.Builders
             _logger.Info($"ConceptBuilder created for concept: '{worldConcept}'.");
         }
 
-        // Called by LLM adapter
+        // ---------------------------------------------------------------------
+        // INTERFACE IMPLEMENTATIONS (now correctly wired)
+        // ---------------------------------------------------------------------
+
+        public void SetClarity(bool isClear, IReadOnlyList<string> recommendations, IReadOnlyList<string> questions)
+        {
+            SetClarity((bool?)isClear, recommendations, questions);
+        }
+
+        public void SetPitch(string? pitch, IReadOnlyList<string> recommendations)
+        {
+            SetPitch(pitch, (IEnumerable<string>)recommendations);
+        }
+
+        public void SetTags(IOverlayTags? tags, IReadOnlyList<string> recommendations)
+        {
+            SetTags(tags, (IEnumerable<string>)recommendations);
+        }
+
+        // ---------------------------------------------------------------------
+        // INTERNAL WORKING IMPLEMENTATIONS (canonical versions)
+        // ---------------------------------------------------------------------
+
         public void SetClarity(bool? isClear, IEnumerable<string> recs, IEnumerable<string> questions)
         {
             IsClear = isClear;
+
             ClarityRecommendations.AddRange(recs);
             ClarityQuestions.AddRange(questions);
 
@@ -91,6 +99,10 @@ namespace Nocturne.Genesis.Builders
                 _logger.Error("Tag inference failed.");
         }
 
+        // ---------------------------------------------------------------------
+        // FEASIBILITY MARKERS
+        // ---------------------------------------------------------------------
+
         public void MarkFailure(string reason)
         {
             IsFeasible = false;
@@ -103,6 +115,10 @@ namespace Nocturne.Genesis.Builders
             IsFeasible = true;
             _logger.Info("Concept evaluation marked as successful.");
         }
+
+        // ---------------------------------------------------------------------
+        // FINAL ARTIFACT
+        // ---------------------------------------------------------------------
 
         public IConcept Build()
         {

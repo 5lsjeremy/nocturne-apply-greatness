@@ -16,6 +16,11 @@ namespace Nocturne.Genesis.Factories
         public GenesisFactory(string configPath = "genesis.config.json")
         {
             _config = GenesisConfigLoader.Load(configPath);
+
+            _config.Llm.ApiKey = Env.Expand(_config.Llm.ApiKey);
+
+            if (string.IsNullOrWhiteSpace(_config.Llm.ApiKey))
+                throw new InvalidOperationException("LLM API key is missing. Check your environment variables.");
         }
 
         public IGenesisEngine Create(ISurfaceArtifact seed, IGenesisOptions? options = null)
@@ -34,14 +39,14 @@ namespace Nocturne.Genesis.Factories
 
             var promptBuilder = new LlmPromptBuilder();
 
-            var llmClient = new CopilotLlmClientBuilder()
+            var llmClient = new GeminiLlmClientBuilder()
                 .UseHttpClient(new HttpClient())
                 .UseEndpoint(_config.Llm.Endpoint)
                 .UseApiKey(_config.Llm.ApiKey)
                 .UseModel(_config.Llm.Model)
                 .Build();
 
-            var llm = new CopilotLlmAdapter(llmClient);
+            var llm = new GeminiLlmAdapter(llmClient);
 
             var promptService = new GenesisPromptService(
                 promptSet,

@@ -16,7 +16,7 @@ namespace Nocturne.TestHarness
         {
             Name = name;
             Id = Guid.NewGuid().ToString();
-            WorldConcept = "A haunted bureaucratic underworld where players navigate a surreal DMV staffed by ghosts.";
+            WorldConcept = "This is a game about Monkey Pirates.  These pirates are after your booty.  This is a game like Monkey Ball.  Epic Battles between Monkeys and Parrots for domination of the rum Islands";
         }
     }
 
@@ -71,7 +71,7 @@ namespace Nocturne.TestHarness
             Console.WriteLine();
             Console.WriteLine("=== CONCEPT LOGS ===");
 
-            if (session.ConceptLogs.Count == 0)
+            if (session.ConceptLogs == null || session.ConceptLogs.Count == 0)
             {
                 Console.WriteLine("(no logs)");
             }
@@ -89,6 +89,7 @@ namespace Nocturne.TestHarness
                     Console.WriteLine();
                 }
             }
+
 
             // Cards
             Console.WriteLine("=== CARDS ===");
