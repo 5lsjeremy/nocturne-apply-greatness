@@ -1,6 +1,9 @@
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Abstractions.Surface;
+using Nocturne.Genesis.Concepts;
+using Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts;
+using Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts;
 using Nocturne.Surface.Diagnostics;
 
 namespace Nocturne.Genesis.Builders
@@ -40,7 +43,7 @@ namespace Nocturne.Genesis.Builders
         }
 
         // ---------------------------------------------------------------------
-        // INTERFACE IMPLEMENTATIONS (now correctly wired)
+        // INTERFACE IMPLEMENTATIONS
         // ---------------------------------------------------------------------
 
         public void SetClarity(bool isClear, IReadOnlyList<string> recommendations, IReadOnlyList<string> questions)
@@ -59,7 +62,7 @@ namespace Nocturne.Genesis.Builders
         }
 
         // ---------------------------------------------------------------------
-        // INTERNAL WORKING IMPLEMENTATIONS (canonical versions)
+        // INTERNAL WORKING IMPLEMENTATIONS
         // ---------------------------------------------------------------------
 
         public void SetClarity(bool? isClear, IEnumerable<string> recs, IEnumerable<string> questions)
@@ -124,64 +127,40 @@ namespace Nocturne.Genesis.Builders
         {
             _logger.Info("Building final concept artifact.");
 
-            return new Concept(
-                worldConcept: _worldConcept,
-                isClear: IsClear,
-                clarityRecs: ClarityRecommendations,
-                clarityQuestions: ClarityQuestions,
-                pitch: Pitch,
-                pitchRecs: PitchRecommendations,
-                tags: Tags,
-                tagRecs: TagRecommendations,
-                isFeasible: IsFeasible,
-                failureReason: FailureReason,
-                logs: _logger.Entries.ToList()
-            );
-        }
+            var metadata = new ConceptMetadata();
+            foreach (var entry in _logger.Entries)
+                metadata.AddLog(entry);
 
-        private sealed class Concept : IConcept
-        {
-            public string WorldConcept { get; }
-            public bool? IsClear { get; }
-            public IReadOnlyList<string> ClarityRecommendations { get; }
-            public IReadOnlyList<string> ClarityQuestions { get; }
-
-            public string? Pitch { get; }
-            public IReadOnlyList<string> PitchRecommendations { get; }
-
-            public IOverlayTags? Tags { get; }
-            public IReadOnlyList<string> TagRecommendations { get; }
-
-            public bool IsFeasible { get; }
-            public string? FailureReason { get; }
-
-            public IReadOnlyCollection<ISurfaceLogEntry> Logs { get; }
-
-            public Concept(
-                string worldConcept,
-                bool? isClear,
-                IReadOnlyList<string> clarityRecs,
-                IReadOnlyList<string> clarityQuestions,
-                string? pitch,
-                IReadOnlyList<string> pitchRecs,
-                IOverlayTags? tags,
-                IReadOnlyList<string> tagRecs,
-                bool isFeasible,
-                string? failureReason,
-                IReadOnlyCollection<ISurfaceLogEntry> logs)
+            var concept = new ConceptBase
             {
-                WorldConcept = worldConcept;
-                IsClear = isClear;
-                ClarityRecommendations = clarityRecs;
-                ClarityQuestions = clarityQuestions;
-                Pitch = pitch;
-                PitchRecommendations = pitchRecs;
-                Tags = tags;
-                TagRecommendations = tagRecs;
-                IsFeasible = isFeasible;
-                FailureReason = failureReason;
-                Logs = logs;
-            }
+                Core = new ConceptCore
+                {
+                    WorldConcept = _worldConcept,
+                    Pitch = Pitch
+                },
+
+                Evaluation = new ConceptEvaluation
+                {
+                    IsClear = IsClear,
+                    ClarityRecommendations = ClarityRecommendations.ToList(),
+                    ClarityQuestions = ClarityQuestions.ToList(),
+
+                    PitchRecommendations = PitchRecommendations.ToList(),
+                    TagRecommendations = TagRecommendations.ToList(),
+
+                    IsFeasible = IsFeasible,
+                    FailureReason = FailureReason
+                },
+
+                Extraction = new ConceptExtraction
+                {
+                    Tags = Tags
+                },
+
+                Metadata = metadata
+            };
+
+            return concept;
         }
     }
 }

@@ -10,10 +10,10 @@ namespace Nocturne.Abstractions.Genesis
         IReadOnlyList<ICard> Cards { get; }
         IStarterDeck StarterDeck { get; }
 
-        // NEW — the evaluated concept that inference was based on
+        // The evaluated concept that inference was based on
         IConcept Concept { get; }
 
-        // NEW — full diagnostic trace from concept evaluation
+        // Full diagnostic trace from concept evaluation (projection of Concept.Metadata.Logs)
         IReadOnlyCollection<ISurfaceLogEntry> ConceptLogs { get; }
 
         ICard? GetCardById(string id);

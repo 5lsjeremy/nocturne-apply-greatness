@@ -16,7 +16,7 @@ namespace Nocturne.TestHarness
         {
             Name = name;
             Id = Guid.NewGuid().ToString();
-            WorldConcept = "This is a game about Monkey Pirates.  These pirates are after your booty.  This is a game like Monkey Ball.  Epic Battles between Monkeys and Parrots for domination of the rum Islands";
+            WorldConcept = "Man is kidnapped by dolphins and forced to build underwater city.  He must adapt and use their tools, their tech, and their techniques.  Nothing human is accepted here.";
         }
     }
 
@@ -52,23 +52,39 @@ namespace Nocturne.TestHarness
             Console.WriteLine($"Timestamp: {session.Timestamp}");
             Console.WriteLine();
 
+            // ------------------------------------------------------------
             // Concept
+            // ------------------------------------------------------------
             Console.WriteLine("=== CONCEPT ===");
-            Console.WriteLine($"World Concept: {session.Concept.WorldConcept}");
-            Console.WriteLine($"Clarity: {(session.Concept.IsClear == true ? "clear" : "unclear")}");
-            Console.WriteLine($"Pitch: {session.Concept.Pitch ?? "(none)"}");
 
-            if (session.Concept.Tags != null)
+            var concept = session.Concept;
+            var core = concept.Core;
+            var eval = concept.Evaluation;
+            var extract = concept.Extraction;
+
+            Console.WriteLine($"World Concept: {core.WorldConcept}");
+            Console.WriteLine($"Clarity: {(eval.IsClear == true ? "clear" : "unclear")}");
+            Console.WriteLine($"Pitch: {core.Pitch ?? "(none)"}");
+
+            if (extract.Tags != null)
             {
-                Console.WriteLine($"Tags: tone={session.Concept.Tags.Tone}, density={session.Concept.Tags.Density}, risk={session.Concept.Tags.Risk}");
+                Console.WriteLine(
+                    $"Tags: tone={extract.Tags.Tone}, density={extract.Tags.Density}, risk={extract.Tags.Risk}"
+                );
             }
             else
             {
                 Console.WriteLine("Tags: (none)");
             }
 
-            // Concept Logs (updated)
+            if (eval.ClarityRecommendations.Any())
+                Console.WriteLine($"Clarity Rec: {eval.ClarityRecommendations.First()}");
+
             Console.WriteLine();
+
+            // ------------------------------------------------------------
+            // Concept Logs
+            // ------------------------------------------------------------
             Console.WriteLine("=== CONCEPT LOGS ===");
 
             if (session.ConceptLogs == null || session.ConceptLogs.Count == 0)
@@ -90,13 +106,18 @@ namespace Nocturne.TestHarness
                 }
             }
 
-
+            // ------------------------------------------------------------
             // Cards
+            // ------------------------------------------------------------
             Console.WriteLine("=== CARDS ===");
             foreach (var card in session.Cards)
                 Console.WriteLine($" - {card.Id}: {card.Name}");
 
             Console.WriteLine();
+
+            // ------------------------------------------------------------
+            // Starter Deck
+            // ------------------------------------------------------------
             Console.WriteLine("=== STARTER DECK ===");
             Console.WriteLine($"Deck Name: {session.StarterDeck.Name}");
             Console.WriteLine("Cards:");

@@ -30,19 +30,16 @@ namespace Nocturne.Genesis.Services
 
         public async Task RunMvpLoopAsync(IGenesisContext context, IOverlayTags? tags = null)
         {
-            // ❌ NO LONGER ALLOWED:
-            // var concrete = (GenesisContext)context;
-            // concrete.OverlayTags = tags;
-
-            // Overlay tags come from the context constructor.
-            // Use the effective tags (method param overrides context if provided).
+            // Overlay tags: explicit param overrides context
             var effectiveTags = tags ?? context.OverlayTags;
 
             foreach (var q in _promptSet.Questions.OrderBy(q => q.Order))
             {
+                // -----------------------------
+                // OFFLINE PROMPT (builder-facing)
+                // -----------------------------
                 var flavoredPrompt = PromptMerger.ApplyLocalization(q.OfflinePrompt, _localization);
 
-                // Apply overlay tone/density/etc. if present
                 if (effectiveTags != null)
                 {
                     flavoredPrompt = $"{flavoredPrompt}\n\n[overlay-tone:{effectiveTags.Tone}]";
@@ -57,14 +54,19 @@ namespace Nocturne.Genesis.Services
                 if (_offlineMode)
                     continue;
 
+                // -----------------------------
+                // LLM PROMPT (world-enrichment)
+                // -----------------------------
                 var llmPrompt = _promptBuilder.Build(q, context, _localization);
 
-                // Apply overlay tags to LLM prompt
                 if (effectiveTags != null)
                 {
                     llmPrompt = $"{llmPrompt}\n\n[overlay-density:{effectiveTags.Density}]";
                 }
 
+                // -----------------------------
+                // RAW LLM RESPONSE
+                // -----------------------------
                 var enriched = await _llm.GenerateRawAsync(llmPrompt);
 
                 context.Answers[$"{q.Id}_llm"] = enriched;

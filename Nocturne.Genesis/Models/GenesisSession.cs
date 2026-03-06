@@ -18,7 +18,10 @@ namespace Nocturne.Genesis.Models
             = new Dictionary<string, string>();
 
         public IConcept Concept { get; init; } = default!;
-        public IReadOnlyCollection<ISurfaceLogEntry> ConceptLogs { get; }
+
+        // Projection of Concept.Metadata.Logs
+        public IReadOnlyCollection<ISurfaceLogEntry> ConceptLogs
+            => Concept.Metadata.Logs;
 
         public ICard? GetCardById(string id)
         {

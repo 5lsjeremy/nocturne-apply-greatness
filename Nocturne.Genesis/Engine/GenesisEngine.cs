@@ -1,8 +1,9 @@
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
+using Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts;
 using Nocturne.Genesis.Models;
-using Nocturne.Surface.Exceptions;
+using Nocturne.Surface.Diagnostics;
 
 namespace Nocturne.Genesis.Engine
 {
@@ -16,7 +17,7 @@ namespace Nocturne.Genesis.Engine
         private readonly IVersioningService _versioningService;
         private readonly IFingerprintService _fingerprintService;
         private readonly IConceptService _concepts;
-        private readonly IRiffService _riffService;   // NEW
+        private readonly IRiffService _riffService;
 
         public GenesisEngine(
             ISurfaceArtifact seed,
@@ -27,7 +28,7 @@ namespace Nocturne.Genesis.Engine
             IVersioningService versioningService,
             IFingerprintService fingerprintService,
             IConceptService concepts,
-            IRiffService riffService)                 // NEW
+            IRiffService riffService)
         {
             _seed = seed;
             _prompts = prompts;
@@ -37,15 +38,36 @@ namespace Nocturne.Genesis.Engine
             _versioningService = versioningService;
             _fingerprintService = fingerprintService;
             _concepts = concepts;
-            _riffService = riffService;              // NEW
+            _riffService = riffService;
         }
 
         public async Task<IGenesisSession> GenerateAsync(IOverlayTags? tags = null)
         {
             // 1. Evaluate concept BEFORE inference
             var concept = await _concepts.EvaluateAsync(_seed.WorldConcept);
-            if (!concept.IsFeasible)
-                throw new InvalidConceptException(concept.FailureReason ?? "Concept not feasible.");
+
+            // 1a. Log feasibility outcome (success or failure) with LLM metadata
+            {
+                var eval = concept.Evaluation;
+                var meta = concept.Metadata;
+
+                var message = eval.IsFeasible
+                    ? "Concept feasibility check passed."
+                    : $"Concept feasibility check failed: {eval.FailureReason ?? "Unknown reason"}";
+
+                var entry = new SurfaceLogEntry(
+                    eval.IsFeasible ? SurfaceLogLevel.Info : SurfaceLogLevel.Error,
+                    message,
+                    new Dictionary<string, object?>
+                    {
+                        ["llm.raw"] = meta.RawResponse,
+                        ["llm.parsed"] = meta.ParsedResponseJson,
+                        ["llm.interpretation"] = meta.PipelineInterpretation
+                    }
+                );
+
+                (concept.Metadata as ConceptMetadata)?.AddLog(entry);
+            }
 
             // 2. Thread concept into context
             var context = new GenesisContext(_seed, concept, tags);
@@ -116,7 +138,7 @@ namespace Nocturne.Genesis.Engine
 
         public ICard Riff(ICard card, string contributor, string prompt)
         {
-            return _riffService.Riff(card, contributor, prompt);   // NEW
+            return _riffService.Riff(card, contributor, prompt);
         }
     }
 }
