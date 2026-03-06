@@ -8,6 +8,8 @@ namespace Nocturne.Genesis.Concepts
 {
     internal sealed class ConceptBase : IConcept
     {
+        public IWorldContext World { get; protected set; }
+
         public ConceptCore Core { get; set; } = new();
         public ConceptEvaluation Evaluation { get; set; } = new();
         public ConceptExtraction Extraction { get; set; } = new();

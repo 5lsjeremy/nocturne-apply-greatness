@@ -5,6 +5,7 @@ namespace Nocturne.Abstractions.Genesis.Concepts
 {
     public interface IConcept
     {
+        public IWorldContext World { get; }
         IConceptCore Core { get; }
         IConceptEvaluation Evaluation { get; }
         IConceptExtraction Extraction { get; }

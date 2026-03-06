@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <Folder Include="LLM\" />
+      <Folder Include="Overlays\Engines\Defaults\" />
       <Folder Include="Validation\LLM\" />
     </ItemGroup>
 
