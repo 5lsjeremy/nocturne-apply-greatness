@@ -8,11 +8,20 @@ namespace RunnerHarness
     {
         static async Task Main()
         {
+            // Load concept JSON from the concepts folder
+            var concept = ConceptLoader.Load("concepts/concept_dolphins_simulation.json");
+
+            // Create the surface artifact using loaded data
+            var seed = new TestSurfaceArtifact(
+                concept.Name ?? "Untitled Concept",
+                concept.WorldConcept ?? "No concept provided."
+            );
+
             // The ONLY place in your entire solution where concrete Genesis types appear.
             IGenesisFactory factory = new GenesisFactory();
 
-            // Pass the factory into the interface-only harness.
-            await Harness.Run(factory);
+            // Pass the factory and the artifact into the interface-only harness.
+            await Harness.Run(factory, seed);
         }
     }
 }

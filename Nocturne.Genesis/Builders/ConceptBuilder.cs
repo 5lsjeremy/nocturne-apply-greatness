@@ -2,8 +2,6 @@ using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Abstractions.Surface;
 using Nocturne.Genesis.Concepts;
-using Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts;
-using Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts;
 using Nocturne.Surface.Diagnostics;
 
 namespace Nocturne.Genesis.Builders

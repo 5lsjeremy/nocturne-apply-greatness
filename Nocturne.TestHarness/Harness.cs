@@ -12,11 +12,11 @@ namespace Nocturne.TestHarness
         public string Name { get; }
         public string WorldConcept { get; }
 
-        public TestSurfaceArtifact(string name)
+        public TestSurfaceArtifact(string name, string worldConcept)
         {
-            Name = name;
             Id = Guid.NewGuid().ToString();
-            WorldConcept = "Man is kidnapped by dolphins and forced to build underwater city.  He must adapt and use their tools, their tech, and their techniques.  Nothing human is accepted here.";
+            Name = name;
+            WorldConcept = worldConcept;
         }
     }
 
@@ -30,18 +30,19 @@ namespace Nocturne.TestHarness
 
     public static class Harness
     {
-        public static async Task Run(IGenesisFactory factory, IOverlayTags? tags = null)
+        public static async Task Run(
+            IGenesisFactory factory,
+            ISurfaceArtifact artifact,
+            IOverlayTags? tags = null)
         {
             Console.WriteLine("Booting Genesis through interface-only harness...");
-
-            var seed = new TestSurfaceArtifact("Haunted DMV");
 
             var options = new TestGenesisOptions
             {
                 OfflineMode = false
             };
 
-            var engine = factory.Create(seed, options);
+            var engine = factory.Create(artifact, options);
 
             Console.WriteLine("Calling IGenesisEngine.GenerateAsync...");
             var session = await engine.GenerateAsync(tags);
@@ -105,6 +106,22 @@ namespace Nocturne.TestHarness
                     Console.WriteLine();
                 }
             }
+
+            // ------------------------------------------------------------
+            // Worlds
+            // ------------------------------------------------------------
+            var world = concept.World;
+
+            Console.WriteLine("=== WORLD DOMAINS ===");
+            foreach (var kv in world.DomainState.Domains)
+            {
+                var name = kv.Key;
+                var value = kv.Value;
+                Console.WriteLine($"{name}: {value.Current}/{value.Threshold}");
+            }
+
+            Console.WriteLine($"World Stability: {world.DomainState.WorldStability}");
+            Console.WriteLine($"Is Collapsing: {world.DomainState.IsCollapsing}");
 
             // ------------------------------------------------------------
             // Cards

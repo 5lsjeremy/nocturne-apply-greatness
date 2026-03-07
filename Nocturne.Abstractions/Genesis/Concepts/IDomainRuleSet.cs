@@ -2,7 +2,14 @@ namespace Nocturne.Abstractions.Genesis.Concepts
 {
     public interface IDomainRuleSet
     {
-        IEnumerable<IDomainProtectionRule> ProtectionRules { get; }
-        IEnumerable<IDomainReinforcementRule> ReinforcementRules { get; }
+        string Domain { get; }
+
+        IReadOnlyList<IDomainProtectionRule> ProtectionRules { get; }
+        IReadOnlyList<IDomainReinforcementRule> ReinforcementRules { get; }
+
+        float DefaultThreshold { get; }
+        float DefaultGravity { get; }
+
+        bool CheckCollapse(IDomainValue value, IWorldContext world);
     }
 }

@@ -6,6 +6,7 @@ namespace Nocturne.Abstractions.Genesis.Concepts.Enums
         Purpose,
         Pathfinding,
         Redundancy,
-        Recovery
+        Recovery,
+        Generic
     }
 }

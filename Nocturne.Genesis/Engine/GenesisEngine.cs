@@ -1,7 +1,7 @@
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
-using Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts.Nocturne.Genesis.Concepts;
+using Nocturne.Genesis.Concepts;
 using Nocturne.Genesis.Models;
 using Nocturne.Surface.Diagnostics;
 

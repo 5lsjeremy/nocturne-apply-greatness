@@ -168,19 +168,19 @@ Respond ONLY with JSON.
         public Task<string> GenerateRawAsync(string prompt)
             => _client.CompleteAsync(prompt);
     }
-}
 
-public sealed class ClarityResult
-{
-    [JsonPropertyName("isClear")]
-    public bool IsClear { get; set; }
+    public sealed class ClarityResult
+    {
+        [JsonPropertyName("isClear")]
+        public bool IsClear { get; set; }
 
-    [JsonPropertyName("reason")]
-    public string Reason { get; set; } = "";
-}
+        [JsonPropertyName("reason")]
+        public string Reason { get; set; } = "";
+    }
 
-public sealed class PitchResult
-{
-    [JsonPropertyName("pitch")]
-    public string? Pitch { get; set; }
+    public sealed class PitchResult
+    {
+        [JsonPropertyName("pitch")]
+        public string? Pitch { get; set; }
+    }
 }

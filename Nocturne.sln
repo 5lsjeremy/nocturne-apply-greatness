@@ -96,6 +96,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.TestHarness", "Noc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunnerHarness", "RunnerHarness\RunnerHarness.csproj", "{D77E0CB8-78A4-4564-9603-669567F04119}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline 2.2", "pipeline 2.2", "{9A1F61A3-F20F-49D1-823D-9D4B57AB329B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\genesis-pipeline.md = ..\..\OneDrive\Desktop\Docs\genesis-pipeline.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,5 +176,6 @@ Global
 		{8C8C0A3F-BEFB-4798-A747-6BE2FBDFE1C3} = {2A4C9749-361A-49C5-A837-4F389C248358}
 		{98D1BDAA-BE14-4C07-9DB4-5CAC2A52863E} = {2A4C9749-361A-49C5-A837-4F389C248358}
 		{A2C9968F-2614-4F02-818C-335938ABAB5D} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
+		{9A1F61A3-F20F-49D1-823D-9D4B57AB329B} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
 	EndGlobalSection
 EndGlobal

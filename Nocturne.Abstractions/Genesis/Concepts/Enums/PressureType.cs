@@ -6,6 +6,7 @@ namespace Nocturne.Abstractions.Genesis.Concepts.Enums
         Emotional,
         Structural,
         Biological,
-        Network
+        Network,
+        Generic
     }
 }
