@@ -13,6 +13,7 @@
       <ProjectReference Include="..\Nocturne.TestHarness\Nocturne.TestHarness.csproj" />
         <None Include="genesis.config.json" CopyToOutputDirectory="Always" />
         <None Include="prompts\**\*.json" CopyToOutputDirectory="Always" />
+        <None Include="concepts\**\*.json" CopyToOutputDirectory="Always" />
 
     </ItemGroup>
     

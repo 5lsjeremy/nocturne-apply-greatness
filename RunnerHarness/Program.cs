@@ -9,7 +9,7 @@ namespace RunnerHarness
         static async Task Main()
         {
             // Load concept JSON from the concepts folder
-            var concept = ConceptLoader.Load("concepts/concept_dolphins_simulation.json");
+            var concept = ConceptLoader.Load("concepts/concept_dragon_weather.json");
 
             // Create the surface artifact using loaded data
             var seed = new TestSurfaceArtifact(
