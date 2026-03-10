@@ -1,6 +1,4 @@
-using Nocturne.Abstractions.Genesis;
-
-namespace Nocturne.Abstractions;
+namespace Nocturne.Abstractions.Genesis;
 
 public interface IGenesisGuards
 {
