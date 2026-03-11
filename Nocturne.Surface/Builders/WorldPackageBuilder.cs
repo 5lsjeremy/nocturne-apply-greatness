@@ -21,31 +21,37 @@ namespace Nocturne.Surface.Builders
         private void WriteConceptArtifacts(
             IGenesisSession session,
             string root,
-           Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage world)
+            Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage world)
         {
             var conceptRoot = Path.Combine(root, world.Artifacts.Concept.Root);
             Directory.CreateDirectory(conceptRoot);
             _logger.Info("Created concept/ folder.");
 
-            WriteJson(Path.Combine(conceptRoot, "concept.json"),
-                session.Concept.Core,
+            var concept = session.Concept;
+
+            WriteJson(Path.Combine(conceptRoot, "core.json"),
+                concept.Core,
                 world.Artifacts.Concept.Concept);
 
             WriteJson(Path.Combine(conceptRoot, "clarity.json"),
-                session.Concept.Evaluation,
+                concept.Clarity,
                 world.Artifacts.Concept.Clarity);
 
             WriteJson(Path.Combine(conceptRoot, "pitch.json"),
-                session.Concept.Core.Pitch,
+                concept.Pitch,
                 world.Artifacts.Concept.Pitch);
 
             WriteJson(Path.Combine(conceptRoot, "tags.json"),
-                session.Concept.Extraction.Tags,
+                concept.Tags,
                 world.Artifacts.Concept.Tags);
 
             WriteJson(Path.Combine(conceptRoot, "feasibility.json"),
-                session.Concept.Evaluation,
+                concept.Feasibility,
                 world.Artifacts.Concept.Feasibility);
+
+            WriteJson(Path.Combine(conceptRoot, "metadata.json"),
+                concept.Metadata,
+                world.Artifacts.Concept.Metadata);
 
             WriteJson(Path.Combine(conceptRoot, "logs.json"),
                 session.ConceptLogs,

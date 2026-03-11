@@ -1,8 +1,8 @@
-using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Surface;
-using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
 using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
+
+namespace Nocturne.Abstractions.Genesis;
 
 public interface IGenesisSession
 {

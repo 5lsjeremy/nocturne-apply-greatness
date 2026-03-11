@@ -29,10 +29,9 @@ namespace Nocturne.Genesis.Adapters
         {
             var prompt = context.BuildDomainPrompt(tags);
             var raw = await _client.CompleteAsync(prompt);
-            var json = ExtractJson(raw);
+            var json = CleanJson(raw);
 
-            return JsonSerializer.Deserialize<LlmDomainResponse>(json)
-                   ?? throw new InvalidOperationException("Invalid domain JSON.");
+            return Deserialize<LlmDomainResponse>(json, raw, "domain");
         }
 
         // ------------------------------------------------------------
@@ -45,10 +44,9 @@ namespace Nocturne.Genesis.Adapters
         {
             var prompt = context.BuildConceptPrompt(tags);
             var raw = await _client.CompleteAsync(prompt);
-            var json = ExtractJson(raw);
+            var json = CleanJson(raw);
 
-            return JsonSerializer.Deserialize<LlmConceptResponse>(json)
-                   ?? throw new InvalidOperationException("Invalid concept JSON.");
+            return Deserialize<LlmConceptResponse>(json, raw, "concept");
         }
 
         // ------------------------------------------------------------
@@ -61,10 +59,9 @@ namespace Nocturne.Genesis.Adapters
         {
             var prompt = context.BuildCardPrompt(tags);
             var raw = await _client.CompleteAsync(prompt);
-            var json = ExtractJson(raw);
+            var json = CleanJson(raw);
 
-            return JsonSerializer.Deserialize<LlmCardResponse>(json)
-                   ?? throw new InvalidOperationException("Invalid card JSON.");
+            return Deserialize<LlmCardResponse>(json, raw, "card");
         }
 
         // ------------------------------------------------------------
@@ -77,10 +74,9 @@ namespace Nocturne.Genesis.Adapters
         {
             var prompt = context.BuildStarterDeckPrompt(tags);
             var raw = await _client.CompleteAsync(prompt);
-            var json = ExtractJson(raw);
+            var json = CleanJson(raw);
 
-            return JsonSerializer.Deserialize<LlmStarterDeckResponse>(json)
-                   ?? throw new InvalidOperationException("Invalid starter deck JSON.");
+            return Deserialize<LlmStarterDeckResponse>(json, raw, "starter deck");
         }
 
         // ------------------------------------------------------------
@@ -93,10 +89,9 @@ namespace Nocturne.Genesis.Adapters
         {
             var prompt = context.BuildPresentationPrompt(tags);
             var raw = await _client.CompleteAsync(prompt);
-            var json = ExtractJson(raw);
+            var json = CleanJson(raw);
 
-            return JsonSerializer.Deserialize<LlmPresentationResponse>(json)
-                   ?? throw new InvalidOperationException("Invalid presentation JSON.");
+            return Deserialize<LlmPresentationResponse>(json, raw, "presentation");
         }
 
         // ------------------------------------------------------------
@@ -106,24 +101,51 @@ namespace Nocturne.Genesis.Adapters
             => _client.CompleteAsync(prompt);
 
         // ------------------------------------------------------------
-        // JSON EXTRACTION (robust, safe)
+        // JSON SANITIZATION
         // ------------------------------------------------------------
-        private static string ExtractJson(string text)
+        private static string CleanJson(string raw)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(raw))
                 return "{}";
 
-            // Find the first '{'
-            int start = text.IndexOf('{');
-            if (start < 0)
-                return "{}";
+            var cleaned = raw.Trim();
 
-            // Find the last '}'
-            int end = text.LastIndexOf('}');
-            if (end < 0 || end < start)
-                return "{}";
+            // Remove markdown fences
+            cleaned = cleaned
+                .Replace("```json", "", StringComparison.OrdinalIgnoreCase)
+                .Replace("```", "")
+                .Trim('`')
+                .Trim();
 
-            return text.Substring(start, end - start + 1);
+            // Extract first {...} block
+            int first = cleaned.IndexOf('{');
+            int last = cleaned.LastIndexOf('}');
+            if (first >= 0 && last > first)
+                cleaned = cleaned.Substring(first, last - first + 1);
+
+            return cleaned;
+        }
+
+        // ------------------------------------------------------------
+        // DESERIALIZATION WITH ERROR CONTEXT
+        // ------------------------------------------------------------
+        private static T Deserialize<T>(string json, string raw, string label)
+        {
+            try
+            {
+                var dto = JsonSerializer.Deserialize<T>(json);
+                if (dto == null)
+                    throw new InvalidOperationException($"LLM returned null {label} DTO.");
+
+                return dto;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to parse {label} JSON.\nRAW:\n{raw}\nCLEANED:\n{json}",
+                    ex
+                );
+            }
         }
     }
 }

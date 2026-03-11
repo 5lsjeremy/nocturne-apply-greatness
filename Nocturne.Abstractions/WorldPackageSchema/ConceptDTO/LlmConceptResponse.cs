@@ -123,5 +123,20 @@ namespace Nocturne.Abstractions.WorldPackageSchema.ConceptDTO
 
         [JsonPropertyName("recommendedFocusAreas")]
         public List<string> RecommendedFocusAreas { get; init; } = new();
+        
+        // -----------------------------
+        // METADATA
+        // -----------------------------
+        [JsonPropertyName("pipelineInterpretation")]
+        public string PipelineInterpretation { get; init; } = string.Empty;
+
+        [JsonPropertyName("fallbackReason")]
+        public string? FallbackReason { get; init; }
+
+        [JsonPropertyName("rawResponse")]
+        public string? RawResponse { get; init; }
+
+        [JsonPropertyName("parsedResponseJson")]
+        public string? ParsedResponseJson { get; init; }
     }
 }

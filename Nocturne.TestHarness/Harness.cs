@@ -59,28 +59,46 @@ namespace Nocturne.TestHarness
             Console.WriteLine("=== CONCEPT ===");
 
             var concept = session.Concept;
-            var core = concept.Core;
-            var eval = concept.Evaluation;
-            var extract = concept.Extraction;
 
-            Console.WriteLine($"World Concept: {core.WorldConcept}");
-            Console.WriteLine($"Clarity: {(eval.IsClear == true ? "clear" : "unclear")}");
-            Console.WriteLine($"Pitch: {core.Pitch ?? "(none)"}");
+            Console.WriteLine($"World Name: {concept.Core.WorldName}");
+            Console.WriteLine($"Summary: {concept.Core.Summary}");
+            Console.WriteLine($"Core Fantasy: {concept.Core.CoreFantasy}");
+            Console.WriteLine($"Tone: {concept.Core.Tone}");
+            Console.WriteLine($"Genre: {concept.Core.Genre}");
+            Console.WriteLine($"Setting: {concept.Core.Setting}");
+            Console.WriteLine($"Player Fantasy: {concept.Core.PlayerFantasy}");
+            Console.WriteLine($"Creative North Star: {concept.Core.CreativeNorthStar}");
+            Console.WriteLine();
 
-            if (extract.Tags != null)
-            {
-                Console.WriteLine(
-                    $"Tags: tone={extract.Tags.Tone}, density={extract.Tags.Density}, risk={extract.Tags.Risk}"
-                );
-            }
-            else
-            {
-                Console.WriteLine("Tags: (none)");
-            }
+            Console.WriteLine("Clarity:");
+            Console.WriteLine($"  Score: {concept.Clarity.ClarityScore}");
+            Console.WriteLine($"  Notes: {concept.Clarity.Notes}");
+            Console.WriteLine();
 
-            if (eval.ClarityRecommendations.Any())
-                Console.WriteLine($"Clarity Rec: {eval.ClarityRecommendations.First()}");
+            Console.WriteLine("Pitch:");
+            Console.WriteLine($"  Tagline: {concept.Pitch.Tagline}");
+            Console.WriteLine($"  One Sentence: {concept.Pitch.OneSentencePitch}");
+            Console.WriteLine($"  30-Second Pitch: {concept.Pitch.ThirtySecondPitch}");
+            Console.WriteLine($"  Market Position: {concept.Pitch.MarketPosition}");
+            Console.WriteLine($"  Emotional Hook: {concept.Pitch.EmotionalHook}");
+            Console.WriteLine($"  Player Promise: {concept.Pitch.PlayerPromise}");
+            Console.WriteLine();
 
+            Console.WriteLine("Tags:");
+            Console.WriteLine($"  Concept: {string.Join(", ", concept.Tags.ConceptTagsList)}");
+            Console.WriteLine($"  Mechanics: {string.Join(", ", concept.Tags.MechanicTags)}");
+            Console.WriteLine($"  Mood: {string.Join(", ", concept.Tags.MoodTags)}");
+            Console.WriteLine($"  Themes: {string.Join(", ", concept.Tags.ThemeTags)}");
+            Console.WriteLine($"  Setting: {string.Join(", ", concept.Tags.SettingTags)}");
+            Console.WriteLine();
+
+            Console.WriteLine("Feasibility:");
+            Console.WriteLine($"  Creative Potential: {concept.Feasibility.CreativePotential}");
+            Console.WriteLine($"  Alignment With Genre: {concept.Feasibility.AlignmentWithGenre}");
+            Console.WriteLine($"  Expected Complexity: {concept.Feasibility.ExpectedComplexity}");
+            Console.WriteLine($"  Opportunities: {string.Join(", ", concept.Feasibility.Opportunities)}");
+            Console.WriteLine($"  Pitfalls: {string.Join(", ", concept.Feasibility.Pitfalls)}");
+            Console.WriteLine($"  Risks: {string.Join(", ", concept.Feasibility.ProductionRisks)}");
             Console.WriteLine();
 
             // ------------------------------------------------------------
@@ -108,20 +126,41 @@ namespace Nocturne.TestHarness
             }
 
             // ------------------------------------------------------------
-            // World Domains (dummy world context)
+            // World Package Manifest (SurfaceDTO)
             // ------------------------------------------------------------
-            var world = concept.World;
+            Console.WriteLine("=== WORLD PACKAGE ===");
 
-            Console.WriteLine("=== WORLD DOMAINS ===");
-            foreach (var kv in world.DomainState.Domains)
-            {
-                var name = kv.Key;
-                var value = kv.Value;
-                Console.WriteLine($"{name}: {value.Current}/{value.Threshold}");
-            }
+            var world = session.World;
 
-            Console.WriteLine($"World Stability: {world.DomainState.WorldStability}");
-            Console.WriteLine($"Is Collapsing: {world.DomainState.IsCollapsing}");
+            Console.WriteLine($"WorldId: {world.WorldId}");
+            Console.WriteLine($"WorldName: {world.WorldName}");
+            Console.WriteLine($"Version: {world.Version}");
+            Console.WriteLine($"Timestamp: {world.Timestamp}");
+            Console.WriteLine();
+
+            Console.WriteLine("Artifacts:");
+            Console.WriteLine($"  Domains:        {string.Join(", ", world.DomainIds)}");
+            Console.WriteLine($"  Concepts:       {string.Join(", ", world.ConceptIds)}");
+            Console.WriteLine($"  Cards:          {string.Join(", ", world.CardIds)}");
+            Console.WriteLine($"  Starter Decks:  {string.Join(", ", world.StarterDeckIds)}");
+            Console.WriteLine($"  Presentations:  {string.Join(", ", world.PresentationIds)}");
+            Console.WriteLine();
+
+            Console.WriteLine("Presence Flags:");
+            Console.WriteLine($"  HasDomains:        {world.HasDomains}");
+            Console.WriteLine($"  HasConcepts:       {world.HasConcepts}");
+            Console.WriteLine($"  HasCards:          {world.HasCards}");
+            Console.WriteLine($"  HasStarterDecks:   {world.HasStarterDecks}");
+            Console.WriteLine($"  HasPresentations:  {world.HasPresentations}");
+            Console.WriteLine();
+
+            Console.WriteLine("Paths:");
+            Console.WriteLine($"  DomainsPath:       {world.DomainsPath}");
+            Console.WriteLine($"  ConceptsPath:      {world.ConceptsPath}");
+            Console.WriteLine($"  CardsPath:         {world.CardsPath}");
+            Console.WriteLine($"  StarterDecksPath:  {world.StarterDecksPath}");
+            Console.WriteLine($"  PresentationPath:  {world.PresentationPath}");
+            Console.WriteLine();
 
             // ------------------------------------------------------------
             // Cards

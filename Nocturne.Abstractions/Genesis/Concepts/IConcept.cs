@@ -1,14 +1,15 @@
-using Nocturne.Abstractions.Overlays;
-using Nocturne.Abstractions.Surface;
+using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
 
-namespace Nocturne.Abstractions.Genesis.Concepts
+namespace Nocturne.Abstractions.Genesis.Concepts;
+
+public interface IConcept
 {
-    public interface IConcept
-    {
-        public IWorldContext World { get; }
-        IConceptCore Core { get; }
-        IConceptEvaluation Evaluation { get; }
-        IConceptExtraction Extraction { get; }
-        IConceptMetadata Metadata { get; }
-    }
+    IWorldContext World { get; }
+
+    ConceptCore Core { get; }
+    ConceptClarity Clarity { get; }
+    ConceptPitch Pitch { get; }
+    ConceptTags Tags { get; }
+    ConceptFeasibility Feasibility { get; }
+    ConceptMetadata Metadata { get; }
 }

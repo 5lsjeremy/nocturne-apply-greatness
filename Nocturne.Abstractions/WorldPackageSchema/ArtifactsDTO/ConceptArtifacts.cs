@@ -22,6 +22,9 @@ namespace Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO
         [JsonPropertyName("feasibility")]
         public ArtifactEntry Feasibility { get; init; } = new("concept/feasibility.json");
 
+        [JsonPropertyName("metadata")]
+        public ArtifactEntry Metadata { get; init; } = new("concept/metadata.json");
+
         [JsonPropertyName("logs")]
         public ArtifactEntry Logs { get; init; } = new("concept/logs.json");
     }
