@@ -2,22 +2,19 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.PresentationDTO
 {
-    public sealed class PresentationMetadata
+    public sealed record PresentationMetadata
     {
-        [JsonPropertyName("title")]
-        public string Title { get; init; } = string.Empty;
+        [JsonPropertyName("author")]
+        public string Author { get; init; } = "system";
 
-        [JsonPropertyName("tagline")]
-        public string Tagline { get; init; } = string.Empty;
+        [JsonPropertyName("origin")]
+        public string Origin { get; init; } = "inference";
 
-        [JsonPropertyName("summary")]
-        public string Summary { get; init; } = string.Empty;
+        [JsonPropertyName("fingerprint")]
+        public string Fingerprint { get; init; } = string.Empty;
 
-        [JsonPropertyName("heroImage")]
-        public string HeroImage { get; init; } = string.Empty;
-
-        [JsonPropertyName("accentColor")]
-        public string AccentColor { get; init; } = string.Empty;
+        [JsonPropertyName("version")]
+        public int Version { get; init; }
 
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; init; }

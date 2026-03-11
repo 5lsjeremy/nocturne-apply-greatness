@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.ConceptDTO
 {
-    public sealed class ClaritySection
+    public sealed record ClaritySection
     {
         [JsonPropertyName("strengths")]
         public List<string> Strengths { get; init; } = new();

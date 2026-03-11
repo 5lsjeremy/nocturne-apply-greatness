@@ -1,3 +1,4 @@
+using Nocturne.Abstractions.Genesis.Concepts.Enums;
 using Nocturne.Abstractions.Surface;
 
 namespace Nocturne.Surface.Diagnostics
@@ -8,19 +9,19 @@ namespace Nocturne.Surface.Diagnostics
 
         public IReadOnlyCollection<ISurfaceLogEntry> Entries => _entries;
 
-        public void Info(string message)
+        public void Info(string message, string source = "surface")
         {
-            _entries.Add(new SurfaceLogEntry(message, "info"));
+            _entries.Add(new SurfaceLogEntry(SurfaceLogLevel.Info, message, source));
         }
 
-        public void Warn(string message)
+        public void Warn(string message, string source = "surface")
         {
-            _entries.Add(new SurfaceLogEntry(message, "warn"));
+            _entries.Add(new SurfaceLogEntry(SurfaceLogLevel.Warn, message, source));
         }
 
-        public void Error(string message)
+        public void Error(string message, string source = "surface")
         {
-            _entries.Add(new SurfaceLogEntry(message, "error"));
+            _entries.Add(new SurfaceLogEntry(SurfaceLogLevel.Error, message, source));
         }
     }
 }

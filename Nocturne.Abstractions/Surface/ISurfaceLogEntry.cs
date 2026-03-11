@@ -5,5 +5,6 @@ namespace Nocturne.Abstractions.Surface
         DateTime Timestamp { get; }
         string Message { get; }
         string Category { get; }
+        string Source { get; }
     }
 }

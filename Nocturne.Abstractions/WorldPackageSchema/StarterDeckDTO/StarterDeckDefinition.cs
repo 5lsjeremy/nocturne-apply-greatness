@@ -2,16 +2,19 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO
 {
-    public sealed class StarterDeckDefinition
+    public sealed record StarterDeckDefinition
     {
-        [JsonPropertyName("deckName")]
-        public string DeckName { get; init; } = string.Empty;
+        [JsonPropertyName("deckId")]
+        public string DeckId { get; init; } = string.Empty;
+
+        [JsonPropertyName("title")]
+        public string Title { get; init; } = string.Empty;
 
         [JsonPropertyName("summary")]
         public string Summary { get; init; } = string.Empty;
 
-        [JsonPropertyName("cards")]
-        public List<StarterDeckCard> Cards { get; init; } = new();
+        [JsonPropertyName("cardIds")]
+        public List<string> CardIds { get; init; } = new();
 
         [JsonPropertyName("tags")]
         public List<string> Tags { get; init; } = new();

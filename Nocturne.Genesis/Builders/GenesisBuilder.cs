@@ -1,72 +1,140 @@
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
-using Nocturne.Genesis.Models;
-using Nocturne.Genesis.Models.Lineage;
+using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
+using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
+using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
+using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
+using Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO;
+using Nocturne.Abstractions.WorldPackageSchema.PresentationDTO;
+using Nocturne.Genesis.Assemblers;
+using Nocturne.Surface;
+using Nocturne.Surface.Diagnostics;
 
 namespace Nocturne.Genesis.Builders
 {
     internal sealed class GenesisBuilder : IGenesisBuilder
     {
+        private readonly IGenesisInferenceService _inference;
         private readonly IFingerprintService _fingerprints;
+        private readonly DomainAssembler _domainAssembler;
+        private readonly ConceptAssembler _conceptAssembler;
+        private readonly CardAssembler _cardAssembler;
+        private readonly StarterDeckAssembler _starterDeckAssembler;
+        private readonly PresentationAssembler _presentationAssembler;
+        private readonly SurfaceWriter _surfaceWriter;
 
-        public GenesisBuilder(IFingerprintService fingerprints)
+        public GenesisBuilder(
+            IGenesisInferenceService inference,
+            IFingerprintService fingerprints,
+            DomainAssembler domainAssembler,
+            ConceptAssembler conceptAssembler,
+            CardAssembler cardAssembler,
+            StarterDeckAssembler starterDeckAssembler,
+            PresentationAssembler presentationAssembler,
+            SurfaceWriter surfaceWriter)
         {
+            _inference = inference;
             _fingerprints = fingerprints;
+            _domainAssembler = domainAssembler;
+            _conceptAssembler = conceptAssembler;
+            _cardAssembler = cardAssembler;
+            _starterDeckAssembler = starterDeckAssembler;
+            _presentationAssembler = presentationAssembler;
+            _surfaceWriter = surfaceWriter;
         }
 
-        // UPDATED SIGNATURE — now matches the interface
-        public IStarterDeck BuildStarterDeck(
+        public async Task<SurfaceDTO> BuildWorldAsync(
+            string rootPath,
             ISurfaceArtifact seed,
             IGenesisContext context,
-            IGenesisInferenceResult inference,
             string inferenceRunId,
-            IOverlayTags? tags = null)
+            IOverlayTags? tags = null,
+            CancellationToken ct = default)
         {
-            var deck = (StarterDeck)inference.StarterDeck;
+            // 1. Inference
+            var domainLlm = await _inference.GenerateDomainAsync(context, tags, ct);
+            var conceptLlm = await _inference.GenerateConceptAsync(context, tags, ct);
+            var cardLlm = await _inference.GenerateCardAsync(context, tags, ct);
+            var deckLlm = await _inference.GenerateStarterDeckAsync(context, tags, ct);
+            var presentationLlm = await _inference.GeneratePresentationAsync(context, tags, ct);
 
-            // 1. Collect card IDs and version numbers
-            var cardIds = deck.Cards.Select(c => c.Id).ToList();
-            var cardVersions = deck.Cards
-                .Select(c => c.Versions.Last().VersionNumber)
-                .ToList();
+            // 2. IDs
+            var domainId = domainLlm.DomainName;
+            var conceptId = conceptLlm.SeedId;
+            var cardId = Guid.NewGuid().ToString("N");
+            var deckId = Guid.NewGuid().ToString("N");
+            var presentationId = Guid.NewGuid().ToString("N");
 
-            // 2. Compute metadata fingerprint
-            var metadataFingerprint = _fingerprints.ComputeFingerprint(deck.Metadata);
+            // 3. Fingerprints
+            var domainFp = _fingerprints.ComputeFingerprint(domainLlm);
+            var conceptFp = _fingerprints.ComputeFingerprint(conceptLlm);
+            var cardFp = _fingerprints.ComputeFingerprint(cardLlm);
+            var deckFp = _fingerprints.ComputeFingerprint(deckLlm);
+            var presentationFp = _fingerprints.ComputeFingerprint(presentationLlm);
 
-            // 3. Compute deck fingerprint
-            var deckFingerprint = _fingerprints.ComputeFingerprint(new
-            {
-                SeedId = seed.Id,
-                InferenceRunId = inferenceRunId,
-                CardIds = cardIds,
-                CardVersions = cardVersions,
-                Metadata = deck.Metadata,
-                OverlayTone = tags?.Tone,
-                OverlayDensity = tags?.Density,
-                OverlayRisk = tags?.Risk
-            });
+            // 4. Loggers
+            var domainLogger = new SurfaceLogger();
+            var conceptLogger = new SurfaceLogger();
+            var cardLogger = new SurfaceLogger();
+            var deckLogger = new SurfaceLogger();
+            var presentationLogger = new SurfaceLogger();
+            
+            // 5. Assemble artifacts
 
-            // 4. Attach deck lineage
-            deck.Lineage = new DeckLineage
-            {
-                SeedId = seed.Id,
-                InferenceRunId = inferenceRunId,
-                CardIds = cardIds,
-                CardVersionNumbers = cardVersions,
-                MetadataFingerprint = metadataFingerprint,
-                DeckFingerprint = deckFingerprint
-            };
+            var domainArtifacts = _domainAssembler.Assemble(
+                domainLlm,
+                domainId,
+                domainLogger);
 
-            // 5. Apply overlay metadata (optional but useful)
+            var conceptArtifacts = _conceptAssembler.Assemble(
+                conceptLlm,
+                conceptId,
+                conceptLogger);
+
+            var cardArtifacts = _cardAssembler.Assemble(
+                cardLlm,
+                cardId,
+                cardFp,
+                1,
+                "inference",
+                cardLogger);
+
+            var deckArtifacts = _starterDeckAssembler.Assemble(
+                deckLlm,
+                deckId,
+                deckFp,
+                1,
+                "inference",
+                deckLogger);
+
+            var presentationArtifacts = _presentationAssembler.Assemble(
+                presentationLlm,
+                presentationId,
+                presentationFp,
+                1,
+                "inference",
+                presentationLogger);
+
+            // 6. Overlay metadata (optional)
             if (tags != null)
             {
-                deck.Metadata["overlay-tone"] = tags.Tone;
-                deck.Metadata["overlay-density"] = tags.Density;
-                deck.Metadata["overlay-risk"] = tags.Risk;
+                deckArtifacts.Definition.Tags.Add($"tone:{tags.Tone}");
+                deckArtifacts.Definition.Tags.Add($"density:{tags.Density}");
+                deckArtifacts.Definition.Tags.Add($"risk:{tags.Risk}");
             }
 
-            return deck;
+            // 7. Write world package
+            return _surfaceWriter.WriteWorldPackage(
+                rootPath,
+                worldId: seed.Id,
+                worldName: seed.Name,
+                version: 1,
+                domains: new[] { domainArtifacts },
+                concepts: new[] { conceptArtifacts },
+                cards: new[] { cardArtifacts },
+                starterDecks: new[] { deckArtifacts },
+                presentations: new[] { presentationArtifacts });
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.ConceptDTO
 {
-    public sealed class ConceptClarity
+    public sealed record ConceptClarity
     {
         [JsonPropertyName("clarityScore")]
         public int ClarityScore { get; init; }

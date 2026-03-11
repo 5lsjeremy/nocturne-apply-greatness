@@ -108,7 +108,7 @@ namespace Nocturne.TestHarness
             }
 
             // ------------------------------------------------------------
-            // Worlds
+            // World Domains (dummy world context)
             // ------------------------------------------------------------
             var world = concept.World;
 

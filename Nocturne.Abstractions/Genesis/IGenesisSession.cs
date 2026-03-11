@@ -1,21 +1,26 @@
+using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Surface;
+using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
+using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
 
-namespace Nocturne.Abstractions.Genesis
+public interface IGenesisSession
 {
-    public interface IGenesisSession
-    {
-        string SeedId { get; }
-        DateTime Timestamp { get; }
-        IReadOnlyList<ICard> Cards { get; }
-        IStarterDeck StarterDeck { get; }
+    string SeedId { get; }
+    DateTime Timestamp { get; }
 
-        // The evaluated concept that inference was based on
-        IConcept Concept { get; }
+    // NEW — the full world package
+    SurfaceDTO World { get; }
 
-        // Full diagnostic trace from concept evaluation (projection of Concept.Metadata.Logs)
-        IReadOnlyCollection<ISurfaceLogEntry> ConceptLogs { get; }
+    // Optional — the concept DTO if you want to expose it
+    public IConcept Concept { get; init; }
+    
+    // RESTORE THESE FOR HARNESS COMPATIBILITY
+    IReadOnlyList<ICard> Cards { get; }
+    IStarterDeck StarterDeck { get; }
 
-        ICard? GetCardById(string id);
-    }
+
+    IReadOnlyCollection<ISurfaceLogEntry> ConceptLogs { get; }
+    string InferenceRunId { get; }
+    IReadOnlyDictionary<string, string> PromptAnswers { get; }
 }

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO
 {
-    public sealed class StarterDeckLogs
+    public sealed record StarterDeckLogs
     {
         [JsonPropertyName("entries")]
         public List<StarterDeckLogEntry> Entries { get; init; } = new();

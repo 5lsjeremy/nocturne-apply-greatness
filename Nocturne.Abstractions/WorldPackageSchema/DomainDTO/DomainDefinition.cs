@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.DomainDTO
 {
-    public sealed class DomainDefinition
+    public sealed record DomainDefinition
     {
         [JsonPropertyName("domainName")]
         public string DomainName { get; init; } = string.Empty;

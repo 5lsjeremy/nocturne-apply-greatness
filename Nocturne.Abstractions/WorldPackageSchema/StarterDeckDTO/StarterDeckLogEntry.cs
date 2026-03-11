@@ -2,16 +2,19 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO
 {
-    public sealed class StarterDeckLogEntry
+    public sealed record StarterDeckLogEntry
     {
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; init; }
 
-        [JsonPropertyName("deckName")]
-        public string DeckName { get; init; } = string.Empty;
+        [JsonPropertyName("deckId")]
+        public string DeckId { get; init; } = string.Empty;
 
         [JsonPropertyName("message")]
         public string Message { get; init; } = string.Empty;
+
+        [JsonPropertyName("category")]
+        public string Category { get; init; } = string.Empty;
 
         [JsonPropertyName("source")]
         public string Source { get; init; } = string.Empty;

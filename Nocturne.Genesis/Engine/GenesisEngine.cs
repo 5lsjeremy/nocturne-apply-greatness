@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Concepts.Enums;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Genesis.Concepts;
@@ -11,7 +12,7 @@ namespace Nocturne.Genesis.Engine
     {
         private readonly ISurfaceArtifact _seed;
         private readonly IGenesisPromptService _prompts;
-        private readonly IGenesisInferenceService _inference;
+        private readonly IGenesisInferenceService _inference;   // currently unused, but kept for signature parity
         private readonly IGenesisBuilder _builder;
         private readonly IProvenanceService _provenanceService;
         private readonly IVersioningService _versioningService;
@@ -27,7 +28,6 @@ namespace Nocturne.Genesis.Engine
             IProvenanceService provenanceService,
             IVersioningService versioningService,
             IFingerprintService fingerprintService,
-            IConceptService concepts,
             IRiffService riffService)
         {
             _seed = seed;
@@ -37,16 +37,17 @@ namespace Nocturne.Genesis.Engine
             _provenanceService = provenanceService;
             _versioningService = versioningService;
             _fingerprintService = fingerprintService;
-            _concepts = concepts;
             _riffService = riffService;
         }
 
         public async Task<IGenesisSession> GenerateAsync(IOverlayTags? tags = null)
         {
-            // 1. Evaluate concept BEFORE inference
+            //
+            // 1. Evaluate concept (old concept pipeline still in play)
+            //
             var concept = await _concepts.EvaluateAsync(_seed.WorldConcept);
 
-            // 1a. Log feasibility outcome (success or failure) with LLM metadata
+            // 1a. Log feasibility outcome with LLM metadata (unchanged)
             {
                 var eval = concept.Evaluation;
                 var meta = concept.Metadata;
@@ -58,6 +59,7 @@ namespace Nocturne.Genesis.Engine
                 var entry = new SurfaceLogEntry(
                     eval.IsFeasible ? SurfaceLogLevel.Info : SurfaceLogLevel.Error,
                     message,
+                    "genesis.concept-evaluator",
                     new Dictionary<string, object?>
                     {
                         ["llm.raw"] = meta.RawResponse,
@@ -69,18 +71,44 @@ namespace Nocturne.Genesis.Engine
                 (concept.Metadata as ConceptMetadata)?.AddLog(entry);
             }
 
+            //
             // 2. Thread concept into context
-            var context = new GenesisContext(_seed, concept, tags);
+            //
+            var context = new GenesisContext(
+                seed: _seed,
+                concept: concept,
+                cards: new List<ICard>(),
+                answers: new Dictionary<string, object?>(),
+                overlayTags: tags
+            );
 
-            // 3. MVP loop
+            //
+            // 3. MVP loop (prompt enrichment)
+            //
             await _prompts.RunMvpLoopAsync(context, tags);
 
-            // 4. Inference
-            var inference = _inference.Infer(context, tags);
+            //
+            // 4. Inference + world build are now owned by the builder
+            //    Builder will use IGenesisInferenceService internally via its constructor.
+            //
             var inferenceRunId = Guid.NewGuid().ToString("N");
 
-            // 5. Provenance, versioning, fingerprinting
-            foreach (var card in inference.Cards)
+            // You can choose a root path strategy; for now, use the seed ID as a stable root.
+            var rootPath = _seed.Id;
+
+            var world = await _builder.BuildWorldAsync(
+                rootPath: rootPath,
+                seed: _seed,
+                context: context,
+                inferenceRunId: inferenceRunId,
+                tags: tags
+            );
+
+            //
+            // 5. (Optional) Provenance/versioning/fingerprint at engine level
+            //    If the builder now owns this, you can remove this block entirely.
+            //
+            foreach (var card in context.Cards)
             {
                 var concrete = (GenesisCard)card;
 
@@ -111,23 +139,16 @@ namespace Nocturne.Genesis.Engine
                 concrete.Fingerprint = fingerprint;
             }
 
-            // 6. Starter deck
-            var deck = _builder.BuildStarterDeck(
-                _seed,
-                context,
-                inference,
-                inferenceRunId,
-                tags
-            );
-
-            // 7. Return session WITH concept
+            //
+            // 6. Return session
+            //
             return new GenesisSession
             {
                 Concept = concept,
                 SeedId = _seed.Id,
                 Timestamp = DateTime.UtcNow,
-                Cards = inference.Cards,
-                StarterDeck = deck,
+                Cards = context.Cards.ToList(),   // fixes IList → IReadOnlyList
+                StarterDeck = default!,           // SurfaceDTO does NOT contain a deck
                 InferenceRunId = inferenceRunId,
                 PromptAnswers = context.Answers.ToDictionary(
                     kvp => kvp.Key,

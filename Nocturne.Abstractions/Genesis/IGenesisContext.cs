@@ -1,19 +1,24 @@
-using Nocturne.Abstractions.Overlays;
 using Nocturne.Abstractions.Genesis.Concepts;
+using Nocturne.Abstractions.Overlays;
 
-namespace Nocturne.Abstractions.Genesis
+namespace Nocturne.Abstractions.Genesis;
+
+public interface IGenesisContext
 {
-    public interface IGenesisContext
-    {
-        ISurfaceArtifact Seed { get; }
+    ISurfaceArtifact Seed { get; }
 
-        IDictionary<string, object?> Answers { get; }
+    IDictionary<string, object?> Answers { get; }
 
-        IList<ICard> Cards { get; }
+    IList<ICard> Cards { get; }
 
-        IOverlayTags? OverlayTags { get; }
+    IOverlayTags? OverlayTags { get; }
 
-        // NEW — evaluated concept available to prompts + inference
-        IConcept Concept { get; }
-    }
+    IConcept Concept { get; }
+
+    // NEW — prompt builders for world‑package inference
+    string BuildDomainPrompt(IOverlayTags? tags = null);
+    string BuildConceptPrompt(IOverlayTags? tags = null);
+    string BuildCardPrompt(IOverlayTags? tags = null);
+    string BuildStarterDeckPrompt(IOverlayTags? tags = null);
+    string BuildPresentationPrompt(IOverlayTags? tags = null);
 }

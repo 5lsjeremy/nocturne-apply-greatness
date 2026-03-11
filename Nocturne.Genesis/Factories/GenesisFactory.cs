@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Genesis.Adapters;
 using Nocturne.Genesis.Builders;
 using Nocturne.Genesis.Config;
@@ -6,6 +7,8 @@ using Nocturne.Genesis.Engine;
 using Nocturne.Genesis.Prompts;
 using Nocturne.Genesis.Services;
 using Nocturne.Genesis.Services.Lineage;
+using Nocturne.Genesis.Assemblers;
+using Nocturne.Surface;
 
 namespace Nocturne.Genesis.Factories
 {
@@ -34,11 +37,12 @@ namespace Nocturne.Genesis.Factories
             var mergedLocalizationPath =
                 options?.LocalizationPath ?? _config.Defaults.LocalizationPath;
 
+            // Prompt assets
             var promptSet = PromptSetLoader.Load(mergedPromptSetPath);
             var localization = PromptLocalizationLoader.Load(mergedLocalizationPath);
-
             var promptBuilder = new LlmPromptBuilder();
 
+            // LLM client + world adapter
             var llmClient = new GeminiLlmClientBuilder()
                 .UseHttpClient(new HttpClient())
                 .UseEndpoint(_config.Llm.Endpoint)
@@ -46,8 +50,9 @@ namespace Nocturne.Genesis.Factories
                 .UseModel(_config.Llm.Model)
                 .Build();
 
-            var llm = new GeminiLlmAdapter(llmClient);
+            IGenesisWorldLlmAdapter llm = new GeminiLlmAdapter(llmClient);
 
+            // Prompt service
             var promptService = new GenesisPromptService(
                 promptSet,
                 localization,
@@ -56,26 +61,49 @@ namespace Nocturne.Genesis.Factories
                 mergedOfflineMode
             );
 
-            // lineage services
+            // Lineage services
             var provenanceService = new ProvenanceService();
             var versioningService = new VersioningService();
             var fingerprintService = new FingerprintService();
 
-            // builder now requires fingerprintService
-            var builder = new GenesisBuilder(fingerprintService);
+            // Inference service
+            var inference = new GenesisInferenceService(llm);
 
-            var inference = new GenesisInferenceService();
+            // Assemblers
+            var domainAssembler = new DomainAssembler();
+            var conceptAssembler = new ConceptAssembler();
+            var cardAssembler = new CardAssembler();
+            var starterDeckAssembler = new StarterDeckAssembler();
+            var presentationAssembler = new PresentationAssembler();
 
-            // NEW: concept service (this was missing)
-            var conceptService = new GenesisConceptService(llm);
+            // Transitional concept service (wraps DTO → IConcept)
+            var conceptService = new GenesisConceptService();
 
-            // NEW: riffing service
-            var riffService = new RiffService(new ApprovalService(
-                versioningService,
-                provenanceService,
-                fingerprintService
-            ));
+            // Surface writer
+            var surfaceWriter = new SurfaceWriter();
 
+            // Builder
+            var builder = new GenesisBuilder(
+                inference,
+                fingerprintService,
+                domainAssembler,
+                conceptAssembler,
+                cardAssembler,
+                starterDeckAssembler,
+                presentationAssembler,
+                surfaceWriter
+            );
+
+            // Riffing service
+            var riffService = new RiffService(
+                new ApprovalService(
+                    versioningService,
+                    provenanceService,
+                    fingerprintService
+                )
+            );
+
+            // Engine (updated signature — concept service removed)
             return new GenesisEngine(
                 seed,
                 promptService,
@@ -84,7 +112,6 @@ namespace Nocturne.Genesis.Factories
                 provenanceService,
                 versioningService,
                 fingerprintService,
-                conceptService,   // <-- FIXED: pass concept service, not riff service
                 riffService
             );
         }

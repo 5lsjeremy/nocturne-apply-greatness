@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.ConceptDTO
 {
-    public sealed class ConceptCore
+    public sealed record ConceptCore
     {
         [JsonPropertyName("worldName")]
         public string WorldName { get; init; } = string.Empty;

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.ConceptDTO
 {
-    public sealed class ConceptLogEntry
+    public sealed record ConceptLogEntry
     {
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; init; }

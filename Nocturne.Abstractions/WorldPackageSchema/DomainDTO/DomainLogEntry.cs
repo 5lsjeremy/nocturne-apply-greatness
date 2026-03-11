@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Nocturne.Abstractions.WorldPackageSchema.DomainDTO
 {
-    public sealed class DomainLogEntry
+    public sealed record DomainLogEntry
     {
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; init; }

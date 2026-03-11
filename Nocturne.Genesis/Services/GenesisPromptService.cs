@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Genesis.Engine;
 using Nocturne.Genesis.Prompts;
@@ -10,7 +11,7 @@ namespace Nocturne.Genesis.Services
         private readonly PromptSet _promptSet;
         private readonly PromptLocalization _localization;
         private readonly ILlmPromptBuilder _promptBuilder;
-        private readonly IGenesisLlmAdapter _llm;
+        private readonly IGenesisWorldLlmAdapter _llm;
 
         private readonly bool _offlineMode;
 
@@ -18,7 +19,7 @@ namespace Nocturne.Genesis.Services
             PromptSet promptSet,
             PromptLocalization localization,
             ILlmPromptBuilder promptBuilder,
-            IGenesisLlmAdapter llm,
+            IGenesisWorldLlmAdapter llm,
             bool offlineMode)
         {
             _promptSet = promptSet;
