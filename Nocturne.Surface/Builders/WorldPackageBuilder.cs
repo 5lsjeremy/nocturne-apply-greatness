@@ -3,6 +3,7 @@ using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Surface;
 using Nocturne.Abstractions.WorldPackageSchema;
+using Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO;
 using Nocturne.Surface.Diagnostics;
 using Nocturne.Surface.WorldPackage;
 
@@ -20,7 +21,7 @@ namespace Nocturne.Surface.Builders
         private void WriteConceptArtifacts(
             IGenesisSession session,
             string root,
-           Nocturne.Abstractions.WorldPackageSchema.WorldPackage world)
+           Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage world)
         {
             var conceptRoot = Path.Combine(root, world.Artifacts.Concept.Root);
             Directory.CreateDirectory(conceptRoot);
@@ -51,7 +52,7 @@ namespace Nocturne.Surface.Builders
                 world.Artifacts.Concept.Logs);
         }
 
-        private void WriteEmptyScaffolds(string root, Nocturne.Abstractions.WorldPackageSchema.WorldPackage world)
+        private void WriteEmptyScaffolds(string root, Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage world)
         {
             Directory.CreateDirectory(Path.Combine(root, world.Artifacts.Overlays.Root));
             Directory.CreateDirectory(Path.Combine(root, world.Artifacts.Domains.Root));
@@ -62,7 +63,7 @@ namespace Nocturne.Surface.Builders
             _logger.Info("Created all scaffold folders.");
         }
 
-        private void WriteSurfaceLogs(string root, Nocturne.Abstractions.WorldPackageSchema.WorldPackage world)
+        private void WriteSurfaceLogs(string root, Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage world)
         {
             var surfaceRoot = Path.Combine(root, "surface");
             Directory.CreateDirectory(surfaceRoot);
@@ -106,7 +107,7 @@ namespace Nocturne.Surface.Builders
             Directory.CreateDirectory(context.RootPath);
             _logger.Info($"Created world root at '{context.RootPath}'.");
 
-            var world = new Nocturne.Abstractions.WorldPackageSchema.WorldPackage
+            var world = new Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage
             {
                 WorldName = context.WorldName,
                 Version = context.Version,

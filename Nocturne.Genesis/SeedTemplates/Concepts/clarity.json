@@ -1,0 +1,18 @@
+{
+  "clarityScore": 0,
+  "good": {
+    "strengths": [],
+    "opportunities": []
+  },
+  "bad": {
+    "weaknesses": [],
+    "ambiguities": []
+  },
+  "ugly": {
+    "risks": [],
+    "driftHazards": [],
+    "contradictions": []
+  },
+  "notes": "",
+  "timestamp": ""
+}

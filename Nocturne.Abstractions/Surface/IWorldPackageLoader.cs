@@ -1,4 +1,4 @@
-using Nocturne.Abstractions.WorldPackageSchema;
+using Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO;
 
 namespace Nocturne.Abstractions.Surface
 {

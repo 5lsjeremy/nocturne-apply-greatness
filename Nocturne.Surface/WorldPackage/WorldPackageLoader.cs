@@ -2,6 +2,7 @@ using System.Text.Json;
 using Nocturne.Abstractions.Surface;
 using Nocturne.Abstractions.Surface.Nocturne.Surface.Abstractions;
 using Nocturne.Abstractions.WorldPackageSchema;
+using Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO;
 
 namespace Nocturne.Surface.WorldPackage
 {
@@ -20,7 +21,7 @@ namespace Nocturne.Surface.WorldPackage
 
             var worldJsonPath = Path.Combine(rootPath, "world.json");
 
-            var package = LoadJson<Nocturne.Abstractions.WorldPackageSchema.WorldPackage>(worldJsonPath);
+            var package = LoadJson<Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage>(worldJsonPath);
 
             var artifacts = LoadArtifacts(rootPath, package);
 
@@ -39,7 +40,7 @@ namespace Nocturne.Surface.WorldPackage
 
         private LoadedArtifacts LoadArtifacts(
             string root,
-            Nocturne.Abstractions.WorldPackageSchema.WorldPackage package)
+            Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO.WorldPackage package)
         {
             var loaded = new LoadedArtifacts();
 

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Nocturne.Abstractions.WorldPackageSchema
+namespace Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO
 {
     public class ArtifactEntry
     {
