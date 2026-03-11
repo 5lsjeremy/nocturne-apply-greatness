@@ -103,6 +103,7 @@ namespace Nocturne.Genesis.Factories
                 )
             );
 
+
             // Engine (updated signature — concept service removed)
             return new GenesisEngine(
                 seed,
@@ -112,6 +113,7 @@ namespace Nocturne.Genesis.Factories
                 provenanceService,
                 versioningService,
                 fingerprintService,
+                conceptService,
                 riffService
             );
         }

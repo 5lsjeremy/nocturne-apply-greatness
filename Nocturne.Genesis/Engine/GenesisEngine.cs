@@ -28,6 +28,7 @@ namespace Nocturne.Genesis.Engine
             IProvenanceService provenanceService,
             IVersioningService versioningService,
             IFingerprintService fingerprintService,
+            IConceptService concepts,
             IRiffService riffService)
         {
             _seed = seed;
@@ -37,6 +38,7 @@ namespace Nocturne.Genesis.Engine
             _provenanceService = provenanceService;
             _versioningService = versioningService;
             _fingerprintService = fingerprintService;
+            _concepts = concepts;
             _riffService = riffService;
         }
 

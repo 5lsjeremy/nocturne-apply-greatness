@@ -1,3 +1,4 @@
+using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Genesis.Concepts.Enums;
 using Nocturne.Abstractions.Overlays;
@@ -6,7 +7,7 @@ using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
 
 namespace Nocturne.Genesis.Services
 {
-    internal sealed partial class GenesisConceptService
+    internal sealed partial class GenesisConceptService : IConceptService
     {
         private sealed class ConceptFromDto : IConcept
         {
@@ -311,6 +312,32 @@ namespace Nocturne.Genesis.Services
                 public IReadOnlyCollection<ISurfaceLogEntry> Logs { get; }
                     = Array.Empty<ISurfaceLogEntry>();
             }
+        }
+
+        public Task<IConcept> EvaluateAsync(string worldConcept)
+        {
+            // Create a minimal DTO so the wrapper can function.
+            // This mirrors the new world-package concept fields.
+            var dto = new LlmConceptResponse
+            {
+                Summary = worldConcept,
+                OneSentencePitch = null,
+                ThirtySecondPitch = null,
+                Tagline = null,
+                CoreFantasy = null,
+                Tone = "neutral",
+                ClarityScore = 1,
+                ClarityNotes = "",
+                ConceptTags = Array.Empty<string>().ToList(),
+                InferredSystems = Array.Empty<string>().ToList(),
+                ProductionRisks = Array.Empty<string>().ToList(),
+                RecommendedFocusAreas = Array.Empty<string>().ToList()
+            };
+
+            // Wrap the DTO in the compatibility concept
+            IConcept concept = new ConceptFromDto(dto);
+
+            return Task.FromResult(concept);
         }
     }
 }
