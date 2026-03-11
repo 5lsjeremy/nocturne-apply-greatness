@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -16,8 +17,6 @@ namespace Nocturne.Genesis.Adapters
 
         public override async Task<string> CompleteAsync(string prompt)
         {
-            // Gemini endpoint format:
-            // {Endpoint}/v1beta/models/{Model}:generateContent?key={ApiKey}
             var url = $"{Endpoint}/v1beta/models/{Model}:generateContent?key={ApiKey}";
 
             var body = new
@@ -35,30 +34,49 @@ namespace Nocturne.Genesis.Adapters
                 }
             };
 
-
             var jsonBody = JsonSerializer.Serialize(body);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, url)
+            const int maxRetries = 5;
+            int delayMs = 500;
+
+            for (int attempt = 1; attempt <= maxRetries; attempt++)
             {
-                Content = new StringContent(jsonBody)
-            };
+                var request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = new StringContent(jsonBody)
+                };
 
-            request.Content.Headers.ContentType =
-                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                request.Content.Headers.ContentType =
+                    new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-            var response = await Http.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+                var response = await Http.SendAsync(request);
 
-            var json = await response.Content.ReadAsStringAsync();
-            return ExtractGeminiContent(json);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    return ExtractGeminiContent(json);
+                }
+
+                if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                {
+                    if (attempt == maxRetries)
+                        throw new HttpRequestException("Rate limit exceeded after retries.");
+
+                    await Task.Delay(delayMs);
+                    delayMs *= 2;
+                    continue;
+                }
+
+                response.EnsureSuccessStatusCode();
+            }
+
+            throw new HttpRequestException("Unexpected failure in GeminiLlmClient.");
         }
 
         private static string ExtractGeminiContent(string json)
         {
             using var doc = JsonDocument.Parse(json);
 
-            // Gemini response shape:
-            // candidates[0].content.parts[0].text
             return doc.RootElement
                 .GetProperty("candidates")[0]
                 .GetProperty("content")
