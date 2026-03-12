@@ -1,5 +1,4 @@
 using Nocturne.Abstractions.Genesis;
-using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Genesis.Adapters;
 using Nocturne.Genesis.Builders;
 using Nocturne.Genesis.Config;
@@ -7,7 +6,6 @@ using Nocturne.Genesis.Engine;
 using Nocturne.Genesis.Services;
 using Nocturne.Genesis.Services.Lineage;
 using Nocturne.Genesis.Assemblers;
-using Nocturne.Genesis.Llm;
 using Nocturne.Surface;
 
 namespace Nocturne.Genesis.Factories
@@ -29,7 +27,7 @@ namespace Nocturne.Genesis.Factories
         public IGenesisEngine Create(ISurfaceArtifact seed, IGenesisOptions? options = null)
         {
             //
-            // 1. Low-level LLM client (IGenesisLlmClient)
+            // 1. Low-level LLM client
             //
             var llmClient = new GeminiLlmClientBuilder()
                 .UseHttpClient(new HttpClient())
@@ -39,26 +37,20 @@ namespace Nocturne.Genesis.Factories
                 .Build();
 
             //
-            // 2. Concept generator + concept service (uses low-level client)
-            //
-            var conceptGenerator = new LlmConceptGenerator(llmClient);
-            var conceptService = new GenesisConceptService(conceptGenerator);
-
-            //
-            // 3. World inference adapter (IGenesisWorldLlmAdapter)
+            // 2. Unified world inference adapter
             //
             var llmAdapter = new GeminiLlmAdapter(llmClient);
             var inference = new GenesisInferenceService(llmAdapter);
 
             //
-            // 4. Lineage services
+            // 3. Lineage services
             //
             var provenanceService = new ProvenanceService();
             var versioningService = new VersioningService();
             var fingerprintService = new FingerprintService();
 
             //
-            // 5. Assemblers
+            // 4. Assemblers
             //
             var domainAssembler = new DomainAssembler();
             var conceptAssembler = new ConceptAssembler();
@@ -67,12 +59,12 @@ namespace Nocturne.Genesis.Factories
             var presentationAssembler = new PresentationAssembler();
 
             //
-            // 6. Surface writer
+            // 5. Surface writer
             //
             var surfaceWriter = new SurfaceWriter();
 
             //
-            // 7. Builder (requires inference)
+            // 6. Builder (now takes inference + assemblers)
             //
             var builder = new GenesisBuilder(
                 inference,
@@ -86,7 +78,7 @@ namespace Nocturne.Genesis.Factories
             );
 
             //
-            // 8. Riffing service
+            // 7. Riffing service
             //
             var riffService = new RiffService(
                 new ApprovalService(
@@ -97,12 +89,12 @@ namespace Nocturne.Genesis.Factories
             );
 
             //
-            // 9. Engine (new signature)
+            // 8. Engine (new signature)
             //
             return new GenesisEngine(
                 seed,
                 builder,
-                conceptService,
+                inference,            // ✔️ correct replacement for conceptService
                 provenanceService,
                 versioningService,
                 fingerprintService,

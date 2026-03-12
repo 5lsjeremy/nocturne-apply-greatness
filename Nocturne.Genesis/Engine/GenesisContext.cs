@@ -13,7 +13,7 @@ namespace Nocturne.Genesis.Engine
         public IDictionary<string, object?> Answers { get; }
         public IList<ICard> Cards { get; }
         public IOverlayTags? OverlayTags { get; }
-        public IConcept Concept { get; }
+        public IConcept Concept { get; set; }
 
         public GenesisContext(
             ISurfaceArtifact seed,
@@ -37,7 +37,7 @@ namespace Nocturne.Genesis.Engine
             });
 
         //
-        // DOMAIN PROMPT
+        // DOMAIN PROMPT (legacy)
         //
         public string BuildDomainPrompt(IOverlayTags? tags = null)
         {
@@ -76,14 +76,15 @@ Return ONLY valid JSON with fields:
 - timestamp: string (ISO 8601)
 ";
         }
+
         //
-        // CONCEPT PROMPT
+        // CONCEPT PROMPT (legacy)
         //
         public string BuildConceptPrompt(IOverlayTags? tags = null)
-{
-    var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
+        {
+            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
 
-    return $@"
+            return $@"
 You are a world-concept generator. Produce a JSON object describing the core
 creative concept for a new world.
 
@@ -101,10 +102,6 @@ accented characters, or any non-ASCII punctuation.
 
 IMPORTANT TYPE RULES:
 - All fields shown as string MUST be a JSON string, NOT an array.
-- Do NOT return arrays for: worldName, summary, coreFantasy, tone, genre,
-  setting, playerFantasy, creativeNorthStar, tagline, oneSentencePitch,
-  thirtySecondPitch, marketPosition, emotionalHook, playerPromise,
-  creativePotential, alignmentWithGenre, expectedComplexity, notes.
 - Arrays are ONLY allowed where explicitly shown as [].
 
 Return ONLY valid JSON matching this schema:
@@ -152,10 +149,10 @@ Return ONLY valid JSON matching this schema:
 
 Respond ONLY with JSON.
 ";
-}
+        }
 
         //
-        // CARD PROMPT
+        // CARD PROMPT (legacy)
         //
         public string BuildCardPrompt(IOverlayTags? tags = null)
         {
@@ -187,7 +184,7 @@ Return ONLY valid JSON with fields:
         }
 
         //
-        // STARTER DECK PROMPT
+        // STARTER DECK PROMPT (legacy)
         //
         public string BuildStarterDeckPrompt(IOverlayTags? tags = null)
         {
@@ -217,7 +214,7 @@ Return ONLY valid JSON with fields:
         }
 
         //
-        // PRESENTATION PROMPT
+        // PRESENTATION PROMPT (legacy)
         //
         public string BuildPresentationPrompt(IOverlayTags? tags = null)
         {
@@ -248,5 +245,118 @@ Return ONLY valid JSON with fields:
 - recommendedNextSteps: string[]
 ";
         }
+
+        //
+        // UNIFIED WORLD PACKAGE PROMPT (NEW — FIXED)
+        //
+        public string BuildUnifiedWorldPackagePrompt(IOverlayTags? tags = null)
+        {
+            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
+
+            return $@"
+Generate a unified world package as a single JSON object with five sections:
+
+- domain
+- concept
+- card
+- starterDeck
+- presentation
+
+Each section must follow the structure and field types normally used in world‑package generation.
+
+SEED:
+{Seed.WorldConcept}
+
+OVERLAY:
+{Serialize(overlay)}
+
+REQUIREMENTS:
+- Output must be valid JSON.
+- Use only ASCII characters and standard double quotes.
+- Do not include commentary or markdown.
+- All sections must be present, even if minimal.
+
+STRUCTURE:
+{{
+  ""domain"": {{
+      ""domainName"": ""string"",
+      ""summary"": ""string"",
+      ""boundaries"": [""string""],
+      ""tone"": ""string"",
+      ""tags"": [""string""],
+      ""opportunities"": [""string""],
+      ""risks"": [""string""]
+  }},
+  ""concept"": {{
+      ""seedId"": ""string"",
+      ""core"": {{
+          ""worldName"": ""string"",
+          ""summary"": ""string"",
+          ""coreFantasy"": ""string"",
+          ""tone"": ""string"",
+          ""genre"": ""string"",
+          ""setting"": ""string"",
+          ""playerFantasy"": ""string"",
+          ""creativeNorthStar"": ""string""
+      }},
+      ""clarity"": {{
+          ""clarityScore"": 0,
+          ""notes"": ""string""
+      }},
+      ""pitch"": {{
+          ""tagline"": ""string"",
+          ""oneSentencePitch"": ""string"",
+          ""thirtySecondPitch"": ""string"",
+          ""marketPosition"": ""string"",
+          ""emotionalHook"": ""string"",
+          ""playerPromise"": ""string""
+      }},
+      ""tags"": {{
+          ""conceptTagsList"": [""string""],
+          ""mechanicTags"": [""string""],
+          ""moodTags"": [""string""],
+          ""themeTags"": [""string""],
+          ""settingTags"": [""string""]
+      }},
+      ""feasibility"": {{
+          ""creativePotential"": ""string"",
+          ""alignmentWithGenre"": ""string"",
+          ""expectedComplexity"": ""string"",
+          ""opportunities"": [""string""],
+          ""pitfalls"": [""string""],
+          ""productionRisks"": [""string""]
+      }}
+  }},
+  ""card"": {{
+      ""title"": ""string"",
+      ""summary"": ""string"",
+      ""mechanics"": [""string""],
+      ""narrative"": ""string"",
+      ""tags"": [""string""]
+  }},
+  ""starterDeck"": {{
+      ""deckName"": ""string"",
+      ""summary"": ""string"",
+      ""recommendedCards"": [""string""],
+      ""onboardingNotes"": [""string""],
+      ""risks"": [""string""],
+      ""opportunities"": [""string""]
+  }},
+  ""presentation"": {{
+      ""title"": ""string"",
+      ""subtitle"": ""string"",
+      ""overview"": ""string"",
+      ""pillars"": [""string""],
+      ""tone"": ""string"",
+      ""themes"": [""string""],
+      ""risks"": [""string""],
+      ""opportunities"": [""string""],
+      ""recommendedNextSteps"": [""string""]
+  }}
+}}
+
+Return only the JSON object.
+";
+}
     }
 }

@@ -20,6 +20,24 @@ namespace Nocturne.Genesis.Adapters
         }
 
         // ------------------------------------------------------------
+        // UNIFIED WORLD PACKAGE
+        // ------------------------------------------------------------
+        public async Task<LlmWorldPackageResponse> GenerateWorldPackageAsync(
+            IGenesisContext context,
+            IOverlayTags? tags,
+            CancellationToken ct = default)
+        {
+            var effectiveTags = tags ?? context.OverlayTags;
+
+            var prompt = context.BuildUnifiedWorldPackagePrompt(effectiveTags);
+
+            var raw = await _client.CompleteAsync(prompt);
+            var json = CleanJson(raw);
+
+            return Deserialize<LlmWorldPackageResponse>(json, raw, "world package");
+        }
+        
+        // ------------------------------------------------------------
         // DOMAIN
         // ------------------------------------------------------------
         public async Task<LlmDomainResponse> GenerateDomainAsync(

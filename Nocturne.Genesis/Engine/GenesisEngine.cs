@@ -1,5 +1,4 @@
 using Nocturne.Abstractions.Genesis;
-using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Abstractions.Surface;
@@ -12,7 +11,7 @@ namespace Nocturne.Genesis.Engine
     {
         private readonly ISurfaceArtifact _seed;
         private readonly IGenesisBuilder _builder;
-        private readonly IConceptService _concepts;
+        private readonly IGenesisInferenceService _inference;
         private readonly IProvenanceService _provenanceService;
         private readonly IVersioningService _versioningService;
         private readonly IFingerprintService _fingerprintService;
@@ -21,7 +20,7 @@ namespace Nocturne.Genesis.Engine
         public GenesisEngine(
             ISurfaceArtifact seed,
             IGenesisBuilder builder,
-            IConceptService concepts,
+            IGenesisInferenceService inference,
             IProvenanceService provenanceService,
             IVersioningService versioningService,
             IFingerprintService fingerprintService,
@@ -29,7 +28,7 @@ namespace Nocturne.Genesis.Engine
         {
             _seed = seed;
             _builder = builder;
-            _concepts = concepts;
+            _inference = inference;
             _provenanceService = provenanceService;
             _versioningService = versioningService;
             _fingerprintService = fingerprintService;
@@ -38,48 +37,42 @@ namespace Nocturne.Genesis.Engine
 
         public async Task<IGenesisSession> GenerateAsync(IOverlayTags? tags = null)
         {
-            //
-            // 1. Generate the concept DTO in one LLM call
-            //
-            var concept = await _concepts.EvaluateAsync(_seed.WorldConcept);
-
-            //
-            // 2. Create a fresh context for the builder
-            //
+            // 1. Create an empty context (concept will be filled after inference)
             var context = new GenesisContext(
                 seed: _seed,
-                concept: concept,
+                concept: null!,
                 cards: new List<ICard>(),
                 answers: new Dictionary<string, object?>(),
                 overlayTags: tags
             );
 
-            //
-            // 3. Build the world (builder owns inference, provenance, fingerprints)
-            //
+            // 2. Unified world-package inference
             var inferenceRunId = Guid.NewGuid().ToString("N");
-            var rootPath = _seed.Id;
+            var worldPackage = await _inference.GenerateWorldPackageAsync(context, tags);
 
-            var world = await _builder.BuildWorldAsync(
+            // 3. Update context with concept from unified response
+            context.Concept = new ConceptFromDto(worldPackage.Concept);
+
+            // 4. Build world artifacts using unified DTO
+            var rootPath = _seed.Id;
+            var builtWorld = await _builder.BuildWorldAsync(
                 rootPath: rootPath,
                 seed: _seed,
                 context: context,
                 inferenceRunId: inferenceRunId,
-                tags: tags
+                tags: tags,
+                world: worldPackage
             );
 
-            //
-            // 4. Engine-level provenance/versioning/fingerprints for cards
-            //
+            // 5. Engine-level provenance/versioning/fingerprints for cards
             foreach (var card in context.Cards)
             {
                 var concrete = (GenesisCard)card;
 
-                var promptAnswers = context.Answers
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value?.ToString() ?? string.Empty
-                    );
+                var promptAnswers = context.Answers.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value?.ToString() ?? string.Empty
+                );
 
                 var provenance = _provenanceService.CreateProvenance(
                     seedId: _seed.Id,
@@ -102,23 +95,22 @@ namespace Nocturne.Genesis.Engine
                 concrete.Fingerprint = fingerprint;
             }
 
-            //
-            // 5. Return session
-            //
+            // 6. Return session
             return new GenesisSession
             {
-                Concept = concept,
+                Concept = new ConceptFromDto(worldPackage.Concept),
                 SeedId = _seed.Id,
                 Timestamp = DateTime.UtcNow,
-                World = world,
+                World = builtWorld,
                 Cards = context.Cards.ToList(),
-                StarterDeck = default!, // SurfaceDTO does not contain a deck
+                StarterDeck = new StarterDeckFromDto(worldPackage.StarterDeck),
                 InferenceRunId = inferenceRunId,
                 PromptAnswers = context.Answers.ToDictionary(
                     kvp => kvp.Key,
                     kvp => kvp.Value?.ToString() ?? string.Empty
                 ),
             };
+
         }
 
         public ICard Riff(ICard card, string contributor, string prompt)

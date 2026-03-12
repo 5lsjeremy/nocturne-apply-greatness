@@ -21,4 +21,5 @@ public interface IGenesisContext
     string BuildCardPrompt(IOverlayTags? tags = null);
     string BuildStarterDeckPrompt(IOverlayTags? tags = null);
     string BuildPresentationPrompt(IOverlayTags? tags = null);
+    string BuildUnifiedWorldPackagePrompt(IOverlayTags? tags = null);
 }

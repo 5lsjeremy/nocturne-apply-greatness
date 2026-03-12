@@ -18,49 +18,14 @@ namespace Nocturne.Genesis.Services
             _llm = llm;
         }
 
-        public Task<LlmDomainResponse> GenerateDomainAsync(
+        // NEW unified method
+        public Task<LlmWorldPackageResponse> GenerateWorldPackageAsync(
             IGenesisContext context,
             IOverlayTags? tags = null,
             CancellationToken ct = default)
         {
             var effectiveTags = tags ?? context.OverlayTags;
-            return _llm.GenerateDomainAsync(context, effectiveTags, ct);
-        }
-
-        public Task<LlmConceptResponse> GenerateConceptAsync(
-            IGenesisContext context,
-            IOverlayTags? tags = null,
-            CancellationToken ct = default)
-        {
-            var effectiveTags = tags ?? context.OverlayTags;
-            return _llm.GenerateConceptAsync(context, effectiveTags, ct);
-        }
-
-        public Task<LlmCardResponse> GenerateCardAsync(
-            IGenesisContext context,
-            IOverlayTags? tags = null,
-            CancellationToken ct = default)
-        {
-            var effectiveTags = tags ?? context.OverlayTags;
-            return _llm.GenerateCardAsync(context, effectiveTags, ct);
-        }
-
-        public Task<LlmStarterDeckResponse> GenerateStarterDeckAsync(
-            IGenesisContext context,
-            IOverlayTags? tags = null,
-            CancellationToken ct = default)
-        {
-            var effectiveTags = tags ?? context.OverlayTags;
-            return _llm.GenerateStarterDeckAsync(context, effectiveTags, ct);
-        }
-
-        public Task<LlmPresentationResponse> GeneratePresentationAsync(
-            IGenesisContext context,
-            IOverlayTags? tags = null,
-            CancellationToken ct = default)
-        {
-            var effectiveTags = tags ?? context.OverlayTags;
-            return _llm.GeneratePresentationAsync(context, effectiveTags, ct);
+            return _llm.GenerateWorldPackageAsync(context, effectiveTags, ct);
         }
     }
 }

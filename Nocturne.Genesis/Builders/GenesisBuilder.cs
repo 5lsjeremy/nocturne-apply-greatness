@@ -1,4 +1,5 @@
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
@@ -49,39 +50,42 @@ namespace Nocturne.Genesis.Builders
             ISurfaceArtifact seed,
             IGenesisContext context,
             string inferenceRunId,
-            IOverlayTags? tags = null,
+            IOverlayTags? tags,
+            LlmWorldPackageResponse world,
             CancellationToken ct = default)
         {
-            // 1. Inference
-            var domainLlm = await _inference.GenerateDomainAsync(context, tags, ct);
-            var conceptLlm = await _inference.GenerateConceptAsync(context, tags, ct);
-            var cardLlm = await _inference.GenerateCardAsync(context, tags, ct);
-            var deckLlm = await _inference.GenerateStarterDeckAsync(context, tags, ct);
-            var presentationLlm = await _inference.GeneratePresentationAsync(context, tags, ct);
+            // world is already provided by the engine — do NOT call inference again
+
+// world is already provided by the engine — do NOT call inference again
+
+            var domainLlm       = world.Domain       ?? new LlmDomainResponse();
+            var conceptLlm      = world.Concept      ?? new LlmConceptResponse();
+            var cardLlm         = world.Card         ?? new LlmCardResponse();
+            var deckLlm         = world.StarterDeck  ?? new LlmStarterDeckResponse();
+            var presentationLlm = world.Presentation ?? new LlmPresentationResponse();
 
             // 2. IDs
-            var domainId = domainLlm.DomainName;
-            var conceptId = conceptLlm.SeedId;
-            var cardId = Guid.NewGuid().ToString("N");
-            var deckId = Guid.NewGuid().ToString("N");
+            var domainId       = domainLlm.DomainName ?? seed.Id;
+            var conceptId      = conceptLlm.SeedId ?? seed.Id;
+            var cardId         = Guid.NewGuid().ToString("N");
+            var deckId         = Guid.NewGuid().ToString("N");
             var presentationId = Guid.NewGuid().ToString("N");
 
             // 3. Fingerprints
-            var domainFp = _fingerprints.ComputeFingerprint(domainLlm);
-            var conceptFp = _fingerprints.ComputeFingerprint(conceptLlm);
-            var cardFp = _fingerprints.ComputeFingerprint(cardLlm);
-            var deckFp = _fingerprints.ComputeFingerprint(deckLlm);
+            var domainFp       = _fingerprints.ComputeFingerprint(domainLlm);
+            var conceptFp      = _fingerprints.ComputeFingerprint(conceptLlm);
+            var cardFp         = _fingerprints.ComputeFingerprint(cardLlm);
+            var deckFp         = _fingerprints.ComputeFingerprint(deckLlm);
             var presentationFp = _fingerprints.ComputeFingerprint(presentationLlm);
 
             // 4. Loggers
-            var domainLogger = new SurfaceLogger();
-            var conceptLogger = new SurfaceLogger();
-            var cardLogger = new SurfaceLogger();
-            var deckLogger = new SurfaceLogger();
+            var domainLogger       = new SurfaceLogger();
+            var conceptLogger      = new SurfaceLogger();
+            var cardLogger         = new SurfaceLogger();
+            var deckLogger         = new SurfaceLogger();
             var presentationLogger = new SurfaceLogger();
-            
-            // 5. Assemble artifacts
 
+            // 5. Assemble artifacts
             var domainArtifacts = _domainAssembler.Assemble(
                 domainLlm,
                 domainId,

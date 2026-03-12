@@ -5,7 +5,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
         public enum ArtifactState
         {
             Draft,
-            Approved
+            Approved,
+            Generated
         }
         public enum CardType
         {

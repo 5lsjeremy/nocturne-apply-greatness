@@ -14,4 +14,8 @@
     <ItemGroup>
         <None Include="SeedTemplates\**\*.json" CopyToOutputDirectory="Always" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Llm\" />
+    </ItemGroup>
 </Project>
