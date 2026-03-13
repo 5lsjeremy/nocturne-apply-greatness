@@ -37,23 +37,27 @@ namespace Nocturne.Genesis.Engine
 
         public async Task<IGenesisSession> GenerateAsync(IOverlayTags? tags = null)
         {
-            // 1. Create an empty context (concept will be filled after inference)
+            // 1. Create logger for this run
+            var logger = new SurfaceLogger();
+
+            // 2. Create context (concept will be filled after inference)
             var context = new GenesisContext(
                 seed: _seed,
-                concept: null!,
+                concept: null!,                     // filled after inference
                 cards: new List<ICard>(),
                 answers: new Dictionary<string, object?>(),
-                overlayTags: tags
+                overlayTags: tags,
+                logger: logger                      // <-- FIXED
             );
 
-            // 2. Unified world-package inference
+            // 3. Unified world-package inference
             var inferenceRunId = Guid.NewGuid().ToString("N");
             var worldPackage = await _inference.GenerateWorldPackageAsync(context, tags);
 
-            // 3. Update context with concept from unified response
+            // 4. Update context with concept from unified response
             context.Concept = new ConceptFromDto(worldPackage.Concept);
 
-            // 4. Build world artifacts using unified DTO
+            // 5. Build world artifacts using unified DTO
             var rootPath = _seed.Id;
             var builtWorld = await _builder.BuildWorldAsync(
                 rootPath: rootPath,
@@ -64,7 +68,7 @@ namespace Nocturne.Genesis.Engine
                 world: worldPackage
             );
 
-            // 5. Engine-level provenance/versioning/fingerprints for cards
+            // 6. Engine-level provenance/versioning/fingerprints for cards
             foreach (var card in context.Cards)
             {
                 var concrete = (GenesisCard)card;
@@ -95,7 +99,7 @@ namespace Nocturne.Genesis.Engine
                 concrete.Fingerprint = fingerprint;
             }
 
-            // 6. Return session
+            // 7. Return session
             return new GenesisSession
             {
                 Concept = new ConceptFromDto(worldPackage.Concept),
@@ -110,7 +114,6 @@ namespace Nocturne.Genesis.Engine
                     kvp => kvp.Value?.ToString() ?? string.Empty
                 ),
             };
-
         }
 
         public ICard Riff(ICard card, string contributor, string prompt)

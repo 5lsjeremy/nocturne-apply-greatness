@@ -1,27 +1,32 @@
-using Nocturne.Abstractions.Genesis.Concepts.Enums;
 using Nocturne.Abstractions.Surface;
+using Nocturne.Abstractions.Genesis.Concepts.Enums;
 
 namespace Nocturne.Surface.Diagnostics
 {
-    public sealed class SurfaceLogger
+    public sealed class SurfaceLogger : ISurfaceLogger
     {
         private readonly List<ISurfaceLogEntry> _entries = new();
 
         public IReadOnlyCollection<ISurfaceLogEntry> Entries => _entries;
 
-        public void Info(string message, string source = "surface")
+        public void Info(string message)
         {
-            _entries.Add(new SurfaceLogEntry(SurfaceLogLevel.Info, message, source));
+            Add(SurfaceLogLevel.Info, message, "surface");
         }
 
-        public void Warn(string message, string source = "surface")
+        public void Warn(string message)
         {
-            _entries.Add(new SurfaceLogEntry(SurfaceLogLevel.Warn, message, source));
+            Add(SurfaceLogLevel.Warn, message, "surface");
         }
 
-        public void Error(string message, string source = "surface")
+        public void Error(string message)
         {
-            _entries.Add(new SurfaceLogEntry(SurfaceLogLevel.Error, message, source));
+            Add(SurfaceLogLevel.Error, message, "surface");
+        }
+
+        private void Add(SurfaceLogLevel level, string message, string source)
+        {
+            _entries.Add(new SurfaceLogEntry(level, message, source));
         }
     }
 }

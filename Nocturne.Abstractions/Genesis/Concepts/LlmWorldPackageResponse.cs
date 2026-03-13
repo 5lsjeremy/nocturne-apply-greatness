@@ -8,10 +8,19 @@ namespace Nocturne.Abstractions.Genesis.Concepts
 {
     public sealed class LlmWorldPackageResponse
     {
-        public LlmDomainResponse Domain { get; init; } = default!;
+        // Genesis now returns an array of domains
+        public LlmDomainResponse[] Domains { get; init; } = Array.Empty<LlmDomainResponse>();
+
+        // Concept is still a single object
         public LlmConceptResponse Concept { get; init; } = default!;
-        public LlmCardResponse Card { get; init; } = default!;
-        public LlmStarterDeckResponse StarterDeck { get; init; } = default!;
+
+        // Cards must always be an empty array
+        public LlmCardResponse[] Cards { get; init; } = Array.Empty<LlmCardResponse>();
+
+        // StarterDeck must always be null
+        public LlmStarterDeckResponse? StarterDeck { get; init; } = null;
+
+        // Presentation is still a single object
         public LlmPresentationResponse Presentation { get; init; } = default!;
     }
 }

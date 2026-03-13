@@ -5,8 +5,6 @@ using Nocturne.Genesis.Config;
 using Nocturne.Genesis.Engine;
 using Nocturne.Genesis.Services;
 using Nocturne.Genesis.Services.Lineage;
-using Nocturne.Genesis.Assemblers;
-using Nocturne.Surface;
 using Nocturne.Surface.IO;
 
 namespace Nocturne.Genesis.Factories
@@ -27,11 +25,9 @@ namespace Nocturne.Genesis.Factories
 
         public IGenesisEngine Create(ISurfaceArtifact seed, IGenesisOptions? options = null)
         {
-            //
-            // 1. Low-level LLM client (multi-model)
-            //
+            // 1. LLM client
             var llmClient = new DeepSeekLlmClientBuilder()
-                .UseHttpClient(new HttpClient())
+                .UseHttpClient(new HttpClient { Timeout = TimeSpan.FromSeconds(300) })
                 .UseEndpoint(_config.Llm.Endpoint)
                 .UseApiKey(_config.Llm.ApiKey)
                 .UseScaffoldModel(_config.Llm.ScaffoldModel)
@@ -39,51 +35,27 @@ namespace Nocturne.Genesis.Factories
                 .UseSynthesisModel(_config.Llm.SynthesisModel)
                 .UsePremiumModel(_config.Llm.PremiumModel)
                 .Build();
-            
-            //
-            // 2. Unified world inference adapter
-            //
+
+            // 2. Inference adapter + service
             var llmAdapter = new DeepSeekLlmAdapter(llmClient);
             var inference = new GenesisInferenceService(llmAdapter);
 
-            //
             // 3. Lineage services
-            //
             var provenanceService = new ProvenanceService();
             var versioningService = new VersioningService();
             var fingerprintService = new FingerprintService();
 
-            //
-            // 4. Assemblers
-            //
-            var domainAssembler = new DomainAssembler();
-            var conceptAssembler = new ConceptAssembler();
-            var cardAssembler = new CardAssembler();
-            var starterDeckAssembler = new StarterDeckAssembler();
-            var presentationAssembler = new PresentationAssembler();
-
-            //
-            // 5. Surface writer
-            //
+            // 4. Surface writer
             var surfaceWriter = new SurfaceWriter();
 
-            //
-            // 6. Builder
-            //
+            // 5. Builder (new signature)
             var builder = new GenesisBuilder(
                 inference,
                 fingerprintService,
-                domainAssembler,
-                conceptAssembler,
-                cardAssembler,
-                starterDeckAssembler,
-                presentationAssembler,
                 surfaceWriter
             );
 
-            //
-            // 7. Riffing service
-            //
+            // 6. Riffing service
             var riffService = new RiffService(
                 new ApprovalService(
                     versioningService,
@@ -92,9 +64,7 @@ namespace Nocturne.Genesis.Factories
                 )
             );
 
-            //
-            // 8. Engine
-            //
+            // 7. Engine
             return new GenesisEngine(
                 seed,
                 builder,

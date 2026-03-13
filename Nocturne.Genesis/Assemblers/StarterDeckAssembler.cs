@@ -20,7 +20,8 @@ namespace Nocturne.Genesis.Assemblers
 
             var definition = defTemplate with
             {
-                DeckId = deckId,
+                Id = deckId,
+                Slug = ArtifactIdentity.Slugify(llm.Title),
                 Title = llm.Title,
                 Summary = llm.Summary,
                 CardIds = llm.CardIds.ToList(),

@@ -10,6 +10,6 @@
     "SynthesisModel": "deepseek-chat",
     "PremiumModel": "deepseek-chat",
     "endpoint": "https://api.deepseek.com",
-    "apiKey": "%sk-4aed0176d9fe48ba9d54467a0a918ae6%"
+    "apiKey": "${GENESIS_LLM_KEY}"
   }
 }

@@ -1,16 +1,16 @@
+using System.Text.Json;
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
+using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
 using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
 using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
 using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
-using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
-using Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO;
 using Nocturne.Abstractions.WorldPackageSchema.PresentationDTO;
+using Nocturne.Abstractions.WorldPackageSchema.UnifiedWorldPackageDTO;
 using Nocturne.Genesis.Assemblers;
-using Nocturne.Surface;
-using Nocturne.Surface.Diagnostics;
+using Nocturne.Genesis.Utilities;
 using Nocturne.Surface.IO;
 
 namespace Nocturne.Genesis.Builders
@@ -19,30 +19,15 @@ namespace Nocturne.Genesis.Builders
     {
         private readonly IGenesisInferenceService _inference;
         private readonly IFingerprintService _fingerprints;
-        private readonly DomainAssembler _domainAssembler;
-        private readonly ConceptAssembler _conceptAssembler;
-        private readonly CardAssembler _cardAssembler;
-        private readonly StarterDeckAssembler _starterDeckAssembler;
-        private readonly PresentationAssembler _presentationAssembler;
         private readonly SurfaceWriter _surfaceWriter;
 
         public GenesisBuilder(
             IGenesisInferenceService inference,
             IFingerprintService fingerprints,
-            DomainAssembler domainAssembler,
-            ConceptAssembler conceptAssembler,
-            CardAssembler cardAssembler,
-            StarterDeckAssembler starterDeckAssembler,
-            PresentationAssembler presentationAssembler,
             SurfaceWriter surfaceWriter)
         {
             _inference = inference;
             _fingerprints = fingerprints;
-            _domainAssembler = domainAssembler;
-            _conceptAssembler = conceptAssembler;
-            _cardAssembler = cardAssembler;
-            _starterDeckAssembler = starterDeckAssembler;
-            _presentationAssembler = presentationAssembler;
             _surfaceWriter = surfaceWriter;
         }
 
@@ -55,107 +40,74 @@ namespace Nocturne.Genesis.Builders
             LlmWorldPackageResponse world,
             CancellationToken ct = default)
         {
-            // world is already provided by the engine — do NOT call inference again
-            var domainLlm       = world.Domain       ?? new LlmDomainResponse();
+            // Extract LLM responses
+            var domainsLlm      = world.Domains      ?? Array.Empty<LlmDomainResponse>();
             var conceptLlm      = world.Concept      ?? new LlmConceptResponse();
-            var cardLlm         = world.Card         ?? new LlmCardResponse();
-            var deckLlm         = world.StarterDeck  ?? new LlmStarterDeckResponse();
             var presentationLlm = world.Presentation ?? new LlmPresentationResponse();
 
-            // IDs
-            var domainId       = domainLlm.DomainName ?? seed.Id;
-            var conceptId      = conceptLlm.SeedId ?? seed.Id;
-            var cardId         = Guid.NewGuid().ToString("N");
-            var deckId         = Guid.NewGuid().ToString("N");
-            var presentationId = Guid.NewGuid().ToString("N");
-
-            // Fingerprints
-            var domainFp       = _fingerprints.ComputeFingerprint(domainLlm);
-            var conceptFp      = _fingerprints.ComputeFingerprint(conceptLlm);
-            var cardFp         = _fingerprints.ComputeFingerprint(cardLlm);
-            var deckFp         = _fingerprints.ComputeFingerprint(deckLlm);
-            var presentationFp = _fingerprints.ComputeFingerprint(presentationLlm);
-
-            // Loggers
-            var domainLogger       = new SurfaceLogger();
-            var conceptLogger      = new SurfaceLogger();
-            var cardLogger         = new SurfaceLogger();
-            var deckLogger         = new SurfaceLogger();
-            var presentationLogger = new SurfaceLogger();
-
-            //
-            // 1. Assemble the card FIRST (needed by domain)
-            //
-            var cardArtifacts = _cardAssembler.Assemble(
-                cardLlm,
-                cardId,
-                cardFp,
-                version: 1,
-                origin: "inference",
-                logger: cardLogger
-            );
-
-            //
-            // 2. DomainAssembler now requires cards
-            //
-            var domainArtifacts = _domainAssembler.Assemble(
-                domainLlm,
-                domainId,
-                new[] { cardArtifacts },   // NEW: pass cards into domain
-                domainLogger
-            );
-
-            //
-            // 3. Concept, StarterDeck, Presentation unchanged
-            //
-            var conceptArtifacts = _conceptAssembler.Assemble(
+            // Assemble concept artifacts
+            var conceptAssembler = new ConceptAssembler();
+            var conceptArtifacts = conceptAssembler.Assemble(
                 conceptLlm,
-                conceptId,
-                conceptLogger
+                ArtifactIdentity.ShortId("concept"),
+                context.Logger
             );
 
-            var deckArtifacts = _starterDeckAssembler.Assemble(
-                deckLlm,
-                deckId,
-                deckFp,
-                version: 1,
-                origin: "inference",
-                deckLogger
-            );
+            // Convert each domain into a DomainDefinition
+            var domainDefinitions = new List<DomainDefinition>();
 
-            var presentationArtifacts = _presentationAssembler.Assemble(
-                presentationLlm,
-                presentationId,
-                presentationFp,
-                version: 1,
-                origin: "inference",
-                presentationLogger
-            );
-
-            //
-            // 4. Overlay metadata (optional)
-            //
-            if (tags != null)
+            foreach (var domainLlm in domainsLlm)
             {
-                deckArtifacts.Definition.Tags.Add($"tone:{tags.Tone}");
-                deckArtifacts.Definition.Tags.Add($"density:{tags.Density}");
-                deckArtifacts.Definition.Tags.Add($"risk:{tags.Risk}");
+                var domainId  = ArtifactIdentity.ShortId("domain");
+                var domainSlug = ArtifactIdentity.Slugify(domainLlm.DomainName ?? "domain");
+
+                domainDefinitions.Add(new DomainDefinition
+                {
+                    Id         = domainId,
+                    Slug       = domainSlug,
+                    DomainName = domainLlm.DomainName ?? "domain",
+                    Summary    = domainLlm.Summary ?? "",
+                    Tags       = domainLlm.Tags?.ToList() ?? new(),
+                    Timestamp  = DateTime.UtcNow
+                });
             }
 
-            //
-            // 5. Write world package
-            //
-            return _surfaceWriter.WriteWorldPackage(
-                rootPath,
-                worldId: seed.Id,
-                worldName: seed.Name,
-                version: 1,
-                domains: new[] { domainArtifacts },
-                concepts: new[] { conceptArtifacts },
-                cards: new[] { cardArtifacts },
-                starterDecks: new[] { deckArtifacts },
-                presentations: new[] { presentationArtifacts }
-            );
+            // Presentation definition
+            var presentationId  = ArtifactIdentity.ShortId("presentation");
+            var presSlug        = ArtifactIdentity.Slugify(presentationLlm.Title ?? "presentation");
+
+            var presentation = new PresentationDefinition
+            {
+                Id        = presentationId,
+                Slug      = presSlug,
+                Title     = presentationLlm.Title ?? "",
+                Summary   = presentationLlm.Summary ?? "",
+                Layout    = presentationLlm.Layout ?? "default",
+                Style     = presentationLlm.Style ?? "standard",
+                Tags      = presentationLlm.Tags?.ToList() ?? new(),
+                Timestamp = DateTime.UtcNow
+            };
+
+            // Build unified DTO (no cards, no starter deck)
+            var unified = new UnifiedWorldPackageDto
+            {
+                Domains      = domainDefinitions,
+                Concept      = conceptArtifacts,
+                Cards        = new List<CardDefinition>(),   // always empty
+                StarterDeck  = null,                         // always null
+                Presentation = presentation
+            };
+
+            // Write world package
+            var assembler = new UnifiedWorldPackageAssembler(rootPath);
+            assembler.Assemble(JsonSerializer.Serialize(unified));
+
+            return new SurfaceDTO
+            {
+                WorldId   = seed.Id,
+                WorldName = seed.Name,
+                Version   = 1
+            };
         }
     }
 }

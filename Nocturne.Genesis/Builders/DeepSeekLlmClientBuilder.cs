@@ -83,7 +83,7 @@ namespace Nocturne.Genesis.Builders
                 PremiumModel = _premiumModel
             };
 
-            return new DeepSeekLlmClient(_http, _endpoint,_apiKey, _scaffoldModel);
+            return new DeepSeekLlmClient(_http, config);
         }
     }
 }

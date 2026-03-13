@@ -4,6 +4,12 @@ namespace Nocturne.Abstractions.WorldPackageSchema.DomainDTO
 {
     public sealed record DomainDefinition
     {
+        [JsonPropertyName("id")]
+        public string Id { get; init; } = string.Empty;
+
+        [JsonPropertyName("slug")]
+        public string Slug { get; init; } = string.Empty;
+        
         [JsonPropertyName("domainName")]
         public string DomainName { get; init; } = string.Empty;
 

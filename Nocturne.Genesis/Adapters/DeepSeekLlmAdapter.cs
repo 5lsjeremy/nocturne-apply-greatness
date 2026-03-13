@@ -31,30 +31,71 @@ namespace Nocturne.Genesis.Adapters
             // Extract JSON (DeepSeek sometimes wraps output)
             var json = ExtractJsonBlock(raw);
 
+            // Repair malformed JSON (unclosed arrays, objects, trailing commas)
+            json = JsonRepair.TryRepair(json);
+
             // Deserialize into the unified DTO
             var package = JsonSerializer.Deserialize<LlmWorldPackageResponse>(json);
 
             if (package is null)
                 throw new InvalidOperationException(
-                    $"DeepSeek returned invalid world package JSON.\nRaw:\n{raw}");
+                    $"DeepSeek returned invalid world package JSON.\nRaw:\n{raw}\nRepaired:\n{json}");
 
             return package;
         }
 
         private static string ExtractJsonBlock(string raw)
         {
-            // Fast path: already valid JSON
             raw = raw.Trim();
+
+            // Fast path: already valid JSON object
             if (raw.StartsWith("{") && raw.EndsWith("}"))
                 return raw;
 
-            // Try to extract the first {...} block
+            // Extract the first {...} block
             var match = Regex.Match(raw, "{[\\s\\S]*}");
             if (match.Success)
                 return match.Value;
 
             throw new InvalidOperationException(
                 "DeepSeek response did not contain a valid JSON object.");
+        }
+    }
+
+    internal static class JsonRepair
+    {
+        public static string TryRepair(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            input = input.Trim();
+
+            // Remove trailing commas
+            while (input.EndsWith(","))
+                input = input.Substring(0, input.Length - 1).TrimEnd();
+
+            // Count braces/brackets
+            int openBraces = input.Count(c => c == '{');
+            int closeBraces = input.Count(c => c == '}');
+            int openBrackets = input.Count(c => c == '[');
+            int closeBrackets = input.Count(c => c == ']');
+
+            // Close missing braces
+            while (closeBraces < openBraces)
+            {
+                input += "}";
+                closeBraces++;
+            }
+
+            // Close missing brackets
+            while (closeBrackets < openBrackets)
+            {
+                input += "]";
+                closeBrackets++;
+            }
+
+            return input;
         }
     }
 }

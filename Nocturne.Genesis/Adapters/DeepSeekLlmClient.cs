@@ -4,27 +4,41 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Nocturne.Abstractions.Genesis.Concepts.Enums;
+using Nocturne.Genesis.Config;
 
 namespace Nocturne.Genesis.Adapters
 {
     public sealed class DeepSeekLlmClient : GenesisLlmClientBase
     {
-        public DeepSeekLlmClient(HttpClient http, string endpoint, string apiKey, string model)
-            : base(http, endpoint, apiKey, model)
+        private readonly string _scaffoldModel;
+        private readonly string _refineModel;
+        private readonly string _synthesisModel;
+        private readonly string _premiumModel;
+
+        public DeepSeekLlmClient(HttpClient http, GenesisLlmConfig config)
+            : base(http, config.Endpoint, config.ApiKey, config.ScaffoldModel)
         {
+            _scaffoldModel = config.ScaffoldModel;
+            _refineModel = config.RefineModel;
+            _synthesisModel = config.SynthesisModel;
+            _premiumModel = config.PremiumModel;
         }
 
         private string ResolveModel(LlmTaskType task)
         {
-            // DeepSeek-chat is strong enough for all stages.
-            // If you want to differentiate later, you can map task → model here.
-            return Model; 
+            return task switch
+            {
+                LlmTaskType.Scaffold => _scaffoldModel,
+                LlmTaskType.Refine => _refineModel,
+                LlmTaskType.Synthesis => _synthesisModel,
+                LlmTaskType.Premium => _premiumModel,
+                _ => _scaffoldModel
+            };
         }
 
         public override async Task<string> CompleteAsync(string prompt, LlmTaskType task)
         {
             var model = ResolveModel(task);
-
             var url = $"{Endpoint}/v1/chat/completions";
 
             var body = new

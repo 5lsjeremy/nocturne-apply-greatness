@@ -19,44 +19,49 @@ namespace Nocturne.Genesis.Assemblers
             var feasibilityTemplate = TemplateLoader.LoadTemplate<DomainFeasibility>("Domains/feasibility.json");
             var logsTemplate        = TemplateLoader.LoadTemplate<DomainLogs>("Domains/logs.json");
 
+            // Generate slug from domain name
+            var slug = ArtifactIdentity.Slugify(llm.DomainName ?? "domain");
+
             // Definition
             var definition = definitionTemplate with
             {
-                DomainName = domainId,
-                Summary = llm.Summary,
-                Boundaries = llm.Boundaries.ToList(),
-                Tone = llm.Tone,
-                Tags = llm.Tags.ToList(),
-                Opportunities = llm.Opportunities.ToList(),
-                Risks = llm.Risks.ToList(),
-                DriftWarnings = llm.DriftWarnings.ToList(),
+                Id                = domainId,
+                Slug              = slug,
+                DomainName        = llm.DomainName,
+                Summary           = llm.Summary,
+                Boundaries        = llm.Boundaries.ToList(),
+                Tone              = llm.Tone,
+                Tags              = llm.Tags.ToList(),
+                Opportunities     = llm.Opportunities.ToList(),
+                Risks             = llm.Risks.ToList(),
+                DriftWarnings     = llm.DriftWarnings.ToList(),
                 PressureTestSeeds = llm.PressureTestSeeds.ToList(),
-                PrismSeeds = llm.PrismSeeds.ToList(),
-                Timestamp = DateTime.UtcNow
+                PrismSeeds        = llm.PrismSeeds.ToList(),
+                Timestamp         = DateTime.UtcNow
             };
 
             // Clarity
             var clarity = clarityTemplate with
             {
                 ClarityScore = llm.ClarityScore,
-                Good = llm.Good,
-                Bad = llm.Bad,
-                Ugly = llm.Ugly,
-                Notes = llm.ClarityNotes,
-                Timestamp = DateTime.UtcNow
+                Good         = llm.Good,
+                Bad          = llm.Bad,
+                Ugly         = llm.Ugly,
+                Notes        = llm.ClarityNotes,
+                Timestamp    = DateTime.UtcNow
             };
 
             // Feasibility
             var feasibility = feasibilityTemplate with
             {
-                CreativePotential = llm.CreativePotential,
-                ProductionRisks = llm.ProductionRisks.ToList(),
-                Opportunities = llm.OpportunitiesFeasibility.ToList(),
-                Pitfalls = llm.Pitfalls.ToList(),
-                AlignmentWithWorld = llm.AlignmentWithWorld,
-                ExpectedComplexity = llm.ExpectedComplexity,
+                CreativePotential     = llm.CreativePotential,
+                ProductionRisks       = llm.ProductionRisks.ToList(),
+                Opportunities         = llm.OpportunitiesFeasibility.ToList(),
+                Pitfalls              = llm.Pitfalls.ToList(),
+                AlignmentWithWorld    = llm.AlignmentWithWorld,
+                ExpectedComplexity    = llm.ExpectedComplexity,
                 RecommendedFocusAreas = llm.RecommendedFocusAreas.ToList(),
-                Timestamp = DateTime.UtcNow
+                Timestamp             = DateTime.UtcNow
             };
 
             // Logs
@@ -66,17 +71,17 @@ namespace Nocturne.Genesis.Assemblers
                     .Select(e => new DomainLogEntry
                     {
                         Timestamp = e.Timestamp,
-                        Domain = domainId,
-                        Message = e.Message,
-                        Source = e.Source,
-                        Version = 1
+                        Domain    = domainId,
+                        Message   = e.Message,
+                        Source    = e.Source,
+                        Version   = 1
                     })
                     .ToList()
             };
 
             return new DomainArtifactsDTO(
                 definition,
-                cards,        // NEW: cards included here
+                cards,
                 clarity,
                 feasibility,
                 logs

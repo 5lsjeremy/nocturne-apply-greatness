@@ -4,8 +4,11 @@ namespace Nocturne.Abstractions.WorldPackageSchema.PresentationDTO
 {
     public sealed record PresentationDefinition
     {
-        [JsonPropertyName("presentationId")]
-        public string PresentationId { get; init; } = string.Empty;
+        [JsonPropertyName("id")]
+        public string Id { get; init; } = string.Empty;
+
+        [JsonPropertyName("slug")]
+        public string Slug { get; init; } = string.Empty;
 
         [JsonPropertyName("title")]
         public string Title { get; init; } = string.Empty;

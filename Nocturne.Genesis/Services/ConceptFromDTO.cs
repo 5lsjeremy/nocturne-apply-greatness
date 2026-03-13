@@ -10,7 +10,7 @@ internal sealed class ConceptFromDto : IConcept
 
     public ConceptFromDto(LlmConceptResponse dto)
     {
-        _dto = dto;
+        _dto = dto ?? new LlmConceptResponse();
     }
 
     public IWorldContext World =>
@@ -23,63 +23,62 @@ internal sealed class ConceptFromDto : IConcept
 
     public ConceptCore Core => new ConceptCore
     {
-        WorldName = _dto.WorldName,
-        Summary = _dto.Summary,
-        Themes = _dto.Themes,
-        CoreFantasy = _dto.CoreFantasy,
-        Tone = _dto.Tone,
-        Genre = _dto.Genre,
-        Setting = _dto.Setting,
-        PlayerFantasy = _dto.PlayerFantasy,
-        CreativeNorthStar = _dto.CreativeNorthStar,
-        SeedId = _dto.SeedId,
+        WorldName = _dto.WorldName ?? string.Empty,
+        Summary = _dto.Summary ?? string.Empty,
+        Themes = _dto.Themes ?? [],
+        CoreFantasy = _dto.CoreFantasy ?? string.Empty,
+        Tone = _dto.Tone ?? string.Empty,
+        Genre = _dto.Genre ?? string.Empty,
+        Setting = _dto.Setting ?? string.Empty,
+        PlayerFantasy = _dto.PlayerFantasy ?? string.Empty,
+        CreativeNorthStar = _dto.CreativeNorthStar ?? string.Empty,
+        SeedId = _dto.SeedId ?? string.Empty,
         Timestamp = DateTime.UtcNow
     };
-
 
     public ConceptClarity Clarity => new ConceptClarity
     {
         ClarityScore = _dto.ClarityScore,
-        Good = _dto.Good,
-        Bad = _dto.Bad,
-        Ugly = _dto.Ugly,
-        Notes = _dto.ClarityNotes,   // IMPORTANT: DTO property is Notes, LLM field is clarityNotes
+        Good = _dto.Good ?? new ClaritySection(),
+        Bad = _dto.Bad ?? new ClaritySection(),
+        Ugly = _dto.Ugly ?? new ClaritySection(),
+        Notes = _dto.ClarityNotes ?? string.Empty,
         Timestamp = DateTime.UtcNow
     };
 
 
     public ConceptPitch Pitch => new ConceptPitch
     {
-        Tagline = _dto.Tagline,
-        OneSentencePitch = _dto.OneSentencePitch,
-        ThirtySecondPitch = _dto.ThirtySecondPitch,
-        MarketPosition = _dto.MarketPosition,
-        EmotionalHook = _dto.EmotionalHook,
-        PlayerPromise = _dto.PlayerPromise,
+        Tagline = _dto.Tagline ?? string.Empty,
+        OneSentencePitch = _dto.OneSentencePitch ?? string.Empty,
+        ThirtySecondPitch = _dto.ThirtySecondPitch ?? string.Empty,
+        MarketPosition = _dto.MarketPosition ?? string.Empty,
+        EmotionalHook = _dto.EmotionalHook ?? string.Empty,
+        PlayerPromise = _dto.PlayerPromise ?? string.Empty,
         Timestamp = DateTime.UtcNow
     };
 
     public ConceptTags Tags => new ConceptTags
     {
-        ConceptTagsList = _dto.ConceptTags,
-        MechanicTags = _dto.MechanicTags,
-        MoodTags = _dto.MoodTags,
-        ThemeTags = _dto.ThemeTags,
-        SettingTags = _dto.SettingTags,
-        InferredDomains = _dto.InferredDomains,
-        InferredSystems = _dto.InferredSystems,
+        ConceptTagsList = _dto.ConceptTags ?? [],
+        MechanicTags = _dto.MechanicTags ?? [],
+        MoodTags = _dto.MoodTags ?? [],
+        ThemeTags = _dto.ThemeTags ?? [],
+        SettingTags = _dto.SettingTags ?? [],
+        InferredDomains = _dto.InferredDomains ?? [],
+        InferredSystems = _dto.InferredSystems ?? [],
         Timestamp = DateTime.UtcNow
     };
 
     public ConceptFeasibility Feasibility => new ConceptFeasibility
     {
-        CreativePotential = _dto.CreativePotential,
-        ProductionRisks = _dto.ProductionRisks,
-        Opportunities = _dto.Opportunities,
-        Pitfalls = _dto.Pitfalls,
-        AlignmentWithGenre = _dto.AlignmentWithGenre,
-        ExpectedComplexity = _dto.ExpectedComplexity,
-        RecommendedFocusAreas = _dto.RecommendedFocusAreas,
+        CreativePotential = _dto.CreativePotential ?? string.Empty,
+        ProductionRisks = _dto.ProductionRisks ?? [],
+        Opportunities = _dto.Opportunities ?? [],
+        Pitfalls = _dto.Pitfalls ?? [],
+        AlignmentWithGenre = _dto.AlignmentWithGenre ?? string.Empty,
+        ExpectedComplexity = _dto.ExpectedComplexity ?? string.Empty,
+        RecommendedFocusAreas = _dto.RecommendedFocusAreas ?? [],
         Timestamp = DateTime.UtcNow
     };
 

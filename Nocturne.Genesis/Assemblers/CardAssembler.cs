@@ -24,7 +24,8 @@ namespace Nocturne.Genesis.Assemblers
             // Definition
             var definition = definitionTemplate with
             {
-                CardId = cardId,
+                Id = cardId,
+                Slug = ArtifactIdentity.Slugify(llm.Title),
                 Title = llm.Title,
                 Summary = llm.Summary,
                 Mechanics = llm.Mechanics.ToList(),

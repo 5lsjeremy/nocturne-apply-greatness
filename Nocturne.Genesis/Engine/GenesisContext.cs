@@ -2,6 +2,7 @@ using System.Text.Json;
 using Nocturne.Abstractions.Genesis;
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.Overlays;
+using Nocturne.Abstractions.Surface;
 using Nocturne.Surface;
 using Nocturne.Surface.Overlays.Tags;
 
@@ -14,19 +15,22 @@ namespace Nocturne.Genesis.Engine
         public IList<ICard> Cards { get; }
         public IOverlayTags? OverlayTags { get; }
         public IConcept Concept { get; set; }
+        public ISurfaceLogger Logger { get; }
 
         public GenesisContext(
             ISurfaceArtifact seed,
             IConcept concept,
             IList<ICard> cards,
             IDictionary<string, object?> answers,
-            IOverlayTags? overlayTags)
+            IOverlayTags? overlayTags,
+            ISurfaceLogger logger)
         {
             Seed = seed;
             Concept = concept;
             Cards = cards;
             Answers = answers;
             OverlayTags = overlayTags;
+            Logger = logger;
         }
 
         private static string Serialize(object? obj)
@@ -36,57 +40,18 @@ namespace Nocturne.Genesis.Engine
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
 
-        //
-        // DOMAIN PROMPT (legacy)
-        //
-        public string BuildDomainPrompt(IOverlayTags? tags = null)
-        {
-            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
+public string BuildUnifiedWorldPackagePrompt(IOverlayTags? tags = null)
+{
+    var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
 
-            return $@"
-You are a world-domain architect. Generate a JSON object describing a single
-coherent domain inside a larger world.
+    return $@"
+Generate a unified world package as a single JSON object with the following sections:
 
-SEED ARTIFACT:
-{Seed.WorldConcept}
-
-EVALUATED CONCEPT:
-{Concept.Core}
-
-OVERLAY TAGS:
-{Serialize(overlay)}
-
-Respond ONLY with valid JSON.
-Use ONLY standard ASCII characters.
-Use ONLY standard ASCII double quotes ("" "") for all strings.
-Do NOT use smart quotes, curly quotes, angled quotes, em-dashes, en-dashes,
-accented characters, or any non-ASCII punctuation.
-
-Return ONLY valid JSON with fields:
-- domainName: string
-- summary: string
-- boundaries: string[]
-- tone: string
-- tags: string[]
-- opportunities: string[]
-- risks: string[]
-- driftWarnings: string[]
-- pressureTestSeeds: string[]
-- prismSeeds: string[]
-- timestamp: string (ISO 8601)
-";
-        }
-
-        //
-        // CONCEPT PROMPT (legacy)
-        //
-        public string BuildConceptPrompt(IOverlayTags? tags = null)
-        {
-            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
-
-            return $@"
-You are a world-concept generator. Produce a JSON object describing the core
-creative concept for a new world.
+- domains        (3–7 domains)
+- concept        (core world concept bundle)
+- cards          (must be an empty array)
+- starterDeck    (must be null)
+- presentation   (pitch-ready world summary)
 
 SEED ARTIFACT:
 {Seed.WorldConcept}
@@ -94,199 +59,83 @@ SEED ARTIFACT:
 OVERLAY TAGS:
 {Serialize(overlay)}
 
-Respond ONLY with valid JSON.
-Use ONLY standard ASCII characters.
-Use ONLY standard ASCII double quotes ("" "") for all strings.
-Do NOT use smart quotes, curly quotes, angled quotes, em-dashes, en-dashes,
-accented characters, or any non-ASCII punctuation.
+GLOBAL RULES:
+- The ENTIRE output MUST be under 10000 characters.
+- If needed, shorten summaries, compress lists, and remove non-essential detail.
+- Respond ONLY with valid JSON.
+- Use ONLY ASCII characters and standard ASCII double quotes.
+- No commentary, markdown, or explanation.
+- All arrays and objects must be fully closed and syntactically valid.
 
-IMPORTANT TYPE RULES:
-- All fields shown as string MUST be a JSON string, NOT an array.
-- Arrays are ONLY allowed where explicitly shown as [].
+DOMAIN RULES:
+- Generate 3–7 domains.
+- Each domain must represent a major pillar of the world.
+- Each domain must include ALL required fields.
+- Each domain must have a unique domainId.
+- Domain summary MUST be 1–2 sentences maximum.
+- Boundaries: 3–5 items.
+- Tone: 2–4 words.
+- Tags: 3–6 items.
+- Opportunities: 3–4 short items.
+- Risks: 3–4 short items.
+- DriftWarnings: 1–2 items.
+- PressureTestSeeds: 1–2 items.
+- PrismSeeds: 1–2 items.
+- Timestamp: short phrase.
 
-Return ONLY valid JSON matching this schema:
+CONCEPT RULES:
+- All concept.core fields must be 1–3 sentences each.
+- The playerPromise MUST be included and MUST be 1–3 sentences.
+- Clarity notes: 1–2 sentences.
+- Pitch section MUST include ONLY:
+  - tagline
+  - oneSentencePitch
+  - thirtySecondPitch
+  - playerPromise
+- Do NOT include marketPosition or emotionalHook.
+- Tags lists must be compact (3–6 items each).
 
-{{
-  ""seedId"": ""string"",
-  ""core"": {{
-    ""worldName"": ""string"",
-    ""summary"": ""string"",
-    ""coreFantasy"": ""string"",
-    ""tone"": ""string"",
-    ""genre"": ""string"",
-    ""setting"": ""string"",
-    ""playerFantasy"": ""string"",
-    ""creativeNorthStar"": ""string""
-  }},
-  ""clarity"": {{
-    ""clarityScore"": 0,
-    ""notes"": ""string""
-  }},
-  ""pitch"": {{
-    ""tagline"": ""string"",
-    ""oneSentencePitch"": ""string"",
-    ""thirtySecondPitch"": ""string"",
-    ""marketPosition"": ""string"",
-    ""emotionalHook"": ""string"",
-    ""playerPromise"": ""string""
-  }},
-  ""tags"": {{
-    ""conceptTagsList"": [""string""],
-    ""mechanicTags"": [""string""],
-    ""moodTags"": [""string""],
-    ""themeTags"": [""string""],
-    ""settingTags"": [""string""]
-  }},
-  ""feasibility"": {{
-    ""creativePotential"": ""string"",
-    ""alignmentWithGenre"": ""string"",
-    ""expectedComplexity"": ""string"",
-    ""opportunities"": [""string""],
-    ""pitfalls"": [""string""],
-    ""productionRisks"": [""string""]
-  }}
-}}
+FEASIBILITY RULES:
+Each subsection MUST be a single expressive sentence:
+- creativePotential: one sentence describing creative strength and potential.
+- alignmentWithGenre: one sentence describing fit within genre expectations.
+- expectedComplexity: one sentence describing system and narrative complexity.
+- opportunities: one sentence containing a comma-separated list of opportunities.
+- pitfalls: one sentence containing a comma-separated list of pitfalls.
+- productionRisks: one sentence containing a comma-separated list of production risks.
 
-Respond ONLY with JSON.
-";
-        }
+PRESENTATION RULES:
+- Include ONLY:
+  - title
+  - subtitle
+  - overview (2–4 sentences)
+  - pillars (4 short items)
+  - recommendedNextSteps (exactly 3 short items)
+- Do NOT include tone, themes, risks, or opportunities in presentation.
 
-        //
-        // CARD PROMPT (legacy)
-        //
-        public string BuildCardPrompt(IOverlayTags? tags = null)
-        {
-            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
-
-            return $@"
-You are a card generator for a worldbuilding system. Produce a JSON object
-describing a single card.
-
-SEED ARTIFACT:
-{Seed.WorldConcept}
-
-CONCEPT:
-{Concept.Core}
-
-EXISTING CARDS:
-{Serialize(Cards)}
-
-OVERLAY TAGS:
-{Serialize(overlay)}
-
-Return ONLY valid JSON with fields:
-- title: string
-- summary: string
-- mechanics: string[]
-- narrative: string
-- tags: string[]
-";
-        }
-
-        //
-        // STARTER DECK PROMPT (legacy)
-        //
-        public string BuildStarterDeckPrompt(IOverlayTags? tags = null)
-        {
-            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
-
-            return $@"
-You are a starter-deck architect. Produce a JSON object describing a starter
-deck for this world.
-
-CONCEPT:
-{Concept.Core}
-
-EXISTING CARDS:
-{Serialize(Cards)}
-
-OVERLAY TAGS:
-{Serialize(overlay)}
-
-Return ONLY valid JSON with fields:
-- deckName: string
-- summary: string
-- recommendedCards: string[]
-- onboardingNotes: string[]
-- risks: string[]
-- opportunities: string[]
-";
-        }
-
-        //
-        // PRESENTATION PROMPT (legacy)
-        //
-        public string BuildPresentationPrompt(IOverlayTags? tags = null)
-        {
-            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
-
-            return $@"
-You are a world-presentation generator. Produce a JSON object describing a
-presentation-ready summary of the world.
-
-CONCEPT:
-{Concept.Core}
-
-CARDS:
-{Serialize(Cards)}
-
-OVERLAY TAGS:
-{Serialize(overlay)}
-
-Return ONLY valid JSON with fields:
-- title: string
-- subtitle: string
-- overview: string
-- pillars: string[]
-- tone: string
-- themes: string[]
-- risks: string[]
-- opportunities: string[]
-- recommendedNextSteps: string[]
-";
-        }
-
-        //
-        // UNIFIED WORLD PACKAGE PROMPT (NEW — FIXED)
-        //
-        public string BuildUnifiedWorldPackagePrompt(IOverlayTags? tags = null)
-        {
-            var overlay = tags ?? OverlayTags ?? new OverlayTags("neutral", "medium", "literal", "generic", "medium");
-
-            return $@"
-Generate a unified world package as a single JSON object with five sections:
-
-- domain
-- concept
-- card
-- starterDeck
-- presentation
-
-Each section must follow the structure and field types normally used in world‑package generation.
-
-SEED:
-{Seed.WorldConcept}
-
-OVERLAY:
-{Serialize(overlay)}
-
-REQUIREMENTS:
-- Output must be valid JSON.
-- Use only ASCII characters and standard double quotes.
-- Do not include commentary or markdown.
-- All sections must be present, even if minimal.
+CARDS AND STARTER DECK:
+- ""cards"": [] MUST be an empty array.
+- ""starterDeck"": null MUST be null.
+- Do NOT generate any cards or starter deck content.
 
 STRUCTURE:
 {{
-  ""domain"": {{
+  ""domains"": [
+    {{
+      ""domainId"": ""string"",
       ""domainName"": ""string"",
       ""summary"": ""string"",
       ""boundaries"": [""string""],
       ""tone"": ""string"",
       ""tags"": [""string""],
       ""opportunities"": [""string""],
-      ""risks"": [""string""]
-  }},
+      ""risks"": [""string""],
+      ""driftWarnings"": [""string""],
+      ""pressureTestSeeds"": [""string""],
+      ""prismSeeds"": [""string""],
+      ""timestamp"": ""string""
+    }}
+  ],
   ""concept"": {{
       ""seedId"": ""string"",
       ""core"": {{
@@ -307,8 +156,6 @@ STRUCTURE:
           ""tagline"": ""string"",
           ""oneSentencePitch"": ""string"",
           ""thirtySecondPitch"": ""string"",
-          ""marketPosition"": ""string"",
-          ""emotionalHook"": ""string"",
           ""playerPromise"": ""string""
       }},
       ""tags"": {{
@@ -327,35 +174,18 @@ STRUCTURE:
           ""productionRisks"": [""string""]
       }}
   }},
-  ""card"": {{
-      ""title"": ""string"",
-      ""summary"": ""string"",
-      ""mechanics"": [""string""],
-      ""narrative"": ""string"",
-      ""tags"": [""string""]
-  }},
-  ""starterDeck"": {{
-      ""deckName"": ""string"",
-      ""summary"": ""string"",
-      ""recommendedCards"": [""string""],
-      ""onboardingNotes"": [""string""],
-      ""risks"": [""string""],
-      ""opportunities"": [""string""]
-  }},
+  ""cards"": [],
+  ""starterDeck"": null,
   ""presentation"": {{
       ""title"": ""string"",
       ""subtitle"": ""string"",
       ""overview"": ""string"",
       ""pillars"": [""string""],
-      ""tone"": ""string"",
-      ""themes"": [""string""],
-      ""risks"": [""string""],
-      ""opportunities"": [""string""],
       ""recommendedNextSteps"": [""string""]
   }}
 }}
 
-Return only the JSON object.
+Return ONLY the JSON object.
 ";
 }
     }

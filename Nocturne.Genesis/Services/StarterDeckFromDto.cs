@@ -21,22 +21,16 @@ namespace Nocturne.Genesis.Models
 
         public StarterDeckFromDto(LlmStarterDeckResponse dto)
         {
+            dto ??= new LlmStarterDeckResponse();
+
             Name = dto.Title ?? string.Empty;
             Summary = dto.Summary ?? string.Empty;
             CardIds = dto.CardIds?.ToList() ?? new List<string>();
             Tags = dto.Tags?.ToList() ?? new List<string>();
 
-            // Decks in the unified DTO contain only card IDs, not card objects.
-            // So we expose an empty list here; the builder will resolve cards later.
             Cards = Array.Empty<ICard>();
-
-            // No metadata in the DTO, so provide an empty dictionary.
             Metadata = new Dictionary<string, object>();
-
-            // No lineage in the DTO; provide a safe empty lineage object.
             Lineage = DeckLineage.Empty;
-
-            // Decks produced by inference are always "Generated" state.
             State = CardStatusDetails.ArtifactState.Generated;
         }
     }

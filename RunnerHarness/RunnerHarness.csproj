@@ -14,6 +14,12 @@
         <None Include="genesis.config.json" CopyToOutputDirectory="Always" />
         <None Include="prompts\**\*.json" CopyToOutputDirectory="Always" />
         <None Include="concepts\**\*.json" CopyToOutputDirectory="Always" />
+        <None Update="concepts\concept_trail_of_blood.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="concepts\concept_cryo_nation.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
 
     </ItemGroup>
     

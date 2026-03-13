@@ -1,28 +1,15 @@
+using System.Text.Json.Serialization;
+
 namespace Nocturne.Abstractions.WorldPackageSchema.ConceptDTO
 {
-    public sealed record ConceptArtifactsDTO
-    {
-        public ConceptCore Core { get; }
-        public ConceptClarity Clarity { get; }
-        public ConceptPitch Pitch { get; }
-        public ConceptTags Tags { get; }
-        public ConceptFeasibility Feasibility { get; }
-        public ConceptLogs Logs { get; }
-
-        public ConceptArtifactsDTO(
-            ConceptCore core,
-            ConceptClarity clarity,
-            ConceptPitch pitch,
-            ConceptTags tags,
-            ConceptFeasibility feasibility,
-            ConceptLogs logs)
-        {
-            Core = core;
-            Clarity = clarity;
-            Pitch = pitch;
-            Tags = tags;
-            Feasibility = feasibility;
-            Logs = logs;
-        }
-    }
+    public sealed record ConceptArtifactsDTO(
+        [property: JsonPropertyName("id")]   string Id,
+        [property: JsonPropertyName("slug")] string Slug,
+        [property: JsonPropertyName("core")] ConceptCore Core,
+        [property: JsonPropertyName("clarity")] ConceptClarity Clarity,
+        [property: JsonPropertyName("pitch")] ConceptPitch Pitch,
+        [property: JsonPropertyName("tags")] ConceptTags Tags,
+        [property: JsonPropertyName("feasibility")] ConceptFeasibility Feasibility,
+        [property: JsonPropertyName("logs")] ConceptLogs Logs
+    );
 }

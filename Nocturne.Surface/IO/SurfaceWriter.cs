@@ -41,12 +41,12 @@ namespace Nocturne.Surface.IO
             //
             // 2. Create subfolders
             //
-            var domainsPath       = Path.Combine(tmp, "Domains");
-            var conceptsPath      = Path.Combine(tmp, "Concepts");
-            var cardsPath         = Path.Combine(tmp, "Cards");
-            var sparksPath        = Path.Combine(tmp, "Sparks");
-            var starterDecksPath  = Path.Combine(tmp, "StarterDecks");
-            var presentationPath  = Path.Combine(tmp, "Presentation");
+            var domainsPath      = Path.Combine(tmp, "Domains");
+            var conceptsPath     = Path.Combine(tmp, "Concepts");
+            var cardsPath        = Path.Combine(tmp, "Cards");
+            var sparksPath       = Path.Combine(tmp, "Sparks");
+            var starterDecksPath = Path.Combine(tmp, "StarterDecks");
+            var presentationPath = Path.Combine(tmp, "Presentation");
 
             Directory.CreateDirectory(domainsPath);
             Directory.CreateDirectory(conceptsPath);
@@ -56,7 +56,7 @@ namespace Nocturne.Surface.IO
             Directory.CreateDirectory(presentationPath);
 
             //
-            // 3. Write artifacts
+            // 3. Write artifacts (IDs extracted via ExtractId)
             //
             var domainIds       = WriteArtifacts(domainsPath, domains);
             var conceptIds      = WriteArtifacts(conceptsPath, concepts);
@@ -64,19 +64,18 @@ namespace Nocturne.Surface.IO
             var starterDeckIds  = WriteArtifacts(starterDecksPath, starterDecks);
             var presentationIds = WriteArtifacts(presentationPath, presentations);
 
-            // Sparks are optional (Genesis produces none, Lens produces many)
             var sparkIds = sparks != null
                 ? WriteArtifacts(sparksPath, sparks)
                 : new List<string>();
 
             //
-            // 4. Write indexes
+            // 4. Write indexes (ID-based)
             //
 
             // Domain → Cards
             var domainCardIndex = domains.ToDictionary(
-                d => d.Definition.DomainName,
-                d => d.Cards.Select(c => c.Definition.CardId).ToList()
+                d => d.Definition.Id,
+                d => d.Cards.Select(c => c.Definition.Id).ToList()
             );
             File.WriteAllText(
                 Path.Combine(domainsPath, "card-index.json"),
@@ -85,10 +84,8 @@ namespace Nocturne.Surface.IO
 
             // Card → Sparks
             var cardSparkIndex = cards.ToDictionary<CardArtifactsDTO, string, List<string>>(
-                    c => c.Definition.CardId,
-                    c => c.Sparks
-                        .Select<SparkDTO, string>(s => s.Id)
-                        .ToList()
+                c => c.Definition.Id,
+                c => c.Sparks.Select(s => s.Id).ToList()
             );
             File.WriteAllText(
                 Path.Combine(cardsPath, "spark-index.json"),
@@ -167,11 +164,11 @@ namespace Nocturne.Surface.IO
         {
             return artifact switch
             {
-                DomainArtifactsDTO d       => d.Definition.DomainName,
+                DomainArtifactsDTO d       => d.Definition.Id,
                 ConceptArtifactsDTO c      => c.Core.SeedId,
-                CardArtifactsDTO card      => card.Definition.CardId,
-                StarterDeckArtifactsDTO sd => sd.Definition.DeckId,
-                PresentationArtifactsDTO p => p.Definition.PresentationId,
+                CardArtifactsDTO card      => card.Definition.Id,
+                StarterDeckArtifactsDTO sd => sd.Definition.Id,
+                PresentationArtifactsDTO p => p.Definition.Id,
                 SparkArtifact spark        => spark.Definition.Id,
                 _ => throw new InvalidOperationException("Unknown artifact type")
             };
