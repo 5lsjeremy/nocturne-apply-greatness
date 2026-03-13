@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Nocturne.Abstractions.Genesis.Concepts.Enums;
 
 namespace Nocturne.Genesis.Adapters
 {
@@ -13,7 +14,7 @@ namespace Nocturne.Genesis.Adapters
         {
         }
 
-        public override async Task<string> CompleteAsync(string prompt)
+        public override async Task<string> CompleteAsync(string prompt, LlmTaskType task)
         {
             var body = new
             {

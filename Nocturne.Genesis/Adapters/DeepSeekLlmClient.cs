@@ -1,54 +1,38 @@
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Nocturne.Abstractions.Genesis.Concepts.Enums;
-using Nocturne.Genesis.Config;
 
 namespace Nocturne.Genesis.Adapters
 {
-    public sealed class GeminiLlmClient : GenesisLlmClientBase
+    public sealed class DeepSeekLlmClient : GenesisLlmClientBase
     {
-        private readonly GenesisLlmConfig _config;
-
-        public GeminiLlmClient(
-            HttpClient http,
-            GenesisLlmConfig config)
-            : base(http, config.Endpoint, config.ApiKey, config.SynthesisModel)
+        public DeepSeekLlmClient(HttpClient http, string endpoint, string apiKey, string model)
+            : base(http, endpoint, apiKey, model)
         {
-            _config = config;
         }
 
         private string ResolveModel(LlmTaskType task)
         {
-            return task switch
-            {
-                LlmTaskType.Scaffold => _config.ScaffoldModel,
-                LlmTaskType.Refine => _config.RefineModel,
-                LlmTaskType.Synthesis => _config.SynthesisModel,
-                LlmTaskType.Premium => _config.PremiumModel,
-                _ => _config.SynthesisModel
-            };
+            // DeepSeek-chat is strong enough for all stages.
+            // If you want to differentiate later, you can map task → model here.
+            return Model; 
         }
 
         public override async Task<string> CompleteAsync(string prompt, LlmTaskType task)
         {
             var model = ResolveModel(task);
 
-            var url = $"{Endpoint}/v1beta/models/{model}:generateContent?key={ApiKey}";
+            var url = $"{Endpoint}/v1/chat/completions";
 
             var body = new
             {
-                contents = new[]
+                model = model,
+                messages = new[]
                 {
-                    new
-                    {
-                        role ="user",
-                        parts = new[]
-                        {
-                            new { text = prompt }
-                        }
-                    }
+                    new { role = "user", content = prompt }
                 }
             };
 
@@ -59,17 +43,16 @@ namespace Nocturne.Genesis.Adapters
 
             for (int attempt = 1; attempt <= maxRetries; attempt++)
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, url)
-                {
-                    Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
-                };
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
+                request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
                 var response = await Http.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    return ExtractGeminiContent(json);
+                    return ExtractDeepSeekContent(json);
                 }
 
                 if (response.StatusCode == HttpStatusCode.TooManyRequests)
@@ -93,30 +76,21 @@ namespace Nocturne.Genesis.Adapters
                 }
 
                 var bodyText = await response.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"Gemini 400: {bodyText}");
+                throw new HttpRequestException($"DeepSeek error: {bodyText}");
             }
 
-            throw new HttpRequestException("Unexpected failure in GeminiLlmClient.");
+            throw new HttpRequestException("Unexpected failure in DeepSeekLlmClient.");
         }
 
-        private static string ExtractGeminiContent(string json)
+        private static string ExtractDeepSeekContent(string json)
         {
             using var doc = JsonDocument.Parse(json);
 
-            var parts = doc.RootElement
-                .GetProperty("candidates")[0]
+            return doc.RootElement
+                .GetProperty("choices")[0]
+                .GetProperty("message")
                 .GetProperty("content")
-                .GetProperty("parts");
-
-            var sb = new StringBuilder();
-
-            foreach (var part in parts.EnumerateArray())
-            {
-                if (part.TryGetProperty("text", out var text))
-                    sb.Append(text.GetString());
-            }
-
-            return sb.ToString();
+                .GetString()!;
         }
     }
 }

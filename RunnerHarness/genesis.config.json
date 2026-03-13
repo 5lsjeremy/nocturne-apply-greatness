@@ -5,8 +5,11 @@
     "localizationPath": "prompts/localization/high_fantasy.json"
   },
   "llm": {
-    "endpoint": "https://generativelanguage.googleapis.com",
-    "apiKey": "%GEMINI_API_KEY%",
-    "model": "gemini-2.0-flash-lite"
+    "ScaffoldModel": "deepseek-chat",
+    "RefineModel": "deepseek-chat",
+    "SynthesisModel": "deepseek-chat",
+    "PremiumModel": "deepseek-chat",
+    "endpoint": "https://api.deepseek.com",
+    "apiKey": "%sk-4aed0176d9fe48ba9d54467a0a918ae6%"
   }
 }

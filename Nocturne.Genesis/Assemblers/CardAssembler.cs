@@ -1,4 +1,6 @@
+using Nocturne.Abstractions.WorldPackageSchema;
 using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
+using Nocturne.Abstractions.WorldPackageSchema.SparksDTO;
 using Nocturne.Genesis.Utilities;
 using Nocturne.Surface.Diagnostics;
 
@@ -16,10 +18,10 @@ namespace Nocturne.Genesis.Assemblers
         {
             // Load templates
             var definitionTemplate = TemplateLoader.LoadTemplate<CardDefinition>("Cards/card.json");
-            var metadataTemplate = TemplateLoader.LoadTemplate<CardMetadata>("Cards/metadata.json");
-            var logsTemplate = TemplateLoader.LoadTemplate<CardLogs>("Cards/logs.json");
+            var metadataTemplate   = TemplateLoader.LoadTemplate<CardMetadata>("Cards/metadata.json");
+            var logsTemplate       = TemplateLoader.LoadTemplate<CardLogs>("Cards/logs.json");
 
-            // Definition block (matches your schema exactly)
+            // Definition
             var definition = definitionTemplate with
             {
                 CardId = cardId,
@@ -31,7 +33,7 @@ namespace Nocturne.Genesis.Assemblers
                 Timestamp = DateTime.UtcNow
             };
 
-            // Metadata block (matches your metadata schema)
+            // Metadata
             var metadata = metadataTemplate with
             {
                 Author = "system",
@@ -41,7 +43,7 @@ namespace Nocturne.Genesis.Assemblers
                 Timestamp = DateTime.UtcNow
             };
 
-            // Logs block
+            // Logs
             var logs = logsTemplate with
             {
                 Entries = logger.Entries
@@ -56,7 +58,10 @@ namespace Nocturne.Genesis.Assemblers
                     .ToList()
             };
 
-            return new CardArtifactsDTO(definition, metadata, logs);
+            // Sparks are discovered later by Lens → empty list here
+            var sparks = Array.Empty<SparkDTO>();
+
+            return new CardArtifactsDTO(definition, sparks, metadata, logs);
         }
     }
 }

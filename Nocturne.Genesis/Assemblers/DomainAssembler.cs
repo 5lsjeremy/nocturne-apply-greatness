@@ -1,3 +1,4 @@
+using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
 using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
 using Nocturne.Genesis.Utilities;
 using Nocturne.Surface.Diagnostics;
@@ -9,15 +10,16 @@ namespace Nocturne.Genesis.Assemblers
         public DomainArtifactsDTO Assemble(
             LlmDomainResponse llm,
             string domainId,
+            IReadOnlyList<CardArtifactsDTO> cards,
             SurfaceLogger logger)
         {
             // Load templates
-            var definitionTemplate = TemplateLoader.LoadTemplate<DomainDefinition>("Domains/domain.json");
-            var clarityTemplate = TemplateLoader.LoadTemplate<DomainClarity>("Domains/clarity.json");
+            var definitionTemplate  = TemplateLoader.LoadTemplate<DomainDefinition>("Domains/domain.json");
+            var clarityTemplate     = TemplateLoader.LoadTemplate<DomainClarity>("Domains/clarity.json");
             var feasibilityTemplate = TemplateLoader.LoadTemplate<DomainFeasibility>("Domains/feasibility.json");
-            var logsTemplate = TemplateLoader.LoadTemplate<DomainLogs>("Domains/logs.json");
+            var logsTemplate        = TemplateLoader.LoadTemplate<DomainLogs>("Domains/logs.json");
 
-            // Fill definition (schema-correct)
+            // Definition
             var definition = definitionTemplate with
             {
                 DomainName = domainId,
@@ -33,7 +35,7 @@ namespace Nocturne.Genesis.Assemblers
                 Timestamp = DateTime.UtcNow
             };
 
-            // Fill clarity
+            // Clarity
             var clarity = clarityTemplate with
             {
                 ClarityScore = llm.ClarityScore,
@@ -44,7 +46,7 @@ namespace Nocturne.Genesis.Assemblers
                 Timestamp = DateTime.UtcNow
             };
 
-            // Fill feasibility
+            // Feasibility
             var feasibility = feasibilityTemplate with
             {
                 CreativePotential = llm.CreativePotential,
@@ -57,7 +59,7 @@ namespace Nocturne.Genesis.Assemblers
                 Timestamp = DateTime.UtcNow
             };
 
-            // Fill logs
+            // Logs
             var logs = logsTemplate with
             {
                 Entries = logger.Entries
@@ -72,7 +74,13 @@ namespace Nocturne.Genesis.Assemblers
                     .ToList()
             };
 
-            return new DomainArtifactsDTO(definition, clarity, feasibility, logs);
+            return new DomainArtifactsDTO(
+                definition,
+                cards,        // NEW: cards included here
+                clarity,
+                feasibility,
+                logs
+            );
         }
     }
 }

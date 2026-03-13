@@ -16,6 +16,10 @@ namespace Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO
         [JsonPropertyName("cards")]
         public CardArtifacts Cards { get; init; } = new();
 
+        // NEW: Sparks are now a first-class artifact family
+        [JsonPropertyName("sparks")]
+        public SparkArtifacts Sparks { get; init; } = new();
+
         [JsonPropertyName("starterDeck")]
         public StarterDeckArtifacts StarterDeck { get; init; } = new();
 

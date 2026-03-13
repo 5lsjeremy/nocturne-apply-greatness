@@ -7,6 +7,7 @@ using Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO;
 using Nocturne.Abstractions.WorldPackageSchema.PresentationDTO;
 using System.Text.Json;
 using Nocturne.Abstractions.Genesis.Concepts;
+using Nocturne.Abstractions.Genesis.Concepts.Enums;
 
 namespace Nocturne.Genesis.Adapters
 {
@@ -28,95 +29,13 @@ namespace Nocturne.Genesis.Adapters
             CancellationToken ct = default)
         {
             var effectiveTags = tags ?? context.OverlayTags;
-
             var prompt = context.BuildUnifiedWorldPackagePrompt(effectiveTags);
 
-            var raw = await _client.CompleteAsync(prompt);
+            var raw = await _client.CompleteAsync(prompt, LlmTaskType.Synthesis);
             var json = CleanJson(raw);
 
             return Deserialize<LlmWorldPackageResponse>(json, raw, "world package");
         }
-        
-        // ------------------------------------------------------------
-        // DOMAIN
-        // ------------------------------------------------------------
-        public async Task<LlmDomainResponse> GenerateDomainAsync(
-            IGenesisContext context,
-            IOverlayTags? tags,
-            CancellationToken ct = default)
-        {
-            var prompt = context.BuildDomainPrompt(tags);
-            var raw = await _client.CompleteAsync(prompt);
-            var json = CleanJson(raw);
-
-            return Deserialize<LlmDomainResponse>(json, raw, "domain");
-        }
-
-        // ------------------------------------------------------------
-        // CONCEPT
-        // ------------------------------------------------------------
-        public async Task<LlmConceptResponse> GenerateConceptAsync(
-            IGenesisContext context,
-            IOverlayTags? tags,
-            CancellationToken ct = default)
-        {
-            var prompt = context.BuildConceptPrompt(tags);
-            var raw = await _client.CompleteAsync(prompt);
-            var json = CleanJson(raw);
-
-            return Deserialize<LlmConceptResponse>(json, raw, "concept");
-        }
-
-        // ------------------------------------------------------------
-        // CARD
-        // ------------------------------------------------------------
-        public async Task<LlmCardResponse> GenerateCardAsync(
-            IGenesisContext context,
-            IOverlayTags? tags,
-            CancellationToken ct = default)
-        {
-            var prompt = context.BuildCardPrompt(tags);
-            var raw = await _client.CompleteAsync(prompt);
-            var json = CleanJson(raw);
-
-            return Deserialize<LlmCardResponse>(json, raw, "card");
-        }
-
-        // ------------------------------------------------------------
-        // STARTER DECK
-        // ------------------------------------------------------------
-        public async Task<LlmStarterDeckResponse> GenerateStarterDeckAsync(
-            IGenesisContext context,
-            IOverlayTags? tags,
-            CancellationToken ct = default)
-        {
-            var prompt = context.BuildStarterDeckPrompt(tags);
-            var raw = await _client.CompleteAsync(prompt);
-            var json = CleanJson(raw);
-
-            return Deserialize<LlmStarterDeckResponse>(json, raw, "starter deck");
-        }
-
-        // ------------------------------------------------------------
-        // PRESENTATION
-        // ------------------------------------------------------------
-        public async Task<LlmPresentationResponse> GeneratePresentationAsync(
-            IGenesisContext context,
-            IOverlayTags? tags,
-            CancellationToken ct = default)
-        {
-            var prompt = context.BuildPresentationPrompt(tags);
-            var raw = await _client.CompleteAsync(prompt);
-            var json = CleanJson(raw);
-
-            return Deserialize<LlmPresentationResponse>(json, raw, "presentation");
-        }
-
-        // ------------------------------------------------------------
-        // RAW
-        // ------------------------------------------------------------
-        public Task<string> GenerateRawAsync(string prompt, CancellationToken ct = default)
-            => _client.CompleteAsync(prompt);
 
         // ------------------------------------------------------------
         // JSON SANITIZATION
@@ -128,14 +47,12 @@ namespace Nocturne.Genesis.Adapters
 
             var cleaned = raw.Trim();
 
-            // Remove markdown fences
             cleaned = cleaned
                 .Replace("```json", "", StringComparison.OrdinalIgnoreCase)
                 .Replace("```", "")
                 .Trim('`')
                 .Trim();
 
-            // Extract first {...} block
             int first = cleaned.IndexOf('{');
             int last = cleaned.LastIndexOf('}');
             if (first >= 0 && last > first)

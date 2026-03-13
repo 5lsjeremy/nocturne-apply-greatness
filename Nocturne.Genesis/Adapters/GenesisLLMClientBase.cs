@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Text.Json;
 using Nocturne.Abstractions.Genesis;
+using Nocturne.Abstractions.Genesis.Concepts.Enums;
 
 namespace Nocturne.Genesis.Adapters
 {
@@ -23,8 +24,8 @@ namespace Nocturne.Genesis.Adapters
             Model = model;
         }
 
-        public abstract Task<string> CompleteAsync(string prompt);
-
+        public abstract Task<string> CompleteAsync(string prompt, LlmTaskType task);
+        
         protected static string ExtractContent(string json)
         {
             using var doc = JsonDocument.Parse(json);

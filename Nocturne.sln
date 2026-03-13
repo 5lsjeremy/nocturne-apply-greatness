@@ -101,6 +101,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline 2.2", "pipeline 2.
 		..\..\OneDrive\Desktop\Docs\genesis-pipeline.md = ..\..\OneDrive\Desktop\Docs\genesis-pipeline.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "soarks", "soarks", "{E0748C2F-6A62-4097-AFCC-C6B1653C1B37}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\sparks_v2.md = ..\..\OneDrive\Desktop\Docs\sparks_v2.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,5 +182,6 @@ Global
 		{98D1BDAA-BE14-4C07-9DB4-5CAC2A52863E} = {2A4C9749-361A-49C5-A837-4F389C248358}
 		{A2C9968F-2614-4F02-818C-335938ABAB5D} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
 		{9A1F61A3-F20F-49D1-823D-9D4B57AB329B} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{E0748C2F-6A62-4097-AFCC-C6B1653C1B37} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
 	EndGlobalSection
 EndGlobal

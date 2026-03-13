@@ -1,0 +1,65 @@
+{
+  "Identity": {
+    "EffectId": "",
+    "EffectSlug": "",
+    "SparkId": "",
+    "ParentCardId": "",
+    "ParentCardSlug": "",
+    "ParentDomainId": "",
+    "ParentDomainSlug": ""
+  },
+  "Type": "Mechanical",
+  "Tags": {
+    "InheritedTags": [],
+    "GeneratedTags": [],
+    "DomainTags": []
+  },
+  "Triggers": {
+    "ActivationStates": [],
+    "SuppressionStates": [],
+    "ModificationStates": []
+  },
+  "Modifiers": {
+    "AllowedModifiers": [],
+    "ForbiddenModifiers": [],
+    "OverlayModifiers": []
+  },
+  "Accumulation": {
+    "StabilityContribution": 0.0,
+    "PressureContribution": 0.0,
+    "DriftContribution": 0.0,
+    "Category": ""
+  },
+  "Lifespan": {
+    "DurationType": "persistent",
+    "Duration": null,
+    "CreatedAt": "",
+    "ExpiresAt": null
+  },
+  "State": {
+    "CurrentState": "active",
+    "LastStateChange": ""
+  },
+  "Strength": {
+    "BaseStrength": 0.0,
+    "CurveType": "linear",
+    "CurveParameters": {}
+  },
+  "Dependencies": {
+    "RequiredEffects": [],
+    "ConflictingEffects": [],
+    "RequiredDomainStates": [],
+    "RequiredCardStates": []
+  },
+  "Visibility": {
+    "VisibleToDesigner": true,
+    "VisibleToSimulation": true,
+    "VisibleToOverlays": true,
+    "VisibleInStarterPack": false
+  },
+  "Evidence": {
+    "SimulationLogs": [],
+    "DesignerNotes": [],
+    "ObservedBehaviors": []
+  }
+}

@@ -3,7 +3,7 @@ using Nocturne.Genesis.Config;
 
 namespace Nocturne.Genesis.Builders
 {
-    public sealed class GeminiLlmClientBuilder
+    public sealed class DeepSeekLlmClientBuilder
     {
         private HttpClient? _http;
         private string? _endpoint;
@@ -14,55 +14,49 @@ namespace Nocturne.Genesis.Builders
         private string? _synthesisModel;
         private string? _premiumModel;
 
-        public GeminiLlmClientBuilder UseHttpClient(HttpClient http)
+        public DeepSeekLlmClientBuilder UseHttpClient(HttpClient http)
         {
             _http = http;
             return this;
         }
 
-        public GeminiLlmClientBuilder UseEndpoint(string endpoint)
+        public DeepSeekLlmClientBuilder UseEndpoint(string endpoint)
         {
             _endpoint = endpoint;
             return this;
         }
 
-        public GeminiLlmClientBuilder UseApiKey(string apiKey)
+        public DeepSeekLlmClientBuilder UseApiKey(string apiKey)
         {
             _apiKey = apiKey;
             return this;
         }
 
-        // ------------------------------------------------------------
-        // NEW: Multi-model configuration
-        // ------------------------------------------------------------
-        public GeminiLlmClientBuilder UseScaffoldModel(string model)
+        public DeepSeekLlmClientBuilder UseScaffoldModel(string model)
         {
             _scaffoldModel = model;
             return this;
         }
 
-        public GeminiLlmClientBuilder UseRefineModel(string model)
+        public DeepSeekLlmClientBuilder UseRefineModel(string model)
         {
             _refineModel = model;
             return this;
         }
 
-        public GeminiLlmClientBuilder UseSynthesisModel(string model)
+        public DeepSeekLlmClientBuilder UseSynthesisModel(string model)
         {
             _synthesisModel = model;
             return this;
         }
 
-        public GeminiLlmClientBuilder UsePremiumModel(string model)
+        public DeepSeekLlmClientBuilder UsePremiumModel(string model)
         {
             _premiumModel = model;
             return this;
         }
 
-        // ------------------------------------------------------------
-        // BUILD
-        // ------------------------------------------------------------
-        public GeminiLlmClient Build()
+        public DeepSeekLlmClient Build()
         {
             if (_http is null)
                 throw new InvalidOperationException("HttpClient required");
@@ -71,14 +65,13 @@ namespace Nocturne.Genesis.Builders
             if (_apiKey is null)
                 throw new InvalidOperationException("API key required");
 
-            if (_scaffoldModel is null)
-                throw new InvalidOperationException("Scaffold model required");
-            if (_refineModel is null)
-                throw new InvalidOperationException("Refine model required");
-            if (_synthesisModel is null)
-                throw new InvalidOperationException("Synthesis model required");
-            if (_premiumModel is null)
-                throw new InvalidOperationException("Premium model required");
+            if (_scaffoldModel is null ||
+                _refineModel is null ||
+                _synthesisModel is null ||
+                _premiumModel is null)
+            {
+                throw new InvalidOperationException("All model fields must be provided.");
+            }
 
             var config = new GenesisLlmConfig
             {
@@ -90,7 +83,7 @@ namespace Nocturne.Genesis.Builders
                 PremiumModel = _premiumModel
             };
 
-            return new GeminiLlmClient(_http, config);
+            return new DeepSeekLlmClient(_http, _endpoint,_apiKey, _scaffoldModel);
         }
     }
 }

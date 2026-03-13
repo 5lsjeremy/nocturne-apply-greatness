@@ -7,6 +7,7 @@ using Nocturne.Genesis.Services;
 using Nocturne.Genesis.Services.Lineage;
 using Nocturne.Genesis.Assemblers;
 using Nocturne.Surface;
+using Nocturne.Surface.IO;
 
 namespace Nocturne.Genesis.Factories
 {
@@ -27,19 +28,22 @@ namespace Nocturne.Genesis.Factories
         public IGenesisEngine Create(ISurfaceArtifact seed, IGenesisOptions? options = null)
         {
             //
-            // 1. Low-level LLM client
+            // 1. Low-level LLM client (multi-model)
             //
-            var llmClient = new GeminiLlmClientBuilder()
+            var llmClient = new DeepSeekLlmClientBuilder()
                 .UseHttpClient(new HttpClient())
                 .UseEndpoint(_config.Llm.Endpoint)
                 .UseApiKey(_config.Llm.ApiKey)
-                .UseModel(_config.Llm.Model)
+                .UseScaffoldModel(_config.Llm.ScaffoldModel)
+                .UseRefineModel(_config.Llm.RefineModel)
+                .UseSynthesisModel(_config.Llm.SynthesisModel)
+                .UsePremiumModel(_config.Llm.PremiumModel)
                 .Build();
-
+            
             //
             // 2. Unified world inference adapter
             //
-            var llmAdapter = new GeminiLlmAdapter(llmClient);
+            var llmAdapter = new DeepSeekLlmAdapter(llmClient);
             var inference = new GenesisInferenceService(llmAdapter);
 
             //
@@ -64,7 +68,7 @@ namespace Nocturne.Genesis.Factories
             var surfaceWriter = new SurfaceWriter();
 
             //
-            // 6. Builder (now takes inference + assemblers)
+            // 6. Builder
             //
             var builder = new GenesisBuilder(
                 inference,
@@ -89,12 +93,12 @@ namespace Nocturne.Genesis.Factories
             );
 
             //
-            // 8. Engine (new signature)
+            // 8. Engine
             //
             return new GenesisEngine(
                 seed,
                 builder,
-                inference,            // ✔️ correct replacement for conceptService
+                inference,
                 provenanceService,
                 versioningService,
                 fingerprintService,
