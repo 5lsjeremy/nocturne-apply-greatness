@@ -8,6 +8,7 @@ using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
 using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
 using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
 using Nocturne.Abstractions.WorldPackageSchema.PresentationDTO;
+using Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO;
 using Nocturne.Abstractions.WorldPackageSchema.UnifiedWorldPackageDTO;
 using Nocturne.Genesis.Assemblers;
 using Nocturne.Genesis.Utilities;
@@ -32,82 +33,101 @@ namespace Nocturne.Genesis.Builders
         }
 
         public async Task<SurfaceDTO> BuildWorldAsync(
-            string rootPath,
-            ISurfaceArtifact seed,
-            IGenesisContext context,
-            string inferenceRunId,
-            IOverlayTags? tags,
-            LlmWorldPackageResponse world,
-            CancellationToken ct = default)
-        {
-            // Extract LLM responses
-            var domainsLlm      = world.Domains      ?? Array.Empty<LlmDomainResponse>();
-            var conceptLlm      = world.Concept      ?? new LlmConceptResponse();
-            var presentationLlm = world.Presentation ?? new LlmPresentationResponse();
+    string rootPath,
+    ISurfaceArtifact seed,
+    IGenesisContext context,
+    string inferenceRunId,
+    IOverlayTags? tags,
+    LlmWorldPackageResponse world,
+    CancellationToken ct = default)
+{
+    // Extract LLM responses
+    var domainsLlm      = world.Domains      ?? Array.Empty<LlmDomainResponse>();
+    var conceptLlm      = world.Concept      ?? new LlmConceptResponse();
+    var presentationLlm = world.Presentation ?? new LlmPresentationResponse();
 
-            // Assemble concept artifacts
-            var conceptAssembler = new ConceptAssembler();
-            var conceptArtifacts = conceptAssembler.Assemble(
-                conceptLlm,
-                ArtifactIdentity.ShortId("concept"),
-                context.Logger
-            );
+    // -----------------------------
+    // 1. Assemble Concept
+    // -----------------------------
+    var conceptAssembler = new ConceptAssembler();
+    var conceptArtifacts = conceptAssembler.Assemble(
+        conceptLlm,
+        ArtifactIdentity.ShortId("concept"),
+        context.Logger
+    );
 
-            // Convert each domain into a DomainDefinition
-            var domainDefinitions = new List<DomainDefinition>();
+    // -----------------------------
+    // 2. Assemble Domains
+    // -----------------------------
+    var domainAssembler = new DomainAssembler(_fingerprints);
+    var domainArtifacts = new List<DomainArtifactsDTO>();
 
-            foreach (var domainLlm in domainsLlm)
-            {
-                var domainId  = ArtifactIdentity.ShortId("domain");
-                var domainSlug = ArtifactIdentity.Slugify(domainLlm.DomainName ?? "domain");
+    foreach (var domainLlm in domainsLlm)
+    {
+        var domainId = ArtifactIdentity.ShortId("domain");
 
-                domainDefinitions.Add(new DomainDefinition
-                {
-                    Id         = domainId,
-                    Slug       = domainSlug,
-                    DomainName = domainLlm.DomainName ?? "domain",
-                    Summary    = domainLlm.Summary ?? "",
-                    Tags       = domainLlm.Tags?.ToList() ?? new(),
-                    Timestamp  = DateTime.UtcNow
-                });
-            }
+        var artifacts = domainAssembler.Assemble(
+            domainLlm,
+            domainId,
+            new List<CardArtifactsDTO>(), // no cards yet
+            context.Logger
+        );
 
-            // Presentation definition
-            var presentationId  = ArtifactIdentity.ShortId("presentation");
-            var presSlug        = ArtifactIdentity.Slugify(presentationLlm.Title ?? "presentation");
+        domainArtifacts.Add(artifacts);
+    }
 
-            var presentation = new PresentationDefinition
-            {
-                Id        = presentationId,
-                Slug      = presSlug,
-                Title     = presentationLlm.Title ?? "",
-                Summary   = presentationLlm.Summary ?? "",
-                Layout    = presentationLlm.Layout ?? "default",
-                Style     = presentationLlm.Style ?? "standard",
-                Tags      = presentationLlm.Tags?.ToList() ?? new(),
-                Timestamp = DateTime.UtcNow
-            };
+    // -----------------------------
+    // 3. Assemble Presentation
+    // -----------------------------
+    var presentationAssembler = new PresentationAssembler();
+    var presentationId = ArtifactIdentity.ShortId("presentation");
 
-            // Build unified DTO (no cards, no starter deck)
-            var unified = new UnifiedWorldPackageDto
-            {
-                Domains      = domainDefinitions,
-                Concept      = conceptArtifacts,
-                Cards        = new List<CardDefinition>(),   // always empty
-                StarterDeck  = null,                         // always null
-                Presentation = presentation
-            };
+    var presentationArtifacts = presentationAssembler.Assemble(
+        presentationLlm,
+        presentationId,
+        fingerprint: _fingerprints.ComputeFingerprint(presentationLlm),
+        version: 1,
+        origin: "genesis",
+        logger: context.Logger
+    );
 
-            // Write world package
-            var assembler = new UnifiedWorldPackageAssembler(rootPath);
-            assembler.Assemble(JsonSerializer.Serialize(unified));
+    // -----------------------------
+    // 4. Write full artifact tree
+    // -----------------------------
+    var surface = _surfaceWriter.WriteWorldPackage(
+        rootPath,
+        seed.Id,
+        seed.Name,
+        version: 1,
+        domains: domainArtifacts,
+        concepts: new[] { conceptArtifacts },
+        cards: Array.Empty<CardArtifactsDTO>(),
+        starterDecks: Array.Empty<StarterDeckArtifactsDTO>(),
+        presentations: new[] { presentationArtifacts }
+    );
 
-            return new SurfaceDTO
-            {
-                WorldId   = seed.Id,
-                WorldName = seed.Name,
-                Version   = 1
-            };
-        }
+    // -----------------------------
+    // 5. Build unified DTO
+    // -----------------------------
+    var unified = new UnifiedWorldPackageDto
+    {
+        Domains      = domainArtifacts.Select(d => d.Definition).ToList(),
+        Concept      = conceptArtifacts,
+        Cards        = new List<CardDefinition>(),
+        StarterDeck  = null,
+        Presentation = presentationArtifacts.Definition
+    };
+
+    // -----------------------------
+    // 6. Write unified manifest
+    // -----------------------------
+    var unifiedAssembler = new UnifiedWorldPackageAssembler(rootPath);
+    unifiedAssembler.Assemble(JsonSerializer.Serialize(unified));
+
+    // -----------------------------
+    // 7. Return SurfaceDTO
+    // -----------------------------
+    return surface;
+}
     }
 }

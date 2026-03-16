@@ -2,13 +2,27 @@
   "clarityScore": 0,
   "good": {
     "strengths": [],
-    "opportunities": []
+    "opportunities": [],
+    "weaknesses": [],
+    "ambiguities": [],
+    "risks": [],
+    "driftHazards": [],
+    "contradictions": []
   },
   "bad": {
+    "strengths": [],
+    "opportunities": [],
     "weaknesses": [],
-    "ambiguities": []
+    "ambiguities": [],
+    "risks": [],
+    "driftHazards": [],
+    "contradictions": []
   },
   "ugly": {
+    "strengths": [],
+    "opportunities": [],
+    "weaknesses": [],
+    "ambiguities": [],
     "risks": [],
     "driftHazards": [],
     "contradictions": []

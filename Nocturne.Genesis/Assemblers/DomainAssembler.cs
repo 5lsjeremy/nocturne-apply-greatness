@@ -1,3 +1,5 @@
+using Nocturne.Abstractions.Genesis.Lineage;
+using Nocturne.Abstractions.Surface;
 using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
 using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
 using Nocturne.Genesis.Utilities;
@@ -7,22 +9,32 @@ namespace Nocturne.Genesis.Assemblers
 {
     public sealed class DomainAssembler
     {
+        private readonly IFingerprintService _fingerprints;
+
+        public DomainAssembler(IFingerprintService fingerprints)
+        {
+            _fingerprints = fingerprints;
+        }
+
         public DomainArtifactsDTO Assemble(
             LlmDomainResponse llm,
             string domainId,
             IReadOnlyList<CardArtifactsDTO> cards,
-            SurfaceLogger logger)
+            ISurfaceLogger logger)
         {
             // Load templates
             var definitionTemplate  = TemplateLoader.LoadTemplate<DomainDefinition>("Domains/domain.json");
             var clarityTemplate     = TemplateLoader.LoadTemplate<DomainClarity>("Domains/clarity.json");
             var feasibilityTemplate = TemplateLoader.LoadTemplate<DomainFeasibility>("Domains/feasibility.json");
+            var metadataTemplate    = TemplateLoader.LoadTemplate<DomainMetadata>("Domains/metadata.json");
             var logsTemplate        = TemplateLoader.LoadTemplate<DomainLogs>("Domains/logs.json");
 
-            // Generate slug from domain name
+            // Generate slug
             var slug = ArtifactIdentity.Slugify(llm.DomainName ?? "domain");
 
-            // Definition
+            // -------------------------
+            // Definition (LLM-driven)
+            // -------------------------
             var definition = definitionTemplate with
             {
                 Id                = domainId,
@@ -40,31 +52,39 @@ namespace Nocturne.Genesis.Assemblers
                 Timestamp         = DateTime.UtcNow
             };
 
-            // Clarity
+            // -------------------------
+            // Clarity (template-driven)
+            // -------------------------
             var clarity = clarityTemplate with
             {
-                ClarityScore = llm.ClarityScore,
-                Good         = llm.Good,
-                Bad          = llm.Bad,
-                Ugly         = llm.Ugly,
-                Notes        = llm.ClarityNotes,
-                Timestamp    = DateTime.UtcNow
+                Timestamp = DateTime.UtcNow
             };
 
-            // Feasibility
+            // -------------------------
+            // Feasibility (template-driven)
+            // -------------------------
             var feasibility = feasibilityTemplate with
             {
-                CreativePotential     = llm.CreativePotential,
-                ProductionRisks       = llm.ProductionRisks.ToList(),
-                Opportunities         = llm.OpportunitiesFeasibility.ToList(),
-                Pitfalls              = llm.Pitfalls.ToList(),
-                AlignmentWithWorld    = llm.AlignmentWithWorld,
-                ExpectedComplexity    = llm.ExpectedComplexity,
-                RecommendedFocusAreas = llm.RecommendedFocusAreas.ToList(),
-                Timestamp             = DateTime.UtcNow
+                Timestamp = DateTime.UtcNow
             };
 
+            // -------------------------
+            // Metadata (fingerprint + lineage)
+            // -------------------------
+            var fingerprint = _fingerprints.ComputeFingerprint(llm);
+
+            var metadata = metadataTemplate with
+            {
+                DomainId    = domainId,
+                Fingerprint = fingerprint,
+                Version     = 1,
+                Origin      = "genesis",
+                Timestamp   = DateTime.UtcNow
+            };
+
+            // -------------------------
             // Logs
+            // -------------------------
             var logs = logsTemplate with
             {
                 Entries = logger.Entries
@@ -79,11 +99,15 @@ namespace Nocturne.Genesis.Assemblers
                     .ToList()
             };
 
+            // -------------------------
+            // Final artifact bundle
+            // -------------------------
             return new DomainArtifactsDTO(
                 definition,
                 cards,
                 clarity,
                 feasibility,
+                metadata,
                 logs
             );
         }

@@ -1,3 +1,4 @@
+using Nocturne.Abstractions.Surface;
 using Nocturne.Abstractions.WorldPackageSchema.PresentationDTO;
 using Nocturne.Genesis.Utilities;
 using Nocturne.Surface.Diagnostics;
@@ -12,7 +13,7 @@ namespace Nocturne.Genesis.Assemblers
             string fingerprint,
             int version,
             string origin,
-            SurfaceLogger logger)
+            ISurfaceLogger logger)
         {
             var defTemplate = TemplateLoader.LoadTemplate<PresentationDefinition>("Presentation/presentation.json");
             var metaTemplate = TemplateLoader.LoadTemplate<PresentationMetadata>("Presentation/metadata.json");
@@ -21,12 +22,12 @@ namespace Nocturne.Genesis.Assemblers
             var definition = defTemplate with
             {
                 Id = presentationId,
-                Slug = ArtifactIdentity.Slugify(llm.Title),
-                Title = llm.Title,
-                Summary = llm.Summary,
-                Layout = llm.Layout,
-                Style = llm.Style,
-                Tags = llm.Tags.ToList(),
+                Slug = ArtifactIdentity.Slugify(llm.Title ?? presentationId),
+                Title = llm.Title ?? string.Empty,
+                Subtitle = llm.Subtitle ?? string.Empty,
+                Overview = llm.Overview ?? string.Empty,
+                Pillars = llm.Pillars?.ToList() ?? new List<string>(),
+                RecommendedNextSteps = llm.RecommendedNextSteps?.ToList() ?? new List<string>(),
                 Timestamp = DateTime.UtcNow
             };
 

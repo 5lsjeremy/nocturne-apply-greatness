@@ -35,7 +35,14 @@ namespace Nocturne.Genesis.Adapters
             json = JsonRepair.TryRepair(json);
 
             // Deserialize into the unified DTO
-            var package = JsonSerializer.Deserialize<LlmWorldPackageResponse>(json);
+            var package = JsonSerializer.Deserialize<LlmWorldPackageResponse>(
+                json,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }
+            );
+
 
             if (package is null)
                 throw new InvalidOperationException(

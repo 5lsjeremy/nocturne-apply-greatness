@@ -13,17 +13,17 @@ namespace Nocturne.Abstractions.WorldPackageSchema.PresentationDTO
         [JsonPropertyName("title")]
         public string Title { get; init; } = string.Empty;
 
-        [JsonPropertyName("summary")]
-        public string Summary { get; init; } = string.Empty;
+        [JsonPropertyName("subtitle")]
+        public string Subtitle { get; init; } = string.Empty;
 
-        [JsonPropertyName("layout")]
-        public string Layout { get; init; } = "default";
+        [JsonPropertyName("overview")]
+        public string Overview { get; init; } = string.Empty;
 
-        [JsonPropertyName("style")]
-        public string Style { get; init; } = "standard";
+        [JsonPropertyName("pillars")]
+        public List<string> Pillars { get; init; } = new();
 
-        [JsonPropertyName("tags")]
-        public List<string> Tags { get; init; } = new();
+        [JsonPropertyName("recommendedNextSteps")]
+        public List<string> RecommendedNextSteps { get; init; } = new();
 
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; init; }

@@ -6,5 +6,6 @@ public sealed record DomainArtifactsDTO(
     IReadOnlyList<CardArtifactsDTO> Cards,
     DomainClarity Clarity,
     DomainFeasibility Feasibility,
+    DomainMetadata Metadata,
     DomainLogs Logs
 );
