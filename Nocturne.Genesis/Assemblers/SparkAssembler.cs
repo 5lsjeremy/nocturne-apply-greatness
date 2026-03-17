@@ -1,6 +1,5 @@
 using Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO;
 using Nocturne.Abstractions.WorldPackageSchema.SparksDTO;
-using Nocturne.Genesis.LlmDTO;
 using Nocturne.Genesis.Utilities;
 using Nocturne.Surface.Diagnostics;
 

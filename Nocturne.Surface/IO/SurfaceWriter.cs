@@ -5,6 +5,7 @@ using Nocturne.Abstractions.WorldPackageSchema.PresentationDTO;
 using Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO;
 using Nocturne.Abstractions.WorldPackageSchema.SurfaceDTO;
 using Nocturne.Abstractions.WorldPackageSchema.ArtifactsDTO;
+using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
 using Nocturne.Abstractions.WorldPackageSchema.SparksDTO;
 
 namespace Nocturne.Surface.IO

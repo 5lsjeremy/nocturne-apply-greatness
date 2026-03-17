@@ -1,6 +1,8 @@
 using Nocturne.Abstractions.Genesis.Concepts;
 using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
 
+namespace Nocturne.Genesis.Services;
+
 internal sealed class ConceptFromDto : IConcept
 {
     private readonly LlmConceptResponse _dto;

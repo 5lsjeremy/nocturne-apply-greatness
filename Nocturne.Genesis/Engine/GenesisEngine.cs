@@ -3,6 +3,7 @@ using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.Overlays;
 using Nocturne.Abstractions.Surface;
 using Nocturne.Genesis.Models;
+using Nocturne.Genesis.Services;
 using Nocturne.Surface.Diagnostics;
 
 namespace Nocturne.Genesis.Engine

@@ -4,7 +4,7 @@ using Nocturne.Abstractions.Genesis.Lineage;
 using Nocturne.Abstractions.WorldPackageSchema.StarterDeckDTO;
 using Nocturne.Genesis.Models.Lineage;
 
-namespace Nocturne.Genesis.Models
+namespace Nocturne.Genesis.Services
 {
     internal sealed class StarterDeckFromDto : IStarterDeck
     {

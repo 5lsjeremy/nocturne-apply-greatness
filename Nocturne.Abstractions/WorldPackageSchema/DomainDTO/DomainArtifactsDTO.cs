@@ -1,5 +1,6 @@
 using Nocturne.Abstractions.WorldPackageSchema.CardDTO;
-using Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
+
+namespace Nocturne.Abstractions.WorldPackageSchema.DomainDTO;
 
 public sealed record DomainArtifactsDTO(
     DomainDefinition Definition,

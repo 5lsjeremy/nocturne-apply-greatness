@@ -1,3 +1,5 @@
+namespace Nocturne.Genesis.Assemblers;
+
 public static class ArtifactIdentity
 {
     private static readonly char[] Alphabet =

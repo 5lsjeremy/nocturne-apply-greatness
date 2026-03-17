@@ -12,4 +12,14 @@
       <ProjectReference Include="..\Nocturne.Prism\Nocturne.Prism.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Abstractions\Contracts\" />
+      <Folder Include="Abstractions\Enums\" />
+      <Folder Include="Builders\" />
+      <Folder Include="Engine\Passes\" />
+      <Folder Include="Engine\Rules\" />
+      <Folder Include="Initialization\" />
+      <Folder Include="Prompts\" />
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,4 @@
-using Nocturne.Abstractions.WorldPackageSchema.SparksDTO;
-
-namespace Nocturne.Genesis.LlmDTO
+namespace Nocturne.Abstractions.WorldPackageSchema.SparksDTO
 {
     public sealed class LlmSparkResponse
     {

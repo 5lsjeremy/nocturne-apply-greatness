@@ -2,6 +2,8 @@ using Nocturne.Abstractions.Surface;
 using Nocturne.Abstractions.WorldPackageSchema.ConceptDTO;
 using Nocturne.Genesis.Utilities;
 
+namespace Nocturne.Genesis.Assemblers;
+
 public sealed class ConceptAssembler
 {
     public ConceptArtifactsDTO Assemble(
