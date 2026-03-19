@@ -1,20 +1,38 @@
+//v.01 updated 26.03.18
+using Nocturne.Abstractions.Lens;
+
 namespace Nocturne.Lens.Services
 {
-    public class LensService : ILensService
+    public sealed class LensService : ILensService
     {
         private readonly ILensEngine _engine;
         private readonly ILensMergeService _mergeService;
         private readonly ILensQuestionService _questionService;
 
-        public Task<LensResult> RunAsync(LensContext context) =>
-            _engine.ExecuteAsync(context);
+        public LensService(
+            ILensEngine engine,
+            ILensMergeService mergeService,
+            ILensQuestionService questionService)
+        {
+            _engine = engine;
+            _mergeService = mergeService;
+            _questionService = questionService;
+        }
 
-        public Task<IReadOnlyList<LensQuestion>> GetQuestionsAsync(LensContext context) =>
-            _questionService.GenerateQuestionsAsync(context);
+        public Task<ILensResult> RunAsync(
+            ILensContext context,
+            CancellationToken cancellationToken = default) =>
+            _engine.ExecuteAsync(context, cancellationToken);
 
-        public Task<LensResult> ApplyPlannedUpdatesAsync(
-            LensContext context,
-            IEnumerable<LensPlannedUpdate> updates) =>
-            _mergeService.ApplyAsync(context, updates);
+        public Task<IReadOnlyList<ILensQuestion>> GetQuestionsAsync(
+            ILensContext context,
+            CancellationToken cancellationToken = default) =>
+            _questionService.GenerateQuestionsAsync(context, cancellationToken);
+
+        public Task<ILensResult> ApplyPlannedUpdatesAsync(
+            ILensContext context,
+            IEnumerable<ILensPlannedUpdate> updates,
+            CancellationToken cancellationToken = default) =>
+            _mergeService.ApplyAsync(context, updates, cancellationToken);
     }
 }

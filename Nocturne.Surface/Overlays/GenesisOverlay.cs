@@ -1,24 +1,28 @@
+//v.01 updated 26.03.18
 using Nocturne.Abstractions.Overlays;
-using Nocturne.Abstractions.Overlays.Engines;
-using Nocturne.Surface.Overlays.Base;
 
 namespace Nocturne.Surface.Overlays
 {
-    public sealed class GenesisOverlay : OverlayBase
+    public sealed class GenesisOverlay : IGenesisOverlay
     {
+        public IOverlayTags Tags { get; }
+        public IReadOnlyList<string> SemanticTags { get; }
+        public IReadOnlyList<string> EmotionalTags { get; }
+        public IReadOnlyList<string> StructuralTags { get; }
+        public IReadOnlyList<string> DomainTags { get; }
+
         public GenesisOverlay(
             IOverlayTags tags,
-            IDomainExtractionEngine domainExtraction,
-            ICardExtractionEngine cardExtraction,
-            IWorkOrderEngine workOrder,
-            IDomainEnrichmentEngine domainEnrichment,
-            ICardEnrichmentEngine cardEnrichment,
-            IPitfallEngine pitfalls,
-            IQuestionEngine questions,
-            IReactionEngine reactions)
-            : base(tags, domainExtraction, cardExtraction, workOrder,
-                domainEnrichment, cardEnrichment, pitfalls, questions, reactions)
+            IReadOnlyList<string> semanticTags,
+            IReadOnlyList<string> emotionalTags,
+            IReadOnlyList<string> structuralTags,
+            IReadOnlyList<string> domainTags)
         {
+            Tags = tags;
+            SemanticTags = semanticTags;
+            EmotionalTags = emotionalTags;
+            StructuralTags = structuralTags;
+            DomainTags = domainTags;
         }
     }
 }

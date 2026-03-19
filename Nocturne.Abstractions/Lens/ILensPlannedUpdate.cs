@@ -7,6 +7,6 @@ namespace Nocturne.Abstractions.Lens
         string Id { get; }
         string TargetId { get; }
         LensMutationType MutationType { get; }
-        string Payload { get; }
+        object Payload { get; }
     }
 }

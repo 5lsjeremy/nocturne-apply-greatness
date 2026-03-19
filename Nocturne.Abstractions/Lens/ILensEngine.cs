@@ -1,12 +1,10 @@
-using Nocturne.Abstractions.Surface;
+//v.01 updated 26.03.18
 
-namespace Nocturne.Abstractions.Lens
+namespace Nocturne.Abstractions.Lens;
+
+public interface ILensEngine
 {
-    public interface ILensEngine
-    {
-        Task<ILensResult> ExecuteAsync(
-            ILensContext context,
-            ISurfaceLogger logger,
-            CancellationToken cancellationToken = default);
-    }
+    Task<ILensResult> ExecuteAsync(
+        ILensContext context,
+        CancellationToken cancellationToken = default);
 }

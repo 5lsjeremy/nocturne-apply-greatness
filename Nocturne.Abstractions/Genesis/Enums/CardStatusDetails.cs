@@ -14,7 +14,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Expansion,
             DeckModule,
             Utility,
-            System
+            System,
+            Note
         }
 
         public enum CardOriginType
@@ -23,7 +24,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Riff,
             Starter,
             Imported,
-            Migrated
+            Migrated,
+            System
         }
 
         public enum CardStatusType
@@ -52,7 +54,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Visible,
             Hidden,
             Ghost,
-            SystemOnly
+            SystemOnly,
+            Internal
         }
 
         public enum CardIntentType
@@ -68,7 +71,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Constraint,
             Catalyst,
             Bridge,
-            Anchor
+            Anchor,
+            None
         }
 
         public enum CardAuthorityType
@@ -105,7 +109,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Catalyst,
             Bridge,
             Wildcard,
-            Neutral
+            Neutral,
+            Unstable
         }
 
         public enum CardEnergyType
@@ -117,7 +122,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Serene,
             Aggressive,
             Whimsical,
-            Somber
+            Somber,
+            Low
         }
 
         public enum CardComplexityLevel
@@ -135,7 +141,8 @@ namespace Nocturne.Abstractions.Genesis.Enums
             Dependent,
             DependencyRoot,
             DependencyLeaf,
-            DependencyHub
+            DependencyHub,
+            None
         }
     }
 }
