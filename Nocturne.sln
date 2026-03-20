@@ -26,8 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Surface", "Nocturn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Abstractions", "Nocturne.Abstractions\Nocturne.Abstractions.csproj", "{2CB29DBE-CF77-4DFF-A427-CE48436641AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Samples", "..\PrismX.SDK\Nocturne.Samples - Copy\Nocturne.Samples.csproj", "{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Genesis", "Nocturne.Genesis\Nocturne.Genesis.csproj", "{AC095057-4A65-433D-B85D-D57F870A6B5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{7F03B8A5-1036-4E22-818E-99B5FF7EF713}"
@@ -106,6 +104,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "soarks", "soarks", "{E0748C
 		..\..\OneDrive\Desktop\Docs\sparks_v2.md = ..\..\OneDrive\Desktop\Docs\sparks_v2.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "March26", "March26", "{22945AF0-7295-4C3C-9179-B428B8EAC3B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline2.3", "pipeline2.3", "{4BD0971E-BE2A-4564-8679-8DED91A8E2BF}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\march-26-v2-3.md = ..\..\OneDrive\Desktop\Docs\march-26-v2-3.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismX.StudentAssignmentDomain", "PrismX.StudentAssignmentDomain\PrismX.StudentAssignmentDomain.csproj", "{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,10 +159,6 @@ Global
 		{2CB29DBE-CF77-4DFF-A427-CE48436641AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB29DBE-CF77-4DFF-A427-CE48436641AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB29DBE-CF77-4DFF-A427-CE48436641AC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8352CF2F-1F7B-451F-9070-B5FDA6778CF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC095057-4A65-433D-B85D-D57F870A6B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -168,6 +171,10 @@ Global
 		{D77E0CB8-78A4-4564-9603-669567F04119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D77E0CB8-78A4-4564-9603-669567F04119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D77E0CB8-78A4-4564-9603-669567F04119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7F03B8A5-1036-4E22-818E-99B5FF7EF713} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
@@ -183,5 +190,7 @@ Global
 		{A2C9968F-2614-4F02-818C-335938ABAB5D} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
 		{9A1F61A3-F20F-49D1-823D-9D4B57AB329B} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
 		{E0748C2F-6A62-4097-AFCC-C6B1653C1B37} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{22945AF0-7295-4C3C-9179-B428B8EAC3B3} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{4BD0971E-BE2A-4564-8679-8DED91A8E2BF} = {22945AF0-7295-4C3C-9179-B428B8EAC3B3}
 	EndGlobalSection
 EndGlobal
