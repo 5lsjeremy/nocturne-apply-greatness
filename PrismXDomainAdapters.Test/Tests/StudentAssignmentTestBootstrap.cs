@@ -8,7 +8,7 @@ using PrismX.Shared.Types.Contracts.States;
 using PrismX.StudentAssignmentDomain.StudentAssignmentDomain.Extensions;
 using PrismX.StudentAssignmentDomain.StudentAssignmentDomain.Models;
 
-namespace PrismX.StudentAssignmentDomain.StudentAssignmentDomain.Tests;
+namespace PrismXDomainAdapters.Test.Tests;
 
 public static class StudentAssignmentTestBootstrap
 {

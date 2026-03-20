@@ -113,6 +113,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline2.3", "pipeline2.3"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismX.StudentAssignmentDomain", "PrismX.StudentAssignmentDomain\PrismX.StudentAssignmentDomain.csproj", "{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismXDomainAdapters.Test", "PrismXDomainAdapters.Test\PrismXDomainAdapters.Test.csproj", "{6A79B1C5-A381-4C28-85D6-737AFA9E95A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +177,10 @@ Global
 		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A79B1C5-A381-4C28-85D6-737AFA9E95A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A79B1C5-A381-4C28-85D6-737AFA9E95A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A79B1C5-A381-4C28-85D6-737AFA9E95A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A79B1C5-A381-4C28-85D6-737AFA9E95A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7F03B8A5-1036-4E22-818E-99B5FF7EF713} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}

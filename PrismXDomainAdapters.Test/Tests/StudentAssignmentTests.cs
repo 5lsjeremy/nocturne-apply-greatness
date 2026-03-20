@@ -5,8 +5,9 @@ using PrismX.Shared.Types.Contracts.Base.Context;
 using PrismX.Shared.Types.Contracts.Context;
 using PrismX.Shared.Types.Contracts.Engines;
 using PrismX.Shared.Types.Contracts.States;
+using PrismX.StudentAssignmentDomain.StudentAssignmentDomain;
 
-namespace PrismX.StudentAssignmentDomain.StudentAssignmentDomain.Tests
+namespace PrismXDomainAdapters.Test.Tests
 {
     [TestFixture]
     public class StudentAssignmentEndToEndTests
