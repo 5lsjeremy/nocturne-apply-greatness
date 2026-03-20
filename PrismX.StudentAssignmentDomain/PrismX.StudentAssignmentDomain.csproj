@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>PrismX.StudentAssignmentDomain</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="PrismX.Crucible" Version="1.0.0" />
+        <PackageReference Include="PrismX.Shared" Version="1.0.0" />
+        <PackageReference Include="PrismX.DomainSDK.Kit" Version="1.0.0" />
+    </ItemGroup>
+
+</Project>
