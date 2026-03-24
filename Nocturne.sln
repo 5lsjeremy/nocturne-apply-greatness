@@ -18,8 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.UI", "Nocturne.UI\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\repo-readme.md = ..\..\OneDrive\Desktop\Docs\repo-readme.md
-		..\..\OneDrive\Desktop\Docs\repo-update-2.2.md = ..\..\OneDrive\Desktop\Docs\repo-update-2.2.md
+		..\..\OneDrive\Desktop\Docs\version-0.0.3--26-03.md = ..\..\OneDrive\Desktop\Docs\version-0.0.3--26-03.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Surface", "Nocturne.Surface\Nocturne.Surface.csproj", "{A40DC4FD-62F4-4BC1-9078-E179F5444427}"
@@ -29,82 +28,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.Genesis", "Nocturne.Genesis\Nocturne.Genesis.csproj", "{AC095057-4A65-433D-B85D-D57F870A6B5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{7F03B8A5-1036-4E22-818E-99B5FF7EF713}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\approval-loops.md = ..\..\OneDrive\Desktop\Docs\new\approval-loops.md
-		..\..\OneDrive\Desktop\Docs\new\architectural-principles.md = ..\..\OneDrive\Desktop\Docs\new\architectural-principles.md
-		..\..\OneDrive\Desktop\Docs\new\artifact-immutability.md = ..\..\OneDrive\Desktop\Docs\new\artifact-immutability.md
-		..\..\OneDrive\Desktop\Docs\new\authority-model.md = ..\..\OneDrive\Desktop\Docs\new\authority-model.md
-		..\..\OneDrive\Desktop\Docs\new\constellation-schemas.md = ..\..\OneDrive\Desktop\Docs\new\constellation-schemas.md
-		..\..\OneDrive\Desktop\Docs\new\genesis-core.md = ..\..\OneDrive\Desktop\Docs\new\genesis-core.md
-		..\..\OneDrive\Desktop\Docs\new\ingestion-umbra.md = ..\..\OneDrive\Desktop\Docs\new\ingestion-umbra.md
-		..\..\OneDrive\Desktop\Docs\new\ingestion-umbra-maw.md = ..\..\OneDrive\Desktop\Docs\new\ingestion-umbra-maw.md
-		..\..\OneDrive\Desktop\Docs\new\narrative-modifiers.md = ..\..\OneDrive\Desktop\Docs\new\narrative-modifiers.md
-		..\..\OneDrive\Desktop\Docs\new\nocturne-primer.md = ..\..\OneDrive\Desktop\Docs\new\nocturne-primer.md
-		..\..\OneDrive\Desktop\Docs\new\runtime-catalyst.md = ..\..\OneDrive\Desktop\Docs\new\runtime-catalyst.md
-		..\..\OneDrive\Desktop\Docs\new\runtime-pulse.md = ..\..\OneDrive\Desktop\Docs\new\runtime-pulse.md
-		..\..\OneDrive\Desktop\Docs\new\session-boundary.md = ..\..\OneDrive\Desktop\Docs\new\session-boundary.md
-		..\..\OneDrive\Desktop\Docs\new\universal-contract.md = ..\..\OneDrive\Desktop\Docs\new\universal-contract.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{2A4C9749-361A-49C5-A837-4F389C248358}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "umbra", "umbra", "{D102BD29-A37E-489D-8BCD-418ABADB74FE}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\umbra.md = ..\..\OneDrive\Desktop\Docs\new\umbra.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "umbra.maw", "umbra.maw", "{3715A2EC-7563-4D38-B1D1-21E9139654ED}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\maw-readme.md = ..\..\OneDrive\Desktop\Docs\new\maw-readme.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "genesis", "genesis", "{6145596B-4EC4-4A93-8897-22EBFA29EE2B}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\genesis-readme.md = ..\..\OneDrive\Desktop\Docs\new\genesis-readme.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lens", "lens", "{AC6B71F6-1BD2-42CF-9FA3-445C657F33F8}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\lens.md = ..\..\OneDrive\Desktop\Docs\new\lens.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "catalyst", "catalyst", "{84D722F6-3B62-406B-9CD6-AC7B3D9585B2}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\catalyst-readme.md = ..\..\OneDrive\Desktop\Docs\new\catalyst-readme.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "constellation", "constellation", "{212081D8-8E90-40A1-A8BD-3978BE50C086}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\constellation-readme.md = ..\..\OneDrive\Desktop\Docs\new\constellation-readme.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prism", "prism", "{8C8C0A3F-BEFB-4798-A747-6BE2FBDFE1C3}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\prism-readme.md = ..\..\OneDrive\Desktop\Docs\new\prism-readme.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pulse", "pulse", "{98D1BDAA-BE14-4C07-9DB4-5CAC2A52863E}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\new\pulse-readme.md = ..\..\OneDrive\Desktop\Docs\new\pulse-readme.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{A2C9968F-2614-4F02-818C-335938ABAB5D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nocturne.TestHarness", "Nocturne.TestHarness\Nocturne.TestHarness.csproj", "{7F19B7DD-30B4-4E26-B1A0-5BB3FB48BCF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunnerHarness", "RunnerHarness\RunnerHarness.csproj", "{D77E0CB8-78A4-4564-9603-669567F04119}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline 2.2", "pipeline 2.2", "{9A1F61A3-F20F-49D1-823D-9D4B57AB329B}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\genesis-pipeline.md = ..\..\OneDrive\Desktop\Docs\genesis-pipeline.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "soarks", "soarks", "{E0748C2F-6A62-4097-AFCC-C6B1653C1B37}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OneDrive\Desktop\Docs\sparks_v2.md = ..\..\OneDrive\Desktop\Docs\sparks_v2.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "March26", "March26", "{22945AF0-7295-4C3C-9179-B428B8EAC3B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline2.3", "pipeline2.3", "{4BD0971E-BE2A-4564-8679-8DED91A8E2BF}"
 	ProjectSection(SolutionItems) = preProject
@@ -114,6 +43,37 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismX.StudentAssignmentDomain", "PrismX.StudentAssignmentDomain\PrismX.StudentAssignmentDomain.csproj", "{3B1EA7D1-A224-4B08-B490-1BA1C05C7019}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismXDomainAdapters.Test", "PrismXDomainAdapters.Test\PrismXDomainAdapters.Test.csproj", "{6A79B1C5-A381-4C28-85D6-737AFA9E95A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "merge-candidate", "merge-candidate", "{AB3BA825-E9AD-4089-8CA2-3F1163B9868F}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\new\approval-loops.md = ..\..\OneDrive\Desktop\Docs\new\approval-loops.md
+		..\..\OneDrive\Desktop\Docs\new\architectural-principles.md = ..\..\OneDrive\Desktop\Docs\new\architectural-principles.md
+		..\..\OneDrive\Desktop\Docs\new\artifact-immutability.md = ..\..\OneDrive\Desktop\Docs\new\artifact-immutability.md
+		..\..\OneDrive\Desktop\Docs\new\authority-model.md = ..\..\OneDrive\Desktop\Docs\new\authority-model.md
+		..\..\OneDrive\Desktop\Docs\new\constellation-schemas.md = ..\..\OneDrive\Desktop\Docs\new\constellation-schemas.md
+		..\..\OneDrive\Desktop\Docs\new\genesis-core.md = ..\..\OneDrive\Desktop\Docs\new\genesis-core.md
+		..\..\OneDrive\Desktop\Docs\new\narrative-modifiers.md = ..\..\OneDrive\Desktop\Docs\new\narrative-modifiers.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "runtime", "runtime", "{CF17622A-FF02-415E-8AB6-FD1623BD03A2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\new\runtime-catalyst.md = ..\..\OneDrive\Desktop\Docs\new\runtime-catalyst.md
+		..\..\OneDrive\Desktop\Docs\new\runtime-pulse.md = ..\..\OneDrive\Desktop\Docs\new\runtime-pulse.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "session", "session", "{0596566E-59B9-4C7C-B87C-18697F31DBDC}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\new\session-boundary.md = ..\..\OneDrive\Desktop\Docs\new\session-boundary.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "primer", "primer", "{53BB654C-B456-4ABF-B1A9-855A86309BF0}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\new\nocturne-primer.md = ..\..\OneDrive\Desktop\Docs\new\nocturne-primer.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contract", "contract", "{BB9AAB92-3DD6-4958-AC5B-EB7031798EC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{1176A8F7-DCC1-40F6-BF7C-C35AFBFE2D99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -184,19 +144,13 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7F03B8A5-1036-4E22-818E-99B5FF7EF713} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
-		{2A4C9749-361A-49C5-A837-4F389C248358} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
-		{D102BD29-A37E-489D-8BCD-418ABADB74FE} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{3715A2EC-7563-4D38-B1D1-21E9139654ED} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{6145596B-4EC4-4A93-8897-22EBFA29EE2B} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{AC6B71F6-1BD2-42CF-9FA3-445C657F33F8} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{84D722F6-3B62-406B-9CD6-AC7B3D9585B2} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{212081D8-8E90-40A1-A8BD-3978BE50C086} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{8C8C0A3F-BEFB-4798-A747-6BE2FBDFE1C3} = {2A4C9749-361A-49C5-A837-4F389C248358}
-		{98D1BDAA-BE14-4C07-9DB4-5CAC2A52863E} = {2A4C9749-361A-49C5-A837-4F389C248358}
 		{A2C9968F-2614-4F02-818C-335938ABAB5D} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
-		{9A1F61A3-F20F-49D1-823D-9D4B57AB329B} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
-		{E0748C2F-6A62-4097-AFCC-C6B1653C1B37} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
-		{22945AF0-7295-4C3C-9179-B428B8EAC3B3} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
-		{4BD0971E-BE2A-4564-8679-8DED91A8E2BF} = {22945AF0-7295-4C3C-9179-B428B8EAC3B3}
+		{BB9AAB92-3DD6-4958-AC5B-EB7031798EC1} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{AB3BA825-E9AD-4089-8CA2-3F1163B9868F} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{4BD0971E-BE2A-4564-8679-8DED91A8E2BF} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{53BB654C-B456-4ABF-B1A9-855A86309BF0} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{1176A8F7-DCC1-40F6-BF7C-C35AFBFE2D99} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{CF17622A-FF02-415E-8AB6-FD1623BD03A2} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{0596566E-59B9-4C7C-B87C-18697F31DBDC} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
 	EndGlobalSection
 EndGlobal
