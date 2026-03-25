@@ -75,6 +75,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contract", "contract", "{BB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "repo", "repo", "{1176A8F7-DCC1-40F6-BF7C-C35AFBFE2D99}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "roadmap", "roadmap", "{CACF24BB-2801-4D46-B0AD-545C718E8D3B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\OneDrive\Desktop\Docs\roadmap v0.0.3.md = ..\..\OneDrive\Desktop\Docs\roadmap v0.0.3.md
+		..\..\OneDrive\Desktop\Docs\roadmap-prism-v1_1.md = ..\..\OneDrive\Desktop\Docs\roadmap-prism-v1_1.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,5 +158,6 @@ Global
 		{1176A8F7-DCC1-40F6-BF7C-C35AFBFE2D99} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
 		{CF17622A-FF02-415E-8AB6-FD1623BD03A2} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
 		{0596566E-59B9-4C7C-B87C-18697F31DBDC} = {7F03B8A5-1036-4E22-818E-99B5FF7EF713}
+		{CACF24BB-2801-4D46-B0AD-545C718E8D3B} = {B1FFC7D7-75C6-4A96-B2C0-B55E10BD2676}
 	EndGlobalSection
 EndGlobal
